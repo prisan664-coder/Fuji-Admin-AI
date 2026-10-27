@@ -123,7 +123,6 @@
             border-color: rgba(245, 158, 11, 0.6);
         }
 
-        /* CSS เพิ่มเติมสำหรับปุ่ม Suggestion สวยๆ */
         .suggestion-btn {
             transition: all 0.2s ease;
             border-left: 3px solid transparent;
@@ -131,7 +130,7 @@
 
         .suggestion-btn:hover {
             border-left-color: #f59e0b;
-            background: rgba(30, 41, 59, 0.9);
+            background: rgba(30, 41, 59, 0.95);
             transform: translateX(4px);
         }
     </style>
@@ -162,7 +161,7 @@
                 <div>
                     <h1
                         class="font-extrabold text-sm sm:text-base md:text-lg text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-indigo-300 tracking-tight leading-snug">
-                        ແອດມິນເອໄອ ຮ້ານແປງໂທລະສັບຟູຈິ
+                        ແອດມິນເອໄອ ຮ້ານແແປງໂທລະສັບຟູຈິ
                     </h1>
                     <div class="flex items-center gap-2 text-[11px] sm:text-xs text-slate-400 mt-0.5">
                         <span class="inline-flex items-center text-emerald-400 gap-1 font-medium">
@@ -208,12 +207,12 @@
                             <i class="fa-solid fa-microchip text-xs"></i> Fuji Smart AI
                         </span>
                         <span
-                            class="text-[10px] bg-cyan-950/80 text-cyan-300 border border-cyan-800 px-2 py-0.5 rounded-md font-mono">v3.0
-                            Ready</span>
+                            class="text-[10px] bg-cyan-950/80 text-cyan-300 border border-cyan-800 px-2 py-0.5 rounded-md font-mono">v3.5
+                            Active</span>
                     </div>
                     <p class="mb-2">ສະບາຍດີ! ຍິນດີຕ້ອນຮັບສູ່ <b>ຮ້ານແປງໂທລະສັບຟູຈິ</b> 🛠️</p>
-                    <p class="text-slate-300 mb-2">ພິມຄຳຖາມຂອງທ່ານໄດ້ເລີຍ! ເອໄອຈະຄົ້ນຫາຄຳຕອບທີ່ດີທີ່ສຸດໃຫ້, ຫຼື
-                        ກົດເລືອກຄຳຖາມຍອດຮິດດ້ານລຸ່ມ.</p>
+                    <p class="text-slate-300 mb-2">ພິມຄຳຖາມຂອງທ່ານໄດ້ເລີຍ! ເອໄອຈະຄົ້ນຫາ ແລະ ວິເຄາະຄຳຕອບທີ່ດີທີ່ສຸດໃຫ້,
+                        ຫຼື ກົດເລືອກຄຳຖາມດ້ານລຸ່ມ.</p>
                     <span class="text-[10px] text-slate-500 block text-right mt-1" id="welcome-time"></span>
                 </div>
             </div>
@@ -236,7 +235,7 @@
             </div>
         </div>
 
-        <!-- Input -->
+        <!-- Input Form -->
         <div class="p-3 sm:p-4 glass-header shrink-0">
             <form id="chat-form" onsubmit="handleUserInputSubmit(event)" class="flex items-center gap-2">
                 <div class="relative flex-1">
@@ -256,7 +255,7 @@
         </div>
     </div>
 
-    <!-- Toast -->
+    <!-- Toast Notification -->
     <div id="toast"
         class="fixed top-5 right-5 transform translate-y-[-160%] opacity-0 transition-all duration-300 glass-panel border border-cyan-500/40 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 z-50">
         <div id="toast-icon"
@@ -266,7 +265,7 @@
         <div id="toast-message" class="text-xs sm:text-sm font-medium"></div>
     </div>
 
-    <!-- Firebase -->
+    <!-- Firebase SDK & Script -->
     <script type="module">
         import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import {getDatabase, ref, onValue, push, set, update} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
@@ -288,14 +287,14 @@
 
         const DEFAULT_FAQS = [
             {question: "ຮ້ານຕັ້ງຢູ່ໃສ ແລະ ເປີດຈັກໂມງ?", answer: "📍 **ຮ້ານແປງໂທລະສັບຟູຈິ** ຕັ້ງຢູ່ແຄມທາງໃຫຍ່ ໃກ້ຕະຫຼາດດົງໂດກ.<br>⏰ ເປີດທຸກມື້: **08:30 - 19:00**.", isPinned: true, usageCount: 0},
-            {question: "ປ່ຽນໜ້າຈໍໂທລະສັບ ໃຊ້ເວລາດົນປານໃດ?", answer: "📱 ປ່ຽນໜ້າຈໍໃຊ້ເວລາ **30 - 60 ນາທີ** ຂຶ້ນກັບລຸ້ນ.", isPinned: true, usageCount: 0},
-            {question: "ມີປະກັນຫຼັງການແປງບໍ?", answer: "🛡️ ມີຮັບປະກັນ **30 - 90 ມື້**.", isPinned: false, usageCount: 0},
-            {question: "ປ່ຽນແບັດເຕີຣີ ລາຄາເທົ່າໃດ?", answer: "🔋 ເລີ່ມ **120,000 ກີບ** ຮັບປະກັນ 6 ເດືອນ.", isPinned: false, usageCount: 0},
-            {question: "ໂທລະສັບຕົກນ້ຳ ແປງໄດ້ບໍ?", answer: "💧 ແປງໄດ້! ຟ້າວນຳມາຮ້ານ ຢ່າສຽບສາຍຊາດ.", isPinned: false, usageCount: 0},
+            {question: "ປ່ຽນໜ້າຈໍໂທລະສັບ ໃຊ້ເວລາດົນປານໃດ?", answer: "📱 ປ່ຽນໜ້າຈໍໃຊ້ເວລາ **30 - 60 ນາທີ** ຂຶ້ນກັບລຸ້ນໂທລະສັບ.", isPinned: true, usageCount: 0},
+            {question: "ມີປະກັນຫຼັງການແປງບໍ?", answer: "🛡️ ມີຮັບປະກັນອາໄຫຼ່ ແລະ ການແປງ **30 - 90 ມື້**.", isPinned: false, usageCount: 0},
+            {question: "ປ່ຽນແບັດເຕີຣີ ລາຄາເທົ່າໃດ?", answer: "🔋 ເລີ່ມ **120,000 ກີບ** ຮັບປະກັນແບັດເຕີຣີ 6 ເດືອນ.", isPinned: false, usageCount: 0},
+            {question: "ໂທລະສັບຕົກນ້ຳ ແປງໄດ້ບໍ?", answer: "💧 ແປງໄດ້! ຟ້າວນຳມາຮ້ານ ຢ່າສຽບສາຍຊາດ ຫຼື ເປີດເຄື່ອງ.", isPinned: false, usageCount: 0},
         ];
 
-        let allFAQs = [];       // ทั้งหมด รวม hidden (สำหรับ AI ค้นหา)
-        let visibleFAQs = [];   // เฉพาะ isPinned (สำหรับแสดง chip)
+        let allFAQs = [];       // ທັງໝົດ ໃຊ້ສຳລັບ AI ຄົ້ນຫາ
+        let visibleFAQs = [];   // ເຄື່ອງໝາຍ Pinned ໃຊ້ສະແດງ Chip
         let isFeedbackActive = false;
         let isAudioEnabled = true;
         const usageBuffer = new Set();
@@ -346,9 +345,25 @@
             }
         };
 
+        window.resetSession = function () {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML = `
+                <div class="flex items-start space-x-3 msg-animate">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-md shrink-0 mt-1">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="chat-bubble-ai rounded-2xl rounded-tl-none p-4 max-w-[88%] text-slate-200 text-xs sm:text-sm">
+                        <p class="mb-1">🔄 <b>ລ້າງປະວັດແຊັດແລ້ວ!</b></p>
+                        <p class="text-slate-300">ສາມາດພິມຄຳຖາມໃໝ່ໄດ້ເລີຍ.</p>
+                    </div>
+                </div>`;
+            deactivateFeedbackPrompt();
+            showToast("ລ້າງແຊັດຮຽບຮ້ອຍແລ້ວ");
+        };
+
         document.getElementById('welcome-time').innerText = getCurrentTime();
 
-        // ===== LISTENER =====
+        // ===== REALTIME DATABASE LISTENER =====
         const faqsRef = ref(db, 'faqs');
         onValue(faqsRef, (snapshot) => {
             const data = snapshot.val();
@@ -363,28 +378,25 @@
                     if (q && a) {
                         const faq = {
                             id: key, question: q, answer: a,
-                            isPinned: d.isPinned === true, // ⭐ ใช้ isPinned คุม chip
+                            isPinned: d.isPinned === true || d.isHidden !== true,
                             usageCount: d.usageCount || 0,
                         };
-                        allFAQs.push(faq);                       // AI ค้นหาเจอทั้งหมด
-                        if (faq.isPinned) visibleFAQs.push(faq); // chip แสดงเฉพาะ pinned
+                        allFAQs.push(faq);
+                        if (faq.isPinned) visibleFAQs.push(faq);
                     }
                 });
             }
 
-            // Fallback ถ้าไม่มีข้อมูล
             if (allFAQs.length === 0) {
                 allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i}));
                 visibleFAQs = allFAQs.filter(f => f.isPinned);
             }
 
-            // เรียงตาม usage
             visibleFAQs.sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0));
-
             renderFAQChips();
             document.getElementById('faq-count-badge').innerText = `${visibleFAQs.length} ຄຳຖາມ`;
         }, (err) => {
-            console.warn("Firebase fetch failed:", err);
+            console.warn("Firebase connection failed, using offline fallback:", err);
             allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i}));
             visibleFAQs = allFAQs.filter(f => f.isPinned);
             renderFAQChips();
@@ -396,20 +408,12 @@
             container.innerHTML = '';
 
             if (visibleFAQs.length === 0) {
-                // Empty state
                 container.innerHTML = `
                     <div class="w-full text-center py-3 text-xs text-slate-500 italic">
                         <i class="fa-solid fa-magnifying-glass text-cyan-400/60 mb-1"></i><br>
                         ພິມຄຳຖາມຂອງທ່ານໄດ້ເລີຍ! ເອໄອຈະຄົ້ນຫາຄຳຕອບໃຫ້ 🔍
                     </div>`;
             } else {
-                // Header
-                const header = document.createElement('div');
-                header.className = "w-full text-[10px] text-amber-400 font-semibold mb-1 flex items-center gap-1";
-                header.innerHTML = `<i class="fa-solid fa-star"></i> ຄຳຖາມຍອດຮິດ (${visibleFAQs.length}):`;
-                container.appendChild(header);
-
-                // ⭐ แสดงเฉพาะ isPinned = true
                 visibleFAQs.forEach((faq) => {
                     const btn = document.createElement('button');
                     btn.className = "chip-pinned text-xs px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 text-left active:scale-95 shadow-sm border";
@@ -419,7 +423,6 @@
                 });
             }
 
-            // Feedback chip (แสดงเสมอ)
             const devBtn = document.createElement('button');
             devBtn.className = "text-xs bg-gradient-to-r from-pink-950/60 to-purple-950/60 hover:from-pink-900/80 hover:to-purple-900/80 text-pink-200 border border-pink-500/40 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 text-left active:scale-95 shadow-sm w-full font-medium mt-1";
             devBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-pink-400 text-[11px] shrink-0"></i> <span>${FEEDBACK_SPECIAL_QUESTION}</span>`;
@@ -427,7 +430,6 @@
             container.appendChild(devBtn);
         }
 
-        // ===== increment usage with buffer =====
         async function incrementUsage(faqId) {
             if (!faqId || faqId.startsWith('default-')) return;
             if (usageBuffer.has(faqId)) return;
@@ -436,7 +438,7 @@
                 const faq = allFAQs.find(f => f.id === faqId);
                 if (!faq) return;
                 await update(ref(db, `faqs/${faqId}`), {usageCount: (faq.usageCount || 0) + 1});
-            } catch (e) { /* silent */}
+            } catch (e) { }
         }
 
         window.handleSelectFAQ = function (question, answer, faqId) {
@@ -448,9 +450,8 @@
             setTimeout(() => {
                 removeTypingIndicator();
                 playSound('receive');
-                // ตอบคำถาม แล้วต่อด้วยข้อความถามว่ามีอะไรให้ช่วยเพิ่มไหม
                 appendAIMessage(answer + '<br><br><div class="pt-2 border-t border-slate-700/50 text-cyan-300 text-xs"><i class="fa-regular fa-circle-question mr-1"></i> ມີຫຍັງໃຫ້ຂ້ອຍຊ່ວຍເພີ່ມເຕີມບໍ?</div>');
-            }, 600);
+            }, 500);
         };
 
         window.activateFeedbackPrompt = function () {
@@ -479,48 +480,52 @@
             input.placeholder = "ພິມຄຳຖາມ... (ເຊັ່ນ: ປ່ຽນໜ້າຈໍເທົ່າໃດ)";
         }
 
-        // ===== SMART MATCH ALGORITHM =====
-        function calculateQuestionMatchScore(userInputText, faqQuestionText) {
-            const cleanUser = cleanLaoString(userInputText);
-            const cleanFAQ = cleanLaoString(faqQuestionText);
-            if (!cleanUser || !cleanFAQ) return 0;
-            if (cleanFAQ.includes(cleanUser) || cleanUser.includes(cleanFAQ)) return 0.95;
-
-            const userTokens = cleanUser.split(/\s+/).filter(t => t.length > 1);
-            if (userTokens.length === 0) return 0;
-
-            let tokenMatchCount = 0;
-            userTokens.forEach(token => {
-                if (cleanFAQ.includes(token)) tokenMatchCount++;
-            });
-            const matchRatio = tokenMatchCount / userTokens.length;
-            const charOverlapScore = computeCharOverlap(cleanUser, cleanFAQ);
-
-            // Keyword boost
-            const KEYWORDS = ['iphone', 'ipad', 'samsung', 'oppo', 'vivo', 'xiaomi',
-                'ຈໍ', 'ໜ້າຈໍ', 'ແບັດ', 'ແບັດເຕີຣີ', 'ລາຄາ', 'ຄ່າ',
-                'ປ່ຽນ', 'ແປງ', 'ປະກັນ', 'ເວລາ', 'ກີບ'];
-            let keywordBoost = 0;
-            KEYWORDS.forEach(kw => {
-                if (cleanUser.includes(kw) && cleanFAQ.includes(kw)) keywordBoost += 0.05;
-            });
-            keywordBoost = Math.min(keywordBoost, 0.2);
-
-            return Math.min((matchRatio * 0.4) + (charOverlapScore * 0.4) + keywordBoost, 1.0);
-        }
-
+        // ===== SMART AI MATCHING ALGORITHM =====
         function cleanLaoString(str) {
-            return str.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"“”]/g, "").trim();
+            return (str || '').toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"“”]/g, "").trim();
         }
 
         function computeCharOverlap(str1, str2) {
             let matches = 0;
             const maxLen = Math.max(str1.length, str2.length);
+            if (maxLen === 0) return 0;
             for (let i = 0; i < str1.length - 1; i++) {
                 const sub = str1.substring(i, i + 2);
                 if (str2.includes(sub)) matches++;
             }
-            return maxLen > 0 ? (matches / maxLen) : 0;
+            return matches / maxLen;
+        }
+
+        function calculateQuestionMatchScore(userInputText, faqQuestionText) {
+            const cleanUser = cleanLaoString(userInputText);
+            const cleanFAQ = cleanLaoString(faqQuestionText);
+            if (!cleanUser || !cleanFAQ) return 0;
+
+            if (cleanFAQ.includes(cleanUser) || cleanUser.includes(cleanFAQ)) return 0.95;
+
+            const userTokens = cleanUser.split(/\s+/).filter(t => t.length > 1);
+
+            let tokenMatchCount = 0;
+            if (userTokens.length > 0) {
+                userTokens.forEach(token => {
+                    if (cleanFAQ.includes(token)) tokenMatchCount++;
+                });
+            }
+
+            const matchRatio = userTokens.length > 0 ? (tokenMatchCount / userTokens.length) : 0;
+            const charOverlapScore = computeCharOverlap(cleanUser, cleanFAQ);
+
+            const KEYWORDS = ['iphone', 'ipad', 'samsung', 'oppo', 'vivo', 'xiaomi',
+                'ຈໍ', 'ໜ້າຈໍ', 'ແບັດ', 'ແບັດເຕີຣີ', 'ລາຄາ', 'ຄ່າ',
+                'ປ່ຽນ', 'ແປງ', 'ປະກັນ', 'ເວລາ', 'ກີບ', 'ຕົກນ້ຳ', 'ຊາດ'];
+
+            let keywordBoost = 0;
+            KEYWORDS.forEach(kw => {
+                if (cleanUser.includes(kw) && cleanFAQ.includes(kw)) keywordBoost += 0.08;
+            });
+            keywordBoost = Math.min(keywordBoost, 0.25);
+
+            return Math.min((matchRatio * 0.4) + (charOverlapScore * 0.35) + keywordBoost, 1.0);
         }
 
         function querySmartAI(queryText) {
@@ -528,17 +533,22 @@
             let maxScore = 0;
             const scoredList = [];
 
-            // ⭐ ใช้ allFAQs (รวมที่ซ่อน chip) ในการค้นหา
+            // ຄົ້ນຫາຈາກ FAQs ທັງໝົດ (ລວມທີ່ຊ່ອນໄວ້)
             allFAQs.forEach(faq => {
                 const score = calculateQuestionMatchScore(queryText, faq.question);
                 scoredList.push({faq, score});
-                if (score > maxScore) {maxScore = score; bestMatch = faq;}
+                if (score > maxScore) {
+                    maxScore = score;
+                    bestMatch = faq;
+                }
             });
 
             scoredList.sort((a, b) => b.score - a.score);
+
             return {
-                bestMatch, score: maxScore,
-                topSuggestions: scoredList.slice(0, 3).filter(i => i.score > 0.1).map(i => i.faq)
+                bestMatch,
+                score: maxScore,
+                topSuggestions: scoredList.slice(0, 3).filter(i => i.score > 0.05).map(i => i.faq)
             };
         }
 
@@ -550,7 +560,7 @@
 
             const lowerText = typedText.toLowerCase();
 
-            // ตรวจสอบว่าลูกค้าตอบว่า "ไม่มี" หรือคำขอบคุณหรือไม่
+            // ເຊັກຄຳຂອບໃຈ ຫຼື ບໍ່ມີຄຳຖາມເພີ່ມ
             const isNoMoreQuestion = lowerText.includes("ບໍ່ມີ") || lowerText.includes("ບໍ່ມີແລ້ວ") || lowerText.includes("ບໍ່ມີຫຍັງ") || lowerText.includes("ພໍແລ້ວ") || lowerText.includes("ຈົບແລ້ວ") || lowerText === "ບໍ່" || lowerText.includes("ຂອບໃຈ") || lowerText.includes("thank");
 
             if (isNoMoreQuestion) {
@@ -561,7 +571,6 @@
                 setTimeout(() => {
                     removeTypingIndicator();
                     playSound('receive');
-                    // ข้อความขอบคุณสวยๆ
                     appendAIMessage(`
                         <div class="text-center py-2">
                             <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg shadow-pink-500/30">
@@ -571,7 +580,7 @@
                             <p class="text-xs text-slate-300 leading-relaxed">ຍິນດີທີ່ໄດ້ບໍລິການທ່ານ. ຫາກມີບັນຫາ ຫຼື ຕ້ອງການຄວາມຊ່ວຍເຫຼືອເພີ່ມເຕີມ ສາມາດທັກມາຫາພວກເຮົາໄດ້ຕະຫຼອດເລີຍ 🙏</p>
                         </div>
                     `);
-                }, 600);
+                }, 500);
                 return;
             }
 
@@ -591,99 +600,111 @@
             setTimeout(() => {
                 removeTypingIndicator();
                 playSound('receive');
-                const aiResult = querySmartAI(typedText);
 
-                // ฟังก์ชันสำหรับสร้างข้อความถามเพิ่มเติมต่อท้าย
+                const aiResult = querySmartAI(typedText);
                 const followUpHTML = '<br><br><div class="pt-2 border-t border-slate-700/50 text-cyan-300 text-xs"><i class="fa-regular fa-circle-question mr-1"></i> ມີຫຍັງໃຫ້ຂ້ອຍຊ່ວຍເພີ່ມເຕີມບໍ?</div>';
 
-                // Threshold 0.20
+                // 1. ຕອບກົງໆ ເມື່ອຄະແນນຄວາມເໝາະສົມສູງ (>= 0.20)
                 if (aiResult.score >= 0.20 && aiResult.bestMatch) {
                     const responseHTML = `
-                        <div class="mb-2">💡 <b>ຄຳຕອບທີ່ກົງກັບຄຳຖາມຂອງທ່ານ:</b></div>
-                        <div>${aiResult.bestMatch.answer}${followUpHTML}</div>`;
+                        <div class="mb-2 text-cyan-300 font-semibold text-xs flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-check text-emerald-400"></i> ຄຳຕອບທີ່ກົງກັບຄຳຖາມຂອງທ່ານ:
+                        </div>
+                        <div class="text-slate-200">${aiResult.bestMatch.answer}${followUpHTML}</div>`;
                     appendAIMessage(responseHTML);
                     incrementUsage(aiResult.bestMatch.id);
-                } else if (aiResult.topSuggestions.length > 0) {
-
-                    // 🌟 อัปเกรด UI ข้อความช่วยเหลือ (Suggestion Box) ให้สวยงาม
+                }
+                // 2. ເມື່ອຄຳຖາມໃກ້ຄຽງ ສ້າງປຸ່ມ Suggestion ຂຶ້ນມາໃຫ້ລູກຄ້າກົດເລືອກ
+                else if (aiResult.topSuggestions.length > 0) {
                     let html = `
                         <div class="text-amber-300 mb-3 flex items-start gap-2">
                             <i class="fa-solid fa-circle-info mt-1 text-sm"></i>
                             <div>
-                                <p class="font-bold text-sm">ຂໍອະໄພ, ຂ້ອຍບໍ່ແນ່ໃຈ 100% ຄັບ</p>
-                                <p class="text-xs text-slate-400 mt-0.5">ທ່ານໝາຍເຖິງຄຳຖາມເຫຼົ່ານີ້ບໍ?</p>
+                                <p class="font-bold text-sm">ຂໍອະໄພ, ຂ້ອຍບໍ່ແນ່ໃຈ 100%</p>
+                                <p class="text-xs text-slate-400 mt-0.5">ທ່ານໝາຍເຖິງຄຳຖາມເຫຼົ່ານີ້ບໍ? (ກົດເລືອກໄດ້ເລີຍ):</p>
                             </div>
                         </div>
                         <div class="space-y-2">`;
 
                     aiResult.topSuggestions.forEach((sugg, index) => {
-                        // ใช้ data-attribute ในการเก็บค่า แทน JSON.stringify เพื่อป้องกัน Syntax Error
                         const safeQ = escapeHtml(sugg.question);
                         const safeA = escapeHtml(sugg.answer);
                         const safeId = sugg.id || '';
 
                         html += `
-                            <button class="suggestion-btn w-full text-left bg-slate-800/80 border border-slate-700/80 rounded-xl p-3 flex items-center justify-between group" 
+                            <button class="suggestion-btn w-full text-left bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/80 rounded-xl p-3 flex items-center justify-between group transition" 
                                 onclick="handleSelectFAQ(this.getAttribute('data-q'), this.getAttribute('data-a'), this.getAttribute('data-id'))"
                                 data-q="${safeQ}" data-a="${safeA}" data-id="${safeId}">
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-2 overflow-hidden pr-2">
                                     <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-[10px] shrink-0 font-bold">${index + 1}</span>
-                                    <span class="text-cyan-300 text-xs font-medium leading-snug group-hover:text-cyan-200 transition-colors">${safeQ}</span>
+                                    <span class="text-xs font-medium text-slate-200 truncate group-hover:text-amber-300 transition-colors">${safeQ}</span>
                                 </div>
-                                <i class="fa-solid fa-chevron-right text-[10px] text-slate-500 group-hover:text-amber-400 transition-colors shrink-0 ml-2"></i>
+                                <i class="fa-solid fa-chevron-right text-slate-500 text-xs group-hover:translate-x-1 group-hover:text-amber-400 transition-all shrink-0"></i>
                             </button>`;
                     });
-                    html += `</div>${followUpHTML}`;
+
+                    html += `</div>
+                        <div class="mt-3 pt-2 border-t border-slate-700/50 text-[11px] text-slate-400">
+                            ຫຼື ພິມຄຳຖາມໃໝ່ໃຫ້ລະອຽດຕື່ມອີກໄດ້ເລີຍຄັບ.
+                        </div>`;
                     appendAIMessage(html);
-                } else {
-                    const fallbackHTML = `
-                        <p>ຂໍອະໄພ, ບໍ່ພົບຂໍ້ມູນທີ່ກົງກັບ <b>"${escapeHtml(typedText)}"</b> 😅</p>
-                        <p class="mt-2 text-xs text-slate-300">ກົດສົ່ງຄຳຄິດເຫັນເຖິງຜູ້ພັດທະນາ ເພື່ອໃຫ້ແອດມິນເພີ່ມຄຳຕອບນີ້ໃຫ້!${followUpHTML}</p>`;
-                    appendAIMessage(fallbackHTML);
                 }
-            }, 700);
+                // 3. ເມື່ອບໍ່ມີຄຳຖາມໃດໃກ້ຄຽງເລີຍ
+                else {
+                    appendAIMessage(`
+                        <div class="text-slate-300">
+                            <p class="mb-2">⚠️ ຂໍອະໄພ, ຂ້ອຍບໍ່ພົບຄຳຕອບທີ່ກົງກັບ <b>"${escapeHtml(typedText)}"</b> ໃນລະບົບ.</p>
+                            <p class="text-xs text-slate-400 mb-3">ທ່ານສາມາດເລືອກຄຳຖາມຍອດຮິດດ້ານລຸ່ມ ຫຼື ຝາກຂໍ້ຄວາມເຖິງທີມງານໄດ້ເລີຍ.</p>
+                            <button onclick="activateFeedbackPrompt()" class="text-xs bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 border border-pink-500/40 px-3 py-2 rounded-xl transition flex items-center gap-2 font-medium">
+                                <i class="fa-solid fa-paper-plane"></i> ຝາກຂໍ້ຄວາມເຖິງທີມງານແອດມິນ
+                            </button>
+                        </div>
+                    `);
+                }
+            }, 600);
         };
 
-        async function sendFeedbackToFirebase(feedbackContent) {
+        async function sendFeedbackToFirebase(message) {
             playSound('send');
-            appendUserMessage(feedbackContent);
+            appendUserMessage(message);
             showTypingIndicator();
             try {
                 const feedbackRef = ref(db, 'developer_feedback');
                 const newRef = push(feedbackRef);
                 await set(newRef, {
-                    message: feedbackContent,
+                    message: message,
                     timestamp: new Date().toISOString(),
-                    clientTime: new Date().toLocaleString('lo-LA'),
-                    deviceInfo: navigator.userAgent || 'Unknown'
+                    device: navigator.userAgent.substring(0, 80)
                 });
+
                 setTimeout(() => {
                     removeTypingIndicator();
-                    playSound('receive');
-                    appendAIMessage("ຂອບໃຈຫຼາຍໆ! 💚 ຂໍ້ຄວາມຂອງທ່ານຖືກສົ່ງເຖິງ <b>ຜູ້ພັດທະນາ</b> ແລ້ວ!");
-                    showToast("ສົ່ງຄຳຄິດເຫັນສຳເລັດ!", "success");
+                    playSound('toast');
+                    appendAIMessage("✅ <b>ສົ່ງຄຳຄິດເຫັນຮຽບຮ້ອຍແລ້ວ!</b><br>ຂອບໃຈຫຼາຍໆສຳລັບຄຳແນະນຳ ທີມງານຈະນຳໄປປັບປຸງໃຫ້ດີຂຶ້ນ 🙏");
                     deactivateFeedbackPrompt();
+                    showToast("ສົ່ງຄຳຄິດເຫັນສຳເລັດ");
                 }, 600);
             } catch (err) {
-                console.error(err);
+                console.error("Feedback error:", err);
                 setTimeout(() => {
                     removeTypingIndicator();
-                    appendAIMessage("ຂໍອະໄພ, ເກີດຂໍ້ຜິດພາດ. ລອງໃໝ່ອີກຄັ້ງ.");
-                    showToast("ຜິດພາດ", "error");
-                }, 400);
+                    appendAIMessage("❌ ເກີດຂໍ້ຜິດພາດໃນການສົ່ງ. ກະລຸນາລອງໃໝ່ອີກຄັ້ງ.");
+                    deactivateFeedbackPrompt();
+                }, 600);
             }
         }
 
+        // ===== CHAT UI HELPER FUNCTIONS =====
         function appendUserMessage(text) {
             const chatBox = document.getElementById('chat-box');
             const div = document.createElement('div');
-            div.className = "flex items-end justify-end space-x-2 msg-animate";
+            div.className = "flex items-start justify-end space-x-3 msg-animate";
             div.innerHTML = `
-                <div class="chat-bubble-user rounded-2xl rounded-tr-none p-3.5 max-w-[85%] text-white text-xs sm:text-sm leading-relaxed shadow-lg">
-                    <p>${escapeHtml(text)}</p>
-                    <span class="text-[10px] text-indigo-200 block mt-1 text-right font-mono">${getCurrentTime()}</span>
+                <div class="chat-bubble-user rounded-2xl rounded-tr-none p-3.5 max-w-[85%] text-white text-xs sm:text-sm">
+                    <p class="whitespace-pre-wrap">${escapeHtml(text)}</p>
+                    <span class="text-[10px] text-indigo-200/70 block text-right mt-1">${getCurrentTime()}</span>
                 </div>
-                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-md">
+                <div class="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-md shrink-0 mt-1">
                     <i class="fa-solid fa-user"></i>
                 </div>`;
             chatBox.appendChild(div);
@@ -695,15 +716,12 @@
             const div = document.createElement('div');
             div.className = "flex items-start space-x-3 msg-animate";
             div.innerHTML = `
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-cyan-500/20 shrink-0 mt-1">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-md shrink-0 mt-1">
                     <i class="fa-solid fa-robot"></i>
                 </div>
                 <div class="chat-bubble-ai rounded-2xl rounded-tl-none p-4 max-w-[88%] text-slate-200 text-xs sm:text-sm leading-relaxed">
-                    <div class="text-cyan-400 font-bold mb-1 flex items-center gap-1.5 text-xs">
-                        <i class="fa-solid fa-sparkles"></i> Fuji AI:
-                    </div>
                     <div>${htmlContent}</div>
-                    <span class="text-[10px] text-slate-500 block text-right mt-1.5 font-mono">${getCurrentTime()}</span>
+                    <span class="text-[10px] text-slate-500 block text-right mt-1.5">${getCurrentTime()}</span>
                 </div>`;
             chatBox.appendChild(div);
             scrollToBottom();
@@ -715,83 +733,53 @@
             div.id = 'typing-indicator';
             div.className = "flex items-start space-x-3 msg-animate";
             div.innerHTML = `
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shrink-0 mt-1">
-                    <i class="fa-solid fa-robot"></i>
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shrink-0 mt-1">
+                    <i class="fa-solid fa-robot animate-pulse"></i>
                 </div>
-                <div class="chat-bubble-ai rounded-2xl rounded-tl-none px-4 py-3 text-slate-400 text-xs flex items-center gap-2">
-                    <span>ເອໄອກຳລັງວິເຄາະ</span>
-                    <span class="flex gap-1">
-                        <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce"></span>
-                        <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></span>
-                        <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
-                    </span>
+                <div class="chat-bubble-ai rounded-2xl rounded-tl-none px-4 py-3 text-cyan-400 text-xs flex items-center space-x-1.5">
+                    <span class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"></span>
+                    <span class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                    <span class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                    <span class="text-slate-400 text-[11px] ml-2">ກຳລັງວິເຄາະ...</span>
                 </div>`;
             chatBox.appendChild(div);
             scrollToBottom();
         }
 
         function removeTypingIndicator() {
-            document.getElementById('typing-indicator')?.remove();
+            const indicator = document.getElementById('typing-indicator');
+            if (indicator) indicator.remove();
         }
-
-        window.resetSession = function () {
-            const chatBox = document.getElementById('chat-box');
-            chatBox.innerHTML = `
-                <div class="flex items-start space-x-3 msg-animate">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-cyan-500/20 shrink-0 mt-1">
-                        <i class="fa-solid fa-robot"></i>
-                    </div>
-                    <div class="chat-bubble-ai rounded-2xl rounded-tl-none p-4 max-w-[88%] text-slate-200 text-xs sm:text-sm leading-relaxed">
-                        <div class="flex items-center justify-between mb-1.5 pb-1 border-b border-slate-700/50">
-                            <span class="font-bold text-cyan-400 flex items-center gap-1.5">
-                                <i class="fa-solid fa-microchip text-xs"></i> Fuji Smart AI
-                            </span>
-                            <span class="text-[10px] bg-cyan-950/80 text-cyan-300 border border-cyan-800 px-2 py-0.5 rounded-md font-mono">v3.0 Ready</span>
-                        </div>
-                        <p class="mb-2">ສະບາຍດີ! ຍິນດີຕ້ອນຮັບສູ່ <b>ຮ້ານແປງໂທລະສັບຟູຈິ</b> 🛠️</p>
-                        <p class="text-slate-300 mb-2">ພິມຄຳຖາມ ຫຼື ກົດເລືອກຄຳຖາມຍອດຮິດດ້ານລຸ່ມ!</p>
-                        <span class="text-[10px] text-slate-500 block text-right mt-1">${getCurrentTime()}</span>
-                    </div>
-                </div>`;
-            deactivateFeedbackPrompt();
-            showToast("ລ້າງແຊັດແລ້ວ!");
-        };
 
         function scrollToBottom() {
             const chatBox = document.getElementById('chat-box');
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.scrollTo({top: chatBox.scrollHeight, behavior: 'smooth'});
         }
 
-        function getCurrentTime() {
-            return new Date().toLocaleTimeString('lo-LA', {hour: '2-digit', minute: '2-digit'});
-        }
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.innerText = text;
-            return div.innerHTML;
-        }
-
-        function showToast(message, type = 'info') {
-            playSound('toast');
+        function showToast(msg) {
             const toast = document.getElementById('toast');
-            const msgEl = document.getElementById('toast-message');
-            const iconEl = document.getElementById('toast-icon');
-            msgEl.innerText = message;
-            if (type === 'error') {
-                iconEl.className = "w-8 h-8 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center shrink-0";
-                iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
-            } else {
-                iconEl.className = "w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0";
-                iconEl.innerHTML = '<i class="fa-solid fa-check"></i>';
-            }
+            document.getElementById('toast-message').innerText = msg;
             toast.classList.remove('translate-y-[-160%]', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
             setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
                 toast.classList.add('translate-y-[-160%]', 'opacity-0');
             }, 3000);
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('lo-LA', {hour: '2-digit', minute: '2-digit'});
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
     </script>
 </body>
