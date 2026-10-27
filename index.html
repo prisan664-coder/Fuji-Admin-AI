@@ -5,15 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ແອດມິນເອໄອຂອງຮ້ານແປງໂທລະສັບຟູຈິ Fuji Admin</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts for Lao typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
         rel="stylesheet">
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
@@ -25,33 +22,19 @@
                         sans: ['Noto Sans Lao', 'sans-serif'],
                         tech: ['Space Grotesk', 'Noto Sans Lao', 'sans-serif'],
                     },
-                    colors: {
-                        cyber: {
-                            50: '#f0fdf4',
-                            900: '#030712',
-                            card: 'rgba(15, 23, 42, 0.75)',
-                            neon: '#00f0ff',
-                            purple: '#8b5cf6',
-                            pink: '#ec4899'
-                        }
-                    },
+                    colors: {cyber: {900: '#030712', card: 'rgba(15, 23, 42, 0.75)', neon: '#00f0ff'}},
                     animation: {
-                        'gradient-x': 'gradient-x 15s ease infinite',
-                        'float': 'float 6s ease-in-out infinite',
                         'glow-pulse': 'glowPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
                     },
                     keyframes: {
-                        'gradient-x': {
-                            '0%, 100%': {'background-size': '200% 200%', 'background-position': 'left center'},
-                            '50%': {'background-size': '200% 200%', 'background-position': 'right center'}
+                        glowPulse: {
+                            '0%, 100%': {opacity: 0.8, filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.6))'},
+                            '50%': {opacity: 1, filter: 'drop-shadow(0 0 18px rgba(0,240,255,0.9))'}
                         },
                         'float': {
                             '0%, 100%': {transform: 'translateY(0px)'},
                             '50%': {transform: 'translateY(-6px)'}
-                        },
-                        'glowPulse': {
-                            '0%, 100%': {opacity: 0.8, filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.6))'},
-                            '50%': {opacity: 1, filter: 'drop-shadow(0 0 18px rgba(0,240,255,0.9))'}
                         }
                     }
                 }
@@ -70,7 +53,6 @@
             overflow-x: hidden;
         }
 
-        /* Glassmorphism containers */
         .glass-panel {
             background: rgba(15, 23, 42, 0.78);
             backdrop-filter: blur(20px);
@@ -85,7 +67,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        /* Neon & Chat Bubbles */
         .chat-bubble-user {
             background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
             box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.5);
@@ -98,11 +79,6 @@
             box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
         }
 
-        .neon-border-glow {
-            box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
-        }
-
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 5px;
         }
@@ -135,26 +111,43 @@
         .msg-animate {
             animation: fadeInMsg 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
+        .chip-pinned {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(249, 115, 22, 0.15));
+            border-color: rgba(245, 158, 11, 0.4);
+            color: #fcd34d;
+        }
+
+        .chip-pinned:hover {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(249, 115, 22, 0.25));
+            border-color: rgba(245, 158, 11, 0.6);
+        }
+
+        /* CSS เพิ่มเติมสำหรับปุ่ม Suggestion สวยๆ */
+        .suggestion-btn {
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .suggestion-btn:hover {
+            border-left-color: #f59e0b;
+            background: rgba(30, 41, 59, 0.9);
+            transform: translateX(4px);
+        }
     </style>
 </head>
 
 <body class="text-slate-100 flex flex-col items-center justify-center min-h-screen p-2 sm:p-4">
 
-    <!-- Glowing Background Orbs -->
-    <div
-        class="fixed top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow">
-    </div>
-    <div class="fixed bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-slow"
-        style="animation-delay: 1.5s;"></div>
+    <div class="fixed top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="fixed bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-    <!-- Main Outer Container -->
     <div
         class="w-full max-w-2xl h-[94vh] flex flex-col glass-panel rounded-3xl overflow-hidden relative border border-cyan-500/20 shadow-2xl">
 
         <!-- Header -->
         <header class="glass-header px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between z-20 shrink-0">
             <div class="flex items-center space-x-3 sm:space-x-4">
-                <!-- Avatar Icon with Neon Ring -->
                 <div class="relative animate-float">
                     <div
                         class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-400 via-indigo-500 to-pink-500 p-0.5 shadow-lg shadow-cyan-500/30">
@@ -169,7 +162,7 @@
                 <div>
                     <h1
                         class="font-extrabold text-sm sm:text-base md:text-lg text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-indigo-300 tracking-tight leading-snug">
-                        ແອດມິນເອໄອຂອງຮ້ານແປງໂທລະສັບຟູຈິ Fuji Admin
+                        ແອດມິນເອໄອ ຮ້ານແປງໂທລະສັບຟູຈິ
                     </h1>
                     <div class="flex items-center gap-2 text-[11px] sm:text-xs text-slate-400 mt-0.5">
                         <span class="inline-flex items-center text-emerald-400 gap-1 font-medium">
@@ -183,29 +176,26 @@
                 </div>
             </div>
 
-            <!-- Action Controls -->
             <div class="flex items-center space-x-2">
-                <button onclick="toggleAudio()" id="audio-btn" title="ເປີດ/ປິດ ສຽງເອັບເຟັກ"
+                <button onclick="toggleAudio()" id="audio-btn" title="ເປີດ/ປິດ ສຽງ"
                     class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-cyan-400 transition border border-slate-700/60 active:scale-95">
                     <i id="audio-icon" class="fa-solid fa-volume-high text-cyan-400"></i>
                 </button>
-                <button onclick="resetSession()" title="ລ້າງປະວັດແຊັດ"
+                <button onclick="resetSession()" title="ລ້າງແຊັດ"
                     class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-rose-400 transition border border-slate-700/60 active:scale-95">
                     <i class="fa-solid fa-arrows-rotate"></i>
                 </button>
             </div>
         </header>
 
-        <!-- Privacy Shield Notice -->
         <div
             class="bg-gradient-to-r from-cyan-950/40 via-slate-900/60 to-purple-950/40 border-b border-cyan-500/10 px-4 py-1.5 text-[11px] sm:text-xs text-cyan-200/80 flex items-center justify-center gap-2 text-center shrink-0">
             <i class="fa-solid fa-shield-halved text-cyan-400"></i>
-            <span>ຂໍ້ຄວາມໃນນີ້ຈະບໍ່ຖືກບັນທຶກ ເມື່ອທ່ານອອກຈາກໜ້າເວັບ ຂໍ້ຄວາມທັງໝົດຈະຖືກລົບທັນທີ</span>
+            <span>ຂໍ້ຄວາມຈະບໍ່ຖືກບັນທຶກ ເມື່ອອອກຈາກໜ້າເວັບ</span>
         </div>
 
-        <!-- Main Chat Stream Area -->
+        <!-- Chat Stream -->
         <div id="chat-box" class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
-            <!-- AI Welcome Message -->
             <div class="flex items-start space-x-3 msg-animate">
                 <div
                     class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-cyan-500/20 shrink-0 mt-1">
@@ -218,42 +208,40 @@
                             <i class="fa-solid fa-microchip text-xs"></i> Fuji Smart AI
                         </span>
                         <span
-                            class="text-[10px] bg-cyan-950/80 text-cyan-300 border border-cyan-800 px-2 py-0.5 rounded-md font-mono">v2.5
+                            class="text-[10px] bg-cyan-950/80 text-cyan-300 border border-cyan-800 px-2 py-0.5 rounded-md font-mono">v3.0
                             Ready</span>
                     </div>
-                    <p class="mb-2">ສະບາຍດີ! ຍິນດີຕ້ອນຮັບสู่ <b>ຮ້ານແປງໂທລະສັບຟູຈິ Fuji Repair</b> 🛠️</p>
-                    <p class="text-slate-300 mb-2">ທ່ານສາມາດ <b>ພິມຄຳຖາມອິດສະຫຼະ</b> ໃສ່ຊ່ອງພິມດ້ານລຸ່ມນີ້ໄດ້ເລີຍ!
-                        ເອໄອຈະຄິດໄລ່ ແລະ ຕອບຄຳຕອບທີ່ກົງກັບຄວາມຕ້ອງການຂອງທ່ານໃຫ້ທັນທີ ຫຼື
-                        ຈະກົດເລືອກຄຳຖາມແນະນຳດ້ານລຸ່ມກໍໄດ້.</p>
+                    <p class="mb-2">ສະບາຍດີ! ຍິນດີຕ້ອນຮັບສູ່ <b>ຮ້ານແປງໂທລະສັບຟູຈິ</b> 🛠️</p>
+                    <p class="text-slate-300 mb-2">ພິມຄຳຖາມຂອງທ່ານໄດ້ເລີຍ! ເອໄອຈະຄົ້ນຫາຄຳຕອບທີ່ດີທີ່ສຸດໃຫ້, ຫຼື
+                        ກົດເລືອກຄຳຖາມຍອດຮິດດ້ານລຸ່ມ.</p>
                     <span class="text-[10px] text-slate-500 block text-right mt-1" id="welcome-time"></span>
                 </div>
             </div>
         </div>
 
-        <!-- Quick FAQs Suggestion Bar -->
+        <!-- Quick Suggestion Bar -->
         <div class="px-3 py-2.5 bg-slate-950/70 border-t border-slate-800/80 shrink-0">
             <div class="flex justify-between items-center mb-2 px-1">
                 <span class="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
-                    <i class="fa-solid fa-bolt text-cyan-400"></i> ຄຳຖາມຍອດຮິດ (ກົດເພື່ອຖາມທັນທີ):
+                    <i class="fa-solid fa-bolt text-cyan-400"></i> ຄຳຖາມຍອດຮິດ:
                 </span>
                 <span id="faq-count-badge"
                     class="text-[10px] bg-slate-800 text-cyan-300 px-2 py-0.5 rounded-full font-mono">ກຳລັງໂຫຼດ...</span>
             </div>
-
             <div id="faq-buttons-container" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pr-1">
                 <div
                     class="w-full text-center py-2 text-xs text-slate-500 italic flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-circle-notch animate-spin text-cyan-400"></i> ກຳລັງໂຫຼດຄຳຖາມຈາກຖານຂໍ້ມູນ...
+                    <i class="fa-solid fa-circle-notch animate-spin text-cyan-400"></i> ກຳລັງໂຫຼດ...
                 </div>
             </div>
         </div>
 
-        <!-- Chat Input Form & Feedback Interface -->
+        <!-- Input -->
         <div class="p-3 sm:p-4 glass-header shrink-0">
             <form id="chat-form" onsubmit="handleUserInputSubmit(event)" class="flex items-center gap-2">
                 <div class="relative flex-1">
-                    <input type="text" id="user-input"
-                        placeholder="ພິມຄຳຖາມຂອງທ່ານຢູ່ທີ່ນີ້ (ເຊັ່ນ: ປ່ຽນໜ້າຈໍເທົ່າໃດ...)..." autocomplete="off"
+                    <input type="text" id="user-input" placeholder="ພິມຄຳຖາມ... (ເຊັ່ນ: ປ່ຽນໜ້າຈໍເທົ່າໃດ)"
+                        autocomplete="off"
                         class="w-full bg-slate-950/90 text-slate-100 placeholder-slate-500 text-xs sm:text-sm rounded-xl px-4 py-3 border border-slate-700/80 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner">
                     <span id="feedback-badge"
                         class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-[10px] bg-pink-500/20 text-pink-300 border border-pink-500/40 px-2.5 py-1 rounded-md font-medium flex items-center gap-1">
@@ -268,7 +256,7 @@
         </div>
     </div>
 
-    <!-- Custom Modern Toast Notification -->
+    <!-- Toast -->
     <div id="toast"
         class="fixed top-5 right-5 transform translate-y-[-160%] opacity-0 transition-all duration-300 glass-panel border border-cyan-500/40 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 z-50">
         <div id="toast-icon"
@@ -278,12 +266,11 @@
         <div id="toast-message" class="text-xs sm:text-sm font-medium"></div>
     </div>
 
-    <!-- Firebase Modular SDK -->
+    <!-- Firebase -->
     <script type="module">
         import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import {getDatabase, ref, onValue, push, set} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import {getDatabase, ref, onValue, push, set, update} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // Your Web App's Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCPlKQmGJZxWaea_6y-h5lRGL5PSGw861M",
             authDomain: "short-link-b5ee2.firebaseapp.com",
@@ -292,86 +279,59 @@
             storageBucket: "short-link-b5ee2.firebasestorage.app",
             messagingSenderId: "1069426525163",
             appId: "1:1069426525163:web:4b49c025fb5909b9ad4fae",
-            measurementId: "G-TN3NCB1N2J"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Constant Special Developer Feedback Text
         const FEEDBACK_SPECIAL_QUESTION = "ລູກຄ້າຕ້ອງການປະກອບຄວາມຄິດເຫັນເຖິງຜູ້ພັດທະນາໂປຣແກມບໍ ສາມາດພິມຂໍ້ຄວາມແລະສົ່ງໄດ້ທາງນີ້";
 
-        // Backup Default FAQs (In case DB has no entry yet)
         const DEFAULT_FAQS = [
-            {
-                question: "ຮ້ານຕັ້ງຢູ່ໃສ ແລະ ເປີດຈັກໂມງ?",
-                answer: "📍 **ຮ້ານແປງໂທລະສັບຟູຈິ** ຕັ້ງຢູ່ແຄມທາງໃຫຍ່ ໃກ້ຕະຫຼາດດົງໂດກ.<br>⏰ ເປີດບໍລິການທຸກມື້: **08:30 - 19:00 ໂມງ**."
-            },
-            {
-                question: "ປ່ຽນໜ້າຈໍໂທລະສັບ ໃຊ້ເວລາດົນປານໃດ?",
-                answer: "📱 ປ່ຽນໜ້າຈໍໃຊ້ເວລາປະມານ **30 - 60 ນາທີ** (ຂຶ້ນກັບລຸ້ນໂທລະສັບ). ລູກຄ້າສາມາດນັ່ງຖ້າຮັບໄດ້ເລີຍ!"
-            },
-            {
-                question: "ມີປະກັນຫຼັງການແປງບໍ?",
-                answer: "🛡️ ຮ້ານພວກເຮົາມີຮັບປະກັນອາໄຫຼ່ ແລະ ງານແປງ **30 - 90 ມື້** (ຕາມເງື່ອນໄຂອາໄຫຼ່ແຕ່ລະປະເພດ)."
-            },
-            {
-                question: "ປ່ຽນແບັດເຕີຣີ ລາຄາເທົ່າໃດ?",
-                answer: "🔋 ລາຄາປ່ຽນແບັດເຕີຣີເລີ່ມຕົ້ນ **120,000 ກີບ** (ຮວມຄ່າຊ່າງ). ແບັດເຕີຣີມາດຕະຖານ ມີ ມອກ./CE ຮັບປະກັນ 6 ເດືອນ."
-            },
-            {
-                question: "ໂທລະສັບຕົກນ້ຳ ແປງໄດ້ບໍ?",
-                answer: "💧 ແປງໄດ້! ແນະນຳໃຫ້ຟ້າວນຳເຄື່ອງມາຮ້ານທັນທີ ໂດຍບໍ່ຕ້ອງສຽບສາຍຊາດ ເພື່ອໃຫ້ຊ່າງລ້າງບອດ ແລະ ອົບຄວາມຮ້ອນກ່ອນວົງຈອນຊັອດ."
-            }
+            {question: "ຮ້ານຕັ້ງຢູ່ໃສ ແລະ ເປີດຈັກໂມງ?", answer: "📍 **ຮ້ານແປງໂທລະສັບຟູຈິ** ຕັ້ງຢູ່ແຄມທາງໃຫຍ່ ໃກ້ຕະຫຼາດດົງໂດກ.<br>⏰ ເປີດທຸກມື້: **08:30 - 19:00**.", isPinned: true, usageCount: 0},
+            {question: "ປ່ຽນໜ້າຈໍໂທລະສັບ ໃຊ້ເວລາດົນປານໃດ?", answer: "📱 ປ່ຽນໜ້າຈໍໃຊ້ເວລາ **30 - 60 ນາທີ** ຂຶ້ນກັບລຸ້ນ.", isPinned: true, usageCount: 0},
+            {question: "ມີປະກັນຫຼັງການແປງບໍ?", answer: "🛡️ ມີຮັບປະກັນ **30 - 90 ມື້**.", isPinned: false, usageCount: 0},
+            {question: "ປ່ຽນແບັດເຕີຣີ ລາຄາເທົ່າໃດ?", answer: "🔋 ເລີ່ມ **120,000 ກີບ** ຮັບປະກັນ 6 ເດືອນ.", isPinned: false, usageCount: 0},
+            {question: "ໂທລະສັບຕົກນ້ຳ ແປງໄດ້ບໍ?", answer: "💧 ແປງໄດ້! ຟ້າວນຳມາຮ້ານ ຢ່າສຽບສາຍຊາດ.", isPinned: false, usageCount: 0},
         ];
 
-        let faqList = [];
+        let allFAQs = [];       // ทั้งหมด รวม hidden (สำหรับ AI ค้นหา)
+        let visibleFAQs = [];   // เฉพาะ isPinned (สำหรับแสดง chip)
         let isFeedbackActive = false;
         let isAudioEnabled = true;
+        const usageBuffer = new Set();
 
-        // Sound Effects Synthesizer using Web Audio API (No external sound files required)
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function playSound(type) {
             if (!isAudioEnabled) return;
             try {
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
+                if (audioCtx.state === 'suspended') audioCtx.resume();
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
+                osc.connect(gain); gain.connect(audioCtx.destination);
                 if (type === 'send') {
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(440, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
                     gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.1);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
                 } else if (type === 'receive') {
                     osc.type = 'triangle';
                     osc.frequency.setValueAtTime(600, audioCtx.currentTime);
                     osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.15);
                     gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.15);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
                 } else if (type === 'toast') {
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08); // E5
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
                     gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.2);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
                 }
-            } catch (e) {
-                console.warn("Audio Context sound error:", e);
-            }
+            } catch (e) { }
         }
 
         window.toggleAudio = function () {
@@ -379,61 +339,87 @@
             const icon = document.getElementById('audio-icon');
             if (isAudioEnabled) {
                 icon.className = "fa-solid fa-volume-high text-cyan-400";
-                showToast("ເປີດສຽງເອັບເຟັກແລ້ວ");
+                showToast("ເປີດສຽງແລ້ວ");
             } else {
                 icon.className = "fa-solid fa-volume-xmark text-slate-500";
-                showToast("ປິດສຽງເອັບເຟັກແລ້ວ");
+                showToast("ປິດສຽງແລ້ວ");
             }
         };
 
-        // Set Timestamp for initial UI
         document.getElementById('welcome-time').innerText = getCurrentTime();
 
-        // Fetch Live FAQs from Firebase Database (`faqs`)
+        // ===== LISTENER =====
         const faqsRef = ref(db, 'faqs');
         onValue(faqsRef, (snapshot) => {
             const data = snapshot.val();
-            faqList = [];
+            allFAQs = [];
+            visibleFAQs = [];
 
             if (data) {
                 Object.keys(data).forEach(key => {
-                    const q = data[key].question || data[key].q || '';
-                    const a = data[key].answer || data[key].a || '';
+                    const d = data[key];
+                    const q = d.question || d.q || '';
+                    const a = d.answer || d.a || '';
                     if (q && a) {
-                        faqList.push({id: key, question: q, answer: a});
+                        const faq = {
+                            id: key, question: q, answer: a,
+                            isPinned: d.isPinned === true, // ⭐ ใช้ isPinned คุม chip
+                            usageCount: d.usageCount || 0,
+                        };
+                        allFAQs.push(faq);                       // AI ค้นหาเจอทั้งหมด
+                        if (faq.isPinned) visibleFAQs.push(faq); // chip แสดงเฉพาะ pinned
                     }
                 });
             }
 
-            // Fallback if empty
-            if (faqList.length === 0) {
-                faqList = [...DEFAULT_FAQS];
+            // Fallback ถ้าไม่มีข้อมูล
+            if (allFAQs.length === 0) {
+                allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i}));
+                visibleFAQs = allFAQs.filter(f => f.isPinned);
             }
 
+            // เรียงตาม usage
+            visibleFAQs.sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0));
+
             renderFAQChips();
-            document.getElementById('faq-count-badge').innerText = `${faqList.length + 1} ຄຳຖາມ`;
+            document.getElementById('faq-count-badge').innerText = `${visibleFAQs.length} ຄຳຖາມ`;
         }, (err) => {
-            console.warn("Firebase fetch failed, falling back to defaults:", err);
-            faqList = [...DEFAULT_FAQS];
+            console.warn("Firebase fetch failed:", err);
+            allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i}));
+            visibleFAQs = allFAQs.filter(f => f.isPinned);
             renderFAQChips();
-            document.getElementById('faq-count-badge').innerText = "ຂໍ້ມູນສຳຮອງ";
+            document.getElementById('faq-count-badge').innerText = "ສຳຮອງ";
         });
 
-        // Render Quick Suggestion Chips
         function renderFAQChips() {
             const container = document.getElementById('faq-buttons-container');
             container.innerHTML = '';
 
-            // 1. Render Firebase fetched FAQs
-            faqList.forEach((faq) => {
-                const btn = document.createElement('button');
-                btn.className = "text-xs bg-slate-900/90 hover:bg-cyan-950/70 text-cyan-200 hover:text-cyan-100 border border-slate-700/70 hover:border-cyan-500/50 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 text-left active:scale-95 shadow-sm";
-                btn.innerHTML = `<i class="fa-regular fa-comments text-cyan-400 text-[11px] shrink-0"></i> <span>${escapeHtml(faq.question)}</span>`;
-                btn.onclick = () => handleSelectFAQ(faq.question, faq.answer);
-                container.appendChild(btn);
-            });
+            if (visibleFAQs.length === 0) {
+                // Empty state
+                container.innerHTML = `
+                    <div class="w-full text-center py-3 text-xs text-slate-500 italic">
+                        <i class="fa-solid fa-magnifying-glass text-cyan-400/60 mb-1"></i><br>
+                        ພິມຄຳຖາມຂອງທ່ານໄດ້ເລີຍ! ເອໄອຈະຄົ້ນຫາຄຳຕອບໃຫ້ 🔍
+                    </div>`;
+            } else {
+                // Header
+                const header = document.createElement('div');
+                header.className = "w-full text-[10px] text-amber-400 font-semibold mb-1 flex items-center gap-1";
+                header.innerHTML = `<i class="fa-solid fa-star"></i> ຄຳຖາມຍອດຮິດ (${visibleFAQs.length}):`;
+                container.appendChild(header);
 
-            // 2. Render Special Developer Feedback Chip
+                // ⭐ แสดงเฉพาะ isPinned = true
+                visibleFAQs.forEach((faq) => {
+                    const btn = document.createElement('button');
+                    btn.className = "chip-pinned text-xs px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 text-left active:scale-95 shadow-sm border";
+                    btn.innerHTML = `<i class="fa-solid fa-star text-amber-400 text-[11px] shrink-0"></i> <span>${escapeHtml(faq.question)}</span>`;
+                    btn.onclick = () => handleSelectFAQ(faq.question, faq.answer, faq.id);
+                    container.appendChild(btn);
+                });
+            }
+
+            // Feedback chip (แสดงเสมอ)
             const devBtn = document.createElement('button');
             devBtn.className = "text-xs bg-gradient-to-r from-pink-950/60 to-purple-950/60 hover:from-pink-900/80 hover:to-purple-900/80 text-pink-200 border border-pink-500/40 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 text-left active:scale-95 shadow-sm w-full font-medium mt-1";
             devBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-pink-400 text-[11px] shrink-0"></i> <span>${FEEDBACK_SPECIAL_QUESTION}</span>`;
@@ -441,41 +427,47 @@
             container.appendChild(devBtn);
         }
 
-        // Direct FAQ selection handler
-        window.handleSelectFAQ = function (question, answer) {
+        // ===== increment usage with buffer =====
+        async function incrementUsage(faqId) {
+            if (!faqId || faqId.startsWith('default-')) return;
+            if (usageBuffer.has(faqId)) return;
+            usageBuffer.add(faqId);
+            try {
+                const faq = allFAQs.find(f => f.id === faqId);
+                if (!faq) return;
+                await update(ref(db, `faqs/${faqId}`), {usageCount: (faq.usageCount || 0) + 1});
+            } catch (e) { /* silent */}
+        }
+
+        window.handleSelectFAQ = function (question, answer, faqId) {
             deactivateFeedbackPrompt();
             playSound('send');
-
             appendUserMessage(question);
             showTypingIndicator();
-
+            if (faqId) incrementUsage(faqId);
             setTimeout(() => {
                 removeTypingIndicator();
                 playSound('receive');
-                appendAIMessage(answer);
+                // ตอบคำถาม แล้วต่อด้วยข้อความถามว่ามีอะไรให้ช่วยเพิ่มไหม
+                appendAIMessage(answer + '<br><br><div class="pt-2 border-t border-slate-700/50 text-cyan-300 text-xs"><i class="fa-regular fa-circle-question mr-1"></i> ມີຫຍັງໃຫ້ຂ້ອຍຊ່ວຍເພີ່ມເຕີມບໍ?</div>');
             }, 600);
         };
 
-        // Activate Feedback Mode Prompt
         window.activateFeedbackPrompt = function () {
             isFeedbackActive = true;
             playSound('send');
-
             appendUserMessage(FEEDBACK_SPECIAL_QUESTION);
             showTypingIndicator();
-
             setTimeout(() => {
                 removeTypingIndicator();
                 playSound('receive');
-                appendAIMessage("ກະລຸນາ <b>ພິມຂໍ້ຄວາມຄຳຄິດເຫັນ ຫຼື ຂໍ້ສະເໜີແນະ</b> ຂອງທ່ານໃສ່ຊ່ອງພິມດ້ານລຸ່ມ ແລ້ວກົດປຸ່ມສົ່ງ [ <i class='fa-solid fa-paper-plane text-cyan-400'></i> ] ໄດ້ເລີຍครับ! ຂໍ້ຄວາມຂອງທ່ານຈະຖືກສົ່ງເຖິງທີມງານຜູ້ພັດທະນາໂດຍກົງ 💌");
-
+                appendAIMessage("ກະລຸນາ <b>ພິມຂໍ້ຄວາມຄຳຄິດເຫັນ ຫຼື ຂໍ້ສະເໜີແນະ</b> ຂອງທ່ານໃສ່ຊ່ອງພິມ ແລ້ວກົດສົ່ງ [ <i class='fa-solid fa-paper-plane text-cyan-400'></i> ] ໄດ້ເລີຍ! 💌");
                 const input = document.getElementById('user-input');
                 const badge = document.getElementById('feedback-badge');
-
                 badge.classList.remove('hidden');
                 input.value = '';
                 input.focus();
-                input.placeholder = "ພິມຄຳຄິດເຫັນເຖິງຜູ້ພັດທະນາຢູ່ທີ່ນີ້...";
+                input.placeholder = "ພິມຄຳຄິດເຫັນເຖິງຜູ້ພັດທະນາ...";
             }, 500);
         };
 
@@ -483,172 +475,179 @@
             isFeedbackActive = false;
             const input = document.getElementById('user-input');
             const badge = document.getElementById('feedback-badge');
-
             badge.classList.add('hidden');
-            input.placeholder = "ພິມຄຳຖາມຂອງທ່ານຢູ່ທີ່ນີ້ (ເຊັ່ນ: ປ່ຽນໜ້າຈໍເທົ່າໃດ...)...";
+            input.placeholder = "ພິມຄຳຖາມ... (ເຊັ່ນ: ປ່ຽນໜ້າຈໍເທົ່າໃດ)";
         }
 
-        // =========================================================================
-        // SMART AI MATCHING ALGORITHM (Natural Language Search & Fuzzy Keyword Matcher)
-        // =========================================================================
+        // ===== SMART MATCH ALGORITHM =====
         function calculateQuestionMatchScore(userInputText, faqQuestionText) {
             const cleanUser = cleanLaoString(userInputText);
             const cleanFAQ = cleanLaoString(faqQuestionText);
-
             if (!cleanUser || !cleanFAQ) return 0;
+            if (cleanFAQ.includes(cleanUser) || cleanUser.includes(cleanFAQ)) return 0.95;
 
-            // Direct substring or exact match bonus
-            if (cleanFAQ.includes(cleanUser) || cleanUser.includes(cleanFAQ)) {
-                return 0.95;
-            }
-
-            // Tokenize strings into keywords/words
             const userTokens = cleanUser.split(/\s+/).filter(t => t.length > 1);
-            const faqTokens = cleanFAQ.split(/\s+/).filter(t => t.length > 1);
-
             if (userTokens.length === 0) return 0;
 
             let tokenMatchCount = 0;
-            let weightedScore = 0;
-
             userTokens.forEach(token => {
-                if (cleanFAQ.includes(token)) {
-                    tokenMatchCount++;
-                    weightedScore += token.length; // Longer matching words get higher weight
-                }
+                if (cleanFAQ.includes(token)) tokenMatchCount++;
             });
-
             const matchRatio = tokenMatchCount / userTokens.length;
-
-            // N-Gram Character Overlap calculation for Lao unsegmented text
             const charOverlapScore = computeCharOverlap(cleanUser, cleanFAQ);
 
-            // Final Composite Confidence Score (0 to 1.0)
-            const finalScore = (matchRatio * 0.5) + (charOverlapScore * 0.5);
-            return finalScore;
+            // Keyword boost
+            const KEYWORDS = ['iphone', 'ipad', 'samsung', 'oppo', 'vivo', 'xiaomi',
+                'ຈໍ', 'ໜ້າຈໍ', 'ແບັດ', 'ແບັດເຕີຣີ', 'ລາຄາ', 'ຄ່າ',
+                'ປ່ຽນ', 'ແປງ', 'ປະກັນ', 'ເວລາ', 'ກີບ'];
+            let keywordBoost = 0;
+            KEYWORDS.forEach(kw => {
+                if (cleanUser.includes(kw) && cleanFAQ.includes(kw)) keywordBoost += 0.05;
+            });
+            keywordBoost = Math.min(keywordBoost, 0.2);
+
+            return Math.min((matchRatio * 0.4) + (charOverlapScore * 0.4) + keywordBoost, 1.0);
         }
 
         function cleanLaoString(str) {
-            return str.toLowerCase()
-                .replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"“”]/g, "")
-                .trim();
+            return str.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"“”]/g, "").trim();
         }
 
         function computeCharOverlap(str1, str2) {
             let matches = 0;
-            const minLen = Math.min(str1.length, str2.length);
             const maxLen = Math.max(str1.length, str2.length);
-
             for (let i = 0; i < str1.length - 1; i++) {
                 const sub = str1.substring(i, i + 2);
-                if (str2.includes(sub)) {
-                    matches++;
-                }
+                if (str2.includes(sub)) matches++;
             }
-
             return maxLen > 0 ? (matches / maxLen) : 0;
         }
 
-        // Find Best Answer or Nearest 3 Suggestions
         function querySmartAI(queryText) {
             let bestMatch = null;
             let maxScore = 0;
             const scoredList = [];
 
-            faqList.forEach(faq => {
+            // ⭐ ใช้ allFAQs (รวมที่ซ่อน chip) ในการค้นหา
+            allFAQs.forEach(faq => {
                 const score = calculateQuestionMatchScore(queryText, faq.question);
                 scoredList.push({faq, score});
-
-                if (score > maxScore) {
-                    maxScore = score;
-                    bestMatch = faq;
-                }
+                if (score > maxScore) {maxScore = score; bestMatch = faq;}
             });
 
-            // Sort by match score descending
             scoredList.sort((a, b) => b.score - a.score);
-
             return {
-                bestMatch,
-                score: maxScore,
-                topSuggestions: scoredList.slice(0, 3).filter(item => item.score > 0.1).map(item => item.faq)
+                bestMatch, score: maxScore,
+                topSuggestions: scoredList.slice(0, 3).filter(i => i.score > 0.1).map(i => i.faq)
             };
         }
 
-        // Handle Form Submit (Typed Questions or Feedback)
         window.handleUserInputSubmit = async function (e) {
             e.preventDefault();
             const input = document.getElementById('user-input');
             const typedText = input.value.trim();
-
             if (!typedText) return;
 
-            // Check if user is typing feedback or asking feedback keyword
             const lowerText = typedText.toLowerCase();
+
+            // ตรวจสอบว่าลูกค้าตอบว่า "ไม่มี" หรือคำขอบคุณหรือไม่
+            const isNoMoreQuestion = lowerText.includes("ບໍ່ມີ") || lowerText.includes("ບໍ່ມີແລ້ວ") || lowerText.includes("ບໍ່ມີຫຍັງ") || lowerText.includes("ພໍແລ້ວ") || lowerText.includes("ຈົບແລ້ວ") || lowerText === "ບໍ່" || lowerText.includes("ຂອບໃຈ") || lowerText.includes("thank");
+
+            if (isNoMoreQuestion) {
+                playSound('send');
+                appendUserMessage(typedText);
+                input.value = '';
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    playSound('receive');
+                    // ข้อความขอบคุณสวยๆ
+                    appendAIMessage(`
+                        <div class="text-center py-2">
+                            <div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg shadow-pink-500/30">
+                                <i class="fa-solid fa-heart text-white text-xl"></i>
+                            </div>
+                            <p class="font-bold text-pink-300 text-sm mb-1">ຂອບໃຈຫຼາຍໆ! 💖</p>
+                            <p class="text-xs text-slate-300 leading-relaxed">ຍິນດີທີ່ໄດ້ບໍລິການທ່ານ. ຫາກມີບັນຫາ ຫຼື ຕ້ອງການຄວາມຊ່ວຍເຫຼືອເພີ່ມເຕີມ ສາມາດທັກມາຫາພວກເຮົາໄດ້ຕະຫຼອດເລີຍ 🙏</p>
+                        </div>
+                    `);
+                }, 600);
+                return;
+            }
+
             const isFeedbackKeyword = lowerText.includes("ຄວາມຄິດເຫັນ") || lowerText.includes("ຜູ້ພັດທະນາ") || lowerText.includes("feedback") || lowerText.includes("ສະເໜີ");
 
             if (isFeedbackActive || isFeedbackKeyword) {
-                // Submit Developer Feedback to Firebase
                 await sendFeedbackToFirebase(typedText);
                 input.value = '';
                 return;
             }
 
-            // Process Standard Query with Smart AI Matcher
             playSound('send');
             appendUserMessage(typedText);
             input.value = '';
-
             showTypingIndicator();
 
             setTimeout(() => {
                 removeTypingIndicator();
                 playSound('receive');
-
                 const aiResult = querySmartAI(typedText);
 
-                // High Confidence Match Threshold (> 0.28)
-                if (aiResult.score >= 0.28 && aiResult.bestMatch) {
+                // ฟังก์ชันสำหรับสร้างข้อความถามเพิ่มเติมต่อท้าย
+                const followUpHTML = '<br><br><div class="pt-2 border-t border-slate-700/50 text-cyan-300 text-xs"><i class="fa-regular fa-circle-question mr-1"></i> ມີຫຍັງໃຫ້ຂ້ອຍຊ່ວຍເພີ່ມເຕີມບໍ?</div>';
+
+                // Threshold 0.20
+                if (aiResult.score >= 0.20 && aiResult.bestMatch) {
                     const responseHTML = `
                         <div class="mb-2">💡 <b>ຄຳຕອບທີ່ກົງກັບຄຳຖາມຂອງທ່ານ:</b></div>
-                        <div>${aiResult.bestMatch.answer}</div>
-                    `;
+                        <div>${aiResult.bestMatch.answer}${followUpHTML}</div>`;
                     appendAIMessage(responseHTML);
-                }
-                // Medium/Low Confidence Match: Provide Smart Suggestions
-                else if (aiResult.topSuggestions.length > 0) {
-                    let suggestionsHTML = `<p>ຂໍອະໄພ, ເອໄອ ບໍ່ແນ່ໃຈຄຳຖາມຂອງທ່ານ 100%. ແຕ່ທ່ານອາດຈະໝາຍເຖິງຄຳຖາມເຫຼົ່ານີ້ບໍ?</p><div class="mt-2 space-y-1.5">`;
+                    incrementUsage(aiResult.bestMatch.id);
+                } else if (aiResult.topSuggestions.length > 0) {
 
-                    aiResult.topSuggestions.forEach(sugg => {
-                        suggestionsHTML += `
-                            <button onclick="handleSelectFAQ('${escapeHtml(sugg.question)}', '${escapeHtml(sugg.answer)}')" 
-                                    class="w-full text-left text-xs bg-slate-900/90 hover:bg-cyan-950 text-cyan-300 border border-slate-700/80 hover:border-cyan-500/50 p-2 rounded-xl transition flex items-center justify-between">
-                                <span><i class="fa-regular fa-lightbulb text-amber-400 mr-1.5"></i> ${escapeHtml(sugg.question)}</span>
-                                <i class="fa-solid fa-chevron-right text-[10px] text-slate-500"></i>
-                            </button>
-                        `;
+                    // 🌟 อัปเกรด UI ข้อความช่วยเหลือ (Suggestion Box) ให้สวยงาม
+                    let html = `
+                        <div class="text-amber-300 mb-3 flex items-start gap-2">
+                            <i class="fa-solid fa-circle-info mt-1 text-sm"></i>
+                            <div>
+                                <p class="font-bold text-sm">ຂໍອະໄພ, ຂ້ອຍບໍ່ແນ່ໃຈ 100% ຄັບ</p>
+                                <p class="text-xs text-slate-400 mt-0.5">ທ່ານໝາຍເຖິງຄຳຖາມເຫຼົ່ານີ້ບໍ?</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2">`;
+
+                    aiResult.topSuggestions.forEach((sugg, index) => {
+                        // ใช้ data-attribute ในการเก็บค่า แทน JSON.stringify เพื่อป้องกัน Syntax Error
+                        const safeQ = escapeHtml(sugg.question);
+                        const safeA = escapeHtml(sugg.answer);
+                        const safeId = sugg.id || '';
+
+                        html += `
+                            <button class="suggestion-btn w-full text-left bg-slate-800/80 border border-slate-700/80 rounded-xl p-3 flex items-center justify-between group" 
+                                onclick="handleSelectFAQ(this.getAttribute('data-q'), this.getAttribute('data-a'), this.getAttribute('data-id'))"
+                                data-q="${safeQ}" data-a="${safeA}" data-id="${safeId}">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-[10px] shrink-0 font-bold">${index + 1}</span>
+                                    <span class="text-cyan-300 text-xs font-medium leading-snug group-hover:text-cyan-200 transition-colors">${safeQ}</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-right text-[10px] text-slate-500 group-hover:text-amber-400 transition-colors shrink-0 ml-2"></i>
+                            </button>`;
                     });
-
-                    suggestionsHTML += `</div>`;
-                    appendAIMessage(suggestionsHTML);
-                }
-                // No Match found at all
-                else {
+                    html += `</div>${followUpHTML}`;
+                    appendAIMessage(html);
+                } else {
                     const fallbackHTML = `
-                        <p>ຂໍອະໄພ, ເອໄອບໍ່ພົບຂໍ້ມູນທີ່ກົງກັບຄຳຖາມ <b>"${escapeHtml(typedText)}"</b> ໃນເວລານີ້ 😅</p>
-                        <p class="mt-2 text-xs text-slate-300">ທ່ານສາມາດເລືອກຄຳຖາມຍອດຮິດດ້ານລຸ່ມ ຫຼື ກົດສົ່ງຄຳຄິດເຫັນເຖິງຜູ້ພັດທະນາ ເພື່ອໃຫ້ແອດມິນເພີ່ມຄຳຕອບນີ້ໃຫ້ໄດ້ครับ!</p>
-                    `;
+                        <p>ຂໍອະໄພ, ບໍ່ພົບຂໍ້ມູນທີ່ກົງກັບ <b>"${escapeHtml(typedText)}"</b> 😅</p>
+                        <p class="mt-2 text-xs text-slate-300">ກົດສົ່ງຄຳຄິດເຫັນເຖິງຜູ້ພັດທະນາ ເພື່ອໃຫ້ແອດມິນເພີ່ມຄຳຕອບນີ້ໃຫ້!${followUpHTML}</p>`;
                     appendAIMessage(fallbackHTML);
                 }
             }, 700);
         };
 
-        // Send Developer Feedback to Realtime Database (`developer_feedback`)
         async function sendFeedbackToFirebase(feedbackContent) {
             playSound('send');
             appendUserMessage(feedbackContent);
             showTypingIndicator();
-
             try {
                 const feedbackRef = ref(db, 'developer_feedback');
                 const newRef = push(feedbackRef);
@@ -658,26 +657,23 @@
                     clientTime: new Date().toLocaleString('lo-LA'),
                     deviceInfo: navigator.userAgent || 'Unknown'
                 });
-
                 setTimeout(() => {
                     removeTypingIndicator();
                     playSound('receive');
-                    appendAIMessage("ຂອບໃຈຫຼາຍໆ! 💚 ຂໍ້ຄວາມຄຳຄິດເຫັນຂອງທ່ານຖືກສົ່ງເຖິງ <b>ຜູ້ພັດທະນາໂປຣແກມ</b> เรียบร้อยแล้ว. ພວກເຮົາຈະນຳໄປປັບປຸງໃຫ້ດຍິ່ງຂຶ້ນ!");
-                    showToast("ສົ່ງຄຳຄິດເຫັນເຖິງຜູ້ພັດທະນາສຳເລັດ!", "success");
+                    appendAIMessage("ຂອບໃຈຫຼາຍໆ! 💚 ຂໍ້ຄວາມຂອງທ່ານຖືກສົ່ງເຖິງ <b>ຜູ້ພັດທະນາ</b> ແລ້ວ!");
+                    showToast("ສົ່ງຄຳຄິດເຫັນສຳເລັດ!", "success");
                     deactivateFeedbackPrompt();
                 }, 600);
-
             } catch (err) {
-                console.error("Feedback submission error:", err);
+                console.error(err);
                 setTimeout(() => {
                     removeTypingIndicator();
-                    appendAIMessage("ຂໍອະໄພ, ເກີດຂໍ້ຜິດພາດໃນການສົ່ງຂໍ້ຄວາມ. ກະລຸນາລອງໃໝ່ອີກຄັ້ງ.");
-                    showToast("ເກີດຂໍ້ຜິດພາດໃນການສົ່ງ", "error");
+                    appendAIMessage("ຂໍອະໄພ, ເກີດຂໍ້ຜິດພາດ. ລອງໃໝ່ອີກຄັ້ງ.");
+                    showToast("ຜິດພາດ", "error");
                 }, 400);
             }
         }
 
-        // Render Chat Bubbles
         function appendUserMessage(text) {
             const chatBox = document.getElementById('chat-box');
             const div = document.createElement('div');
@@ -689,8 +685,7 @@
                 </div>
                 <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold shrink-0 shadow-md">
                     <i class="fa-solid fa-user"></i>
-                </div>
-            `;
+                </div>`;
             chatBox.appendChild(div);
             scrollToBottom();
         }
@@ -705,17 +700,15 @@
                 </div>
                 <div class="chat-bubble-ai rounded-2xl rounded-tl-none p-4 max-w-[88%] text-slate-200 text-xs sm:text-sm leading-relaxed">
                     <div class="text-cyan-400 font-bold mb-1 flex items-center gap-1.5 text-xs">
-                        <i class="fa-solid fa-sparkles"></i> ແອດມິນ Fuji AI:
+                        <i class="fa-solid fa-sparkles"></i> Fuji AI:
                     </div>
                     <div>${htmlContent}</div>
                     <span class="text-[10px] text-slate-500 block text-right mt-1.5 font-mono">${getCurrentTime()}</span>
-                </div>
-            `;
+                </div>`;
             chatBox.appendChild(div);
             scrollToBottom();
         }
 
-        // Dynamic Typing Animation
         function showTypingIndicator() {
             const chatBox = document.getElementById('chat-box');
             const div = document.createElement('div');
@@ -726,24 +719,21 @@
                     <i class="fa-solid fa-robot"></i>
                 </div>
                 <div class="chat-bubble-ai rounded-2xl rounded-tl-none px-4 py-3 text-slate-400 text-xs flex items-center gap-2">
-                    <span>ເອໄອກຳລັງວິເຄາະຄຳຖາມ</span>
+                    <span>ເອໄອກຳລັງວິເຄາະ</span>
                     <span class="flex gap-1">
                         <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce"></span>
                         <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></span>
                         <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
                     </span>
-                </div>
-            `;
+                </div>`;
             chatBox.appendChild(div);
             scrollToBottom();
         }
 
         function removeTypingIndicator() {
-            const el = document.getElementById('typing-indicator');
-            if (el) el.remove();
+            document.getElementById('typing-indicator')?.remove();
         }
 
-        // Reset Session (Clears in-memory messages only)
         window.resetSession = function () {
             const chatBox = document.getElementById('chat-box');
             chatBox.innerHTML = `
@@ -756,19 +746,17 @@
                             <span class="font-bold text-cyan-400 flex items-center gap-1.5">
                                 <i class="fa-solid fa-microchip text-xs"></i> Fuji Smart AI
                             </span>
-                            <span class="text-[10px] bg-cyan-950/80 text-cyan-300 border border-cyan-800 px-2 py-0.5 rounded-md font-mono">v2.5 Ready</span>
+                            <span class="text-[10px] bg-cyan-950/80 text-cyan-300 border border-cyan-800 px-2 py-0.5 rounded-md font-mono">v3.0 Ready</span>
                         </div>
-                        <p class="mb-2">ສະບາຍດີ! ຍິນດີຕ້ອນຮັບสู่ <b>ຮ້ານແປງໂທລະສັບຟູຈິ Fuji Repair</b> 🛠️</p>
-                        <p class="text-slate-300 mb-2">ທ່ານສາມາດ <b>ພິມຄຳຖາມອິດສະຫຼະ</b> ໃສ່ຊ່ອງພິມດ້ານລຸ່ມນີ້ໄດ້ເລີຍ! ເອໄອຈະຄິດໄລ່ ແລະ ຕອບຄຳຕອບທີ່ກົງກັບຄວາມຕ້ອງການຂອງທ່ານໃຫ້ທັນທີ ຫຼື ຈະກົດເລືອກຄຳຖາມແນະນຳດ້ານລຸ່ມກໍໄດ້ครับ.</p>
+                        <p class="mb-2">ສະບາຍດີ! ຍິນດີຕ້ອນຮັບສູ່ <b>ຮ້ານແປງໂທລະສັບຟູຈິ</b> 🛠️</p>
+                        <p class="text-slate-300 mb-2">ພິມຄຳຖາມ ຫຼື ກົດເລືອກຄຳຖາມຍອດຮິດດ້ານລຸ່ມ!</p>
                         <span class="text-[10px] text-slate-500 block text-right mt-1">${getCurrentTime()}</span>
                     </div>
-                </div>
-            `;
+                </div>`;
             deactivateFeedbackPrompt();
-            showToast("ລ້າງປະວັດແຊັດเรียบร้อยแล้ว!");
+            showToast("ລ້າງແຊັດແລ້ວ!");
         };
 
-        // Utilities
         function scrollToBottom() {
             const chatBox = document.getElementById('chat-box');
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -790,9 +778,7 @@
             const toast = document.getElementById('toast');
             const msgEl = document.getElementById('toast-message');
             const iconEl = document.getElementById('toast-icon');
-
             msgEl.innerText = message;
-
             if (type === 'error') {
                 iconEl.className = "w-8 h-8 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center shrink-0";
                 iconEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
@@ -800,10 +786,8 @@
                 iconEl.className = "w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0";
                 iconEl.innerHTML = '<i class="fa-solid fa-check"></i>';
             }
-
             toast.classList.remove('translate-y-[-160%]', 'opacity-0');
             toast.classList.add('translate-y-0', 'opacity-100');
-
             setTimeout(() => {
                 toast.classList.remove('translate-y-0', 'opacity-100');
                 toast.classList.add('translate-y-[-160%]', 'opacity-0');
