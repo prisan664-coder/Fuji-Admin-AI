@@ -22,19 +22,19 @@
                         sans: ['Noto Sans Lao', 'sans-serif'],
                         tech: ['Space Grotesk', 'Noto Sans Lao', 'sans-serif'],
                     },
-                    colors: {cyber: {900: '#030712', card: 'rgba(15, 23, 42, 0.75)', neon: '#00f0ff'}},
+                    colors: { cyber: { 900: '#030712', card: 'rgba(15, 23, 42, 0.75)', neon: '#00f0ff' } },
                     animation: {
                         'glow-pulse': 'glowPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'float': 'float 6s ease-in-out infinite',
                     },
                     keyframes: {
                         glowPulse: {
-                            '0%, 100%': {opacity: 0.8, filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.6))'},
-                            '50%': {opacity: 1, filter: 'drop-shadow(0 0 18px rgba(0,240,255,0.9))'}
+                            '0%, 100%': { opacity: 0.8, filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.6))' },
+                            '50%': { opacity: 1, filter: 'drop-shadow(0 0 18px rgba(0,240,255,0.9))' }
                         },
                         'float': {
-                            '0%, 100%': {transform: 'translateY(0px)'},
-                            '50%': {transform: 'translateY(-6px)'}
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-6px)' }
                         }
                     }
                 }
@@ -215,7 +215,7 @@
                     <span class="text-[10px] text-slate-500 block text-right mt-1" id="welcome-time"></span>
                 </div>
             </div>
-        </div>ັ້
+        </div>
 
         <!-- Quick Suggestion Bar -->
         <div class="px-3 py-2.5 bg-slate-950/70 border-t border-slate-800/80 shrink-0">
@@ -266,8 +266,8 @@
 
     <!-- Firebase SDK & Script -->
     <script type="module">
-        import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import {getDatabase, ref, onValue, push, set, update} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, onValue, push, set, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCPlKQmGJZxWaea_6y-h5lRGL5PSGw861M",
@@ -285,18 +285,18 @@
         const FEEDBACK_SPECIAL_QUESTION = "ລູກຄ້າຕ້ອງການປະກອບຄວາມຄິດເຫັນເຖິງຜູ້ພັດທະນາໂປຣແກມບໍ ສາມາດພິມຂໍ້ຄວາມແລະສົ່ງໄດ້ທາງນີ້";
 
         const DEFAULT_FAQS = [
-            {question: "ຮ້ານຕັ້ງຢູ່ໃສ ແລະ ເປີດຈັກໂມງ?", answer: "📍 **ຮ້ານແປງໂທລະສັບຟູຈິ** ຕັ້ງຢູ່ແຄມທາງໃຫຍ່ ໃກ້ຕະຫຼາດດົງໂດກ.<br>⏰ ເປີດທຸກມື້: **08:30 - 19:00**.<br>🌐 ເບິ່ງແຜນທີ່: https://maps.google.com", isPinned: true, usageCount: 0},
-            {question: "ປ່ຽນໜ້າຈໍໂທລະສັບ ໃຊ້ເວລາດົນປານໃດ?", answer: "📱 ປ່ຽນໜ້າຈໍໃຊ້ເວລາ **30 - 60 ນາທີ** ຂຶ້ນກັບລຸ້ນໂທລະສັບ.", isPinned: true, usageCount: 0},
-            {question: "ມີປະກັນຫຼັງການແປງບໍ?", answer: "🛡️ ມີຮັບປະກັນອາໄຫຼ່ ແລະ ການແປງ **30 - 90 ມື້**.", isPinned: false, usageCount: 0},
-            {question: "ປ່ຽນແບັດເຕີຣີ ລາຄາເທົ່າໃດ?", answer: "🔋 ເລີ່ມ **120,000 ກີບ** ຮັບປະກັນແບັດເຕີຣີ 6 ເດືອນ.", isPinned: false, usageCount: 0},
-            {question: "ໂທລະສັບຕົກນ້ຳ ແປງໄດ້ບໍ?", answer: "💧 ແປງໄດ້! ຟ້າວນຳມາຮ້ານ ຢ່າສຽບສາຍຊາດ ຫຼື ເປີດເຄື່ອງ.", isPinned: false, usageCount: 0},
+            { question: "ຮ້ານຕັ້ງຢູ່ໃສ ແລະ ເປີດຈັກໂມງ?", answer: "📍 **ຮ້ານແປງໂທລະສັບຟູຈິ** ຕັ້ງຢູ່ແຄມທາງໃຫຍ່ ໃກ້ຕະຫຼາດດົງໂດກ.<br>⏰ ເປີດທຸກມື້: **08:30 - 19:00**.<br>🌐 ເບິ່ງແຜນທີ່: https://maps.google.com", isPinned: true, usageCount: 0 },
+            { question: "ປ່ຽນໜ້າຈໍໂທລະສັບ ໃຊ້ເວລາດົນປານໃດ?", answer: "📱 ປ່ຽນໜ້າຈໍໃຊ້ເວລາ **30 - 60 ນາທີ** ຂຶ້ນກັບລຸ້ນໂທລະສັບ.", isPinned: true, usageCount: 0 },
+            { question: "ມີປະກັນຫຼັງການແປງບໍ?", answer: "🛡️ ມີຮັບປະກັນອາໄຫຼ່ ແລະ ການແປງ **30 - 90 ມື້**.", isPinned: false, usageCount: 0 },
+            { question: "ປ່ຽນແບັດເຕີຣີ ລາຄາເທົ່າໃດ?", answer: "🔋 ເລີ່ມ **120,000 ກີບ** ຮັບປະກັນແບັດເຕີຣີ 6 ເດືອນ.", isPinned: false, usageCount: 0 },
+            { question: "ໂທລະສັບຕົກນ້ຳ ແປງໄດ້ບໍ?", answer: "💧 ແປງໄດ້! ຟ້າວນຳມາຮ້ານ ຢ່າສຽບສາຍຊາດ ຫຼື ເປີດເຄື່ອງ.", isPinned: false, usageCount: 0 },
         ];
 
         let allFAQs = [];
         let visibleFAQs = [];
         let isFeedbackActive = false;
         let isAudioEnabled = true;
-        let sessionContext = {lastBrand: null, lastTopic: null}; // 🌟 ຄວາມ ຈຳ บริบทสนทนา
+        let sessionContext = { lastBrand: null, lastTopic: null };
         const usageBuffer = new Set();
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -346,7 +346,7 @@
         };
 
         window.resetSession = function () {
-            sessionContext = {lastBrand: null, lastTopic: null};
+            sessionContext = { lastBrand: null, lastTopic: null };
             const chatBox = document.getElementById('chat-box');
             chatBox.innerHTML = `
                 <div class="flex items-start space-x-3 msg-animate">
@@ -389,7 +389,7 @@
             }
 
             if (allFAQs.length === 0) {
-                allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i}));
+                allFAQs = DEFAULT_FAQS.map((f, i) => ({ ...f, id: 'default-' + i }));
                 visibleFAQs = allFAQs.filter(f => f.isPinned);
             }
 
@@ -398,7 +398,7 @@
             document.getElementById('faq-count-badge').innerText = `${visibleFAQs.length} ຄຳຖາມ`;
         }, (err) => {
             console.warn("Firebase connection failed:", err);
-            allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i}));
+            allFAQs = DEFAULT_FAQS.map((f, i) => ({ ...f, id: 'default-' + i }));
             visibleFAQs = allFAQs.filter(f => f.isPinned);
             renderFAQChips();
             document.getElementById('faq-count-badge').innerText = "ສຳຮອງ";
@@ -438,7 +438,7 @@
             try {
                 const faq = allFAQs.find(f => f.id === faqId);
                 if (!faq) return;
-                await update(ref(db, `faqs/${faqId}`), {usageCount: (faq.usageCount || 0) + 1});
+                await update(ref(db, `faqs/${faqId}`), { usageCount: (faq.usageCount || 0) + 1 });
             } catch (e) { }
         }
 
@@ -482,6 +482,39 @@
             input.placeholder = "ພິມຄຳຖາມ... (ເຊັ່ນ: ປ່ຽນໜ້າຈໍ iPhone 13)";
         }
 
+        // ===== 🌟 COMPLETE ANGER & PROFANITY DICTIONARY DETECTOR =====
+        function checkAngerOrProfanity(text) {
+            const clean = (text || '').toLowerCase();
+            
+            // ລາຍຊື່ຄຳສັບຄົບຖ້ວນ (ພາສາລາວ, ໄທ, ອັງກິດ) ສະແດງຄວາມໂກດ, ອຸກອັ່ງ, ຄຳຕຳໜິ, ຄຳດ່າ
+            const angryKeywords = [
+                // ພາສາລາວ
+                'ດົນ', 'ຊ້າ', 'ດົນແທ້', 'ຊ້າຄັກ', 'ຊ້າໂພດ', 'ຊ້າເປັນບ້າ', 'ບໍລິການຊ້າ',
+                'ບໍ່ດີ', 'ແຍ່', 'ຮ່ວຍ', 'ຂີ້ຮ້າຍ', 'ບໍ່ໄດ້ເລື່ອງ', 'ບໍ່ໄດ້ຄວາມ', 'ບໍ່ມີຄຸນນະພາບ',
+                'ບໍ່ປະທັບໃຈ', 'ຜິດຫວັງ', 'ເສຍຄວາມຮູ້ສຶກ', 'ຫງຸດຫງິດ', 'ຕຶງ', 'ຕຶງມື', 'ສູຍ', 'ເຄືອງ', 'ຂັດໃຈ',
+                'ບໍ່ພໍໃຈ', 'ບໍ່ມັກ', 'ບໍ່ໂອເຄ', 'ຮັບບໍ່ໄດ້', 'ແຮງ', 'ແຮງໂພດ', 'ເກີນໄປ',
+                'ຫຼອກລວງ', 'ຕົ້ມຕ๋ຸນ', 'ຕົວະ', 'ຂີ້ຕັ໋ວ', 'ບໍ່ຈິງໃຈ', 'ເສຍເວລາ', 'ຖ້າດົນ', 'ຖ້າຈົນເມື່ອຍ',
+                'ບໍ່ສົນໃຈລູກຄ້າ', 'ບໍ່ສົນຫົວ', 'ແປງບໍ່ດີ', 'ເຮັດເປ', 'ເຮັດພັງ', 'ຄວາຍ', 'ຫົວຄ', 'ຊົ່ວ', 'ຫມາ',
+
+                // ພາສາໄທ
+                'ช้า', 'ช้ามาก', 'นาน', 'นานมาก', 'รอนาน', 'ช้าเป็นเต่า',
+                'แย่', 'ไม่ดี', 'ห่วย', 'ห่วยแตก', 'แย่มาก', 'ใช้ไม่ได้', 'ห่วยที่สุด',
+                'ไม่ประทับใจ', 'ผิดหวัง', 'เสียความรู้สึก', 'หงุดหงิด', 'หัวร้อน', 'โกรธ', 'เคือง', 'โมโห', 'ฉุน',
+                'ไม่พอใจ', 'ไม่โอเค', 'รับไม่ได้', 'แย่สุดๆ', 'เกรดกาก', 'ทุเรศ',
+                'หลอกลวง', 'โกง', 'ต้มตุ๋น', 'ขี้โกง', 'ไม่จริงใจ', 'บริการแย่', 'บริการห่วย', 'พนักงานแย่',
+                'ช่างแย่', 'ไม่ใส่ใจ', 'เพิกเฉย', 'ซ่อมไม่ดี', 'ซ่อมแล้วพังกว่าเดิม', 'ซ่อมแย่', 'เหี้ย', 'ส้นตีน', 'ควาย', 'กาก',
+
+                // ພາສາອັງກິດ
+                'slow', 'very slow', 'taking forever', 'so slow', 'too slow',
+                'bad', 'terrible', 'awful', 'horrible', 'worst', 'poor', 'garbage', 'trash',
+                'disappointed', 'frustrating', 'annoyed', 'angry', 'mad', 'pissed', 'furious', 'upset',
+                'unacceptable', 'ridiculous', 'pathetic', 'useless', 'scam', 'cheat', 'fake', 'dishonest',
+                'bad service', 'poor service', 'worst experience', 'fuck', 'shit', 'bitch'
+            ];
+
+            return angryKeywords.some(kw => clean.includes(kw));
+        }
+
         // ===== ULTRA-SMART AI NLP & MATCHING ENGINE (v4.0) =====
         function cleanLaoString(str) {
             return (str || '').toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"“”]/g, "").trim();
@@ -495,10 +528,10 @@
             let foundBrand = null;
             let foundTopic = null;
 
-            brands.forEach(b => {if (lower.includes(b)) foundBrand = b;});
-            topics.forEach(t => {if (lower.includes(t)) foundTopic = t;});
+            brands.forEach(b => { if (lower.includes(b)) foundBrand = b; });
+            topics.forEach(t => { if (lower.includes(t)) foundTopic = t; });
 
-            return {foundBrand, foundTopic};
+            return { foundBrand, foundTopic };
         }
 
         function computeCharOverlap(str1, str2) {
@@ -530,8 +563,8 @@
             const matchRatio = userTokens.length > 0 ? (tokenMatchCount / userTokens.length) : 0;
             const charOverlapScore = computeCharOverlap(cleanUser, cleanFAQ);
 
-            const {foundBrand: uBrand, foundTopic: uTopic} = extractEntities(userInputText);
-            const {foundBrand: fBrand, foundTopic: fTopic} = extractEntities(faqQuestionText);
+            const { foundBrand: uBrand, foundTopic: uTopic } = extractEntities(userInputText);
+            const { foundBrand: fBrand, foundTopic: fTopic } = extractEntities(faqQuestionText);
 
             let entityBonus = 0;
             if (uBrand && fBrand && uBrand === fBrand) entityBonus += 0.25;
@@ -543,7 +576,6 @@
         function queryUltraSmartAI(queryText) {
             let entities = extractEntities(queryText);
 
-            // 🌟 ຖ້າລູກຄ້າພິມສັ້ນໆ ແຕ່ມີ context ເກົ່າ ໃຫ້ດຶງ context ມາຊ່ວຍ
             if (!entities.foundBrand && sessionContext.lastBrand) {
                 entities.foundBrand = sessionContext.lastBrand;
             }
@@ -551,7 +583,6 @@
                 entities.foundTopic = sessionContext.lastTopic;
             }
 
-            // บันทึก context ปัจจุบัน
             if (entities.foundBrand) sessionContext.lastBrand = entities.foundBrand;
             if (entities.foundTopic) sessionContext.lastTopic = entities.foundTopic;
 
@@ -561,7 +592,7 @@
 
             allFAQs.forEach(faq => {
                 const score = calculateAdvancedScore(queryText, faq.question);
-                scoredList.push({faq, score});
+                scoredList.push({ faq, score });
                 if (score > maxScore) {
                     maxScore = score;
                     bestMatch = faq;
@@ -577,7 +608,6 @@
             };
         }
 
-        // 🌟 ฟังก์ชันแปลงลิงก์ในข้อความให้เป็นคลิกได้
         function autoLinkify(text) {
             if (!text) return '';
             const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
@@ -598,6 +628,7 @@
 
             const lowerText = typedText.toLowerCase();
 
+            // 1. ເຊັກຄຳຂອບໃຈ
             const isNoMoreQuestion = lowerText.includes("ບໍ່ມີ") || lowerText.includes("ບໍ່ມີແລ້ວ") || lowerText.includes("ບໍ່ມີຫຍັງ") || lowerText.includes("ພໍແລ້ວ") || lowerText.includes("ຈົບແລ້ວ") || lowerText === "ບໍ່" || lowerText.includes("ຂອບໃຈ") || lowerText.includes("thank");
 
             if (isNoMoreQuestion) {
@@ -621,6 +652,7 @@
                 return;
             }
 
+            // 2. ເຊັກໂໝດ Feedback
             const isFeedbackKeyword = lowerText.includes("ຄວາມຄິດເຫັນ") || lowerText.includes("ຜູ້ພັດທະນາ") || lowerText.includes("feedback") || lowerText.includes("ສະເໜີ");
 
             if (isFeedbackActive || isFeedbackKeyword) {
@@ -634,14 +666,44 @@
             input.value = '';
             showTypingIndicator();
 
+            // 🌟 3. ກວດຈັບຄຳດ່າ/ຄວາມໂກດ (Anger Detection System)
+            const isAngry = checkAngerOrProfanity(typedText);
+
             setTimeout(() => {
                 removeTypingIndicator();
                 playSound('receive');
 
+                if (isAngry) {
+                    // 💡 ຂໍ້ຄວາມຕອບກັບສະເພາະເມື່ອລູກຄ້າໂກດຕາມທີ່ທ່ານກຳນົດ
+                    const angryResponse = `
+                        <div class="p-1 leading-relaxed">
+                            <p class="text-slate-200 text-xs sm:text-sm mb-2">
+                                💡 <b>ທາງຮ້ານຂໍຮັບປະກັນວ່າຈະບໍ່ປ່ອຍຜ່ານເລື່ອງນີ້ໄປງ່າຍໆ.</b> ເນື່ອງຈາກເປັນເລື່ອງທີ່ຕ້ອງໃຊ້ການຕັດສິນໃຈ ຂ້ອຍຂໍສົ່ງຕໍ່ໃຫ້ <b>ຜູ້ຈັດການຮ້ານ</b> ເພື່ອຕິດຕໍ່ກັບທ່ານໂດຍກົງ ແລະ ຫາທາງອອກທີ່ດີທີ່ສຸດໃຫ້ທັງສອງຝ່າຍ.
+                            </p>
+                            <p class="text-slate-300 text-xs sm:text-sm mb-3">
+                                ເພື່ອຄວາມປອດໄພ ແລະ ບໍ່ໃຫ້ຂໍ້ມູນຕົກຫຼົ່ນ, ຂໍອະນຸຍາດໃຫ້ທ່ານ <b>ພິມລາຍລະອຽດບັນຫາ ແລະ ເບີໂທຕິດຕໍ່</b> ສົ່ງຜ່ານປຸ່ມສົ່ງຄຳຄິດເຫັນທີ່ຢູ່ດ້ານລຸ່ມສຸດຂອງໜ້າຈໍນີ້ແທນ 👇
+                            </p>
+                            <div class="p-3 bg-slate-900/90 rounded-xl border border-pink-500/40 mb-2">
+                                <p class="text-xs text-pink-300 font-semibold mb-2">
+                                    (ປຸ່ມ: ລູກຄ້າຕ້ອງການປະກອບຄວາມຄິດເຫັນເຖິງຜູ້ພັດທະນາໂປຣແກມບໍ...)
+                                </p>
+                                <button onclick="activateFeedbackPrompt()" class="w-full text-left bg-gradient-to-r from-pink-950/80 to-purple-950/80 hover:from-pink-900 hover:to-purple-900 text-pink-200 border border-pink-500/50 p-2.5 rounded-lg text-xs font-medium transition flex items-center gap-2 active:scale-95 shadow-md">
+                                    <i class="fa-solid fa-paper-plane text-pink-400"></i>
+                                    <span>ກົດທີ່ນີ້ເພື່ອພິມບັນຫາ ພ້ອມເບີໂທ ແລ້ວກົດສົ່ງໄດ້ເລີຍ</span>
+                                </button>
+                            </div>
+                            <p class="text-slate-400 text-xs italic">
+                                ພຽງແຕ່ກົດທີ່ປຸ່ມນັ້ນ, ພິມບັນຫາຂອງທ່ານພ້ອມເບີໂທ ແລ້ວກົດສົ່ງໄດ້ເລີຍ. ຜູ້ຈັດການຈະໄດ້ຮັບຂໍ້ຄວາມ ແລະ ຕິດຕໍ່ກັບທ່ານໂດຍໄວທີ່ສຸດ 🙏
+                            </p>
+                        </div>`;
+                    appendAIMessage(angryResponse);
+                    return;
+                }
+
+                // 4. ຄົ້ນຫາ FAQ ຕາມປົກຕິ
                 const aiResult = queryUltraSmartAI(typedText);
                 const followUpHTML = '<br><br><div class="pt-2 border-t border-slate-700/50 text-cyan-300 text-xs"><i class="fa-regular fa-circle-question mr-1"></i> ມີຫຍັງໃຫ້ຂ້ອຍຊ່ວຍເພີ່ມເຕີມບໍ?</div>';
 
-                // 1. ความมั่นใจสูง (Score >= 0.18)
                 if (aiResult.score >= 0.18 && aiResult.bestMatch) {
                     const formattedAnswer = autoLinkify(aiResult.bestMatch.answer);
                     const responseHTML = `
@@ -651,14 +713,13 @@
                         <div class="text-slate-200">${formattedAnswer}${followUpHTML}</div>`;
                     appendAIMessage(responseHTML);
                     incrementUsage(aiResult.bestMatch.id);
-                }
-                // 2. ความมั่นใจปานกลาง - เสนอตัวเลือก (Suggestions)
+                } 
                 else if (aiResult.topSuggestions.length > 0) {
                     let html = `
                         <div class="text-amber-300 mb-3 flex items-start gap-2">
                             <i class="fa-solid fa-circle-info mt-1 text-sm"></i>
                             <div>
-                                <p class="font-bold text-sm">ເອໄອພົບຫົວຂໍ້ທີ່ໃກ້ຄຽງ</p>
+                                <p class="font-bold text-sm">ເອໄອພົບຫົວຂໍ້ທີ່ໃກ້ຄຽງຄັບ</p>
                                 <p class="text-xs text-slate-400 mt-0.5">ທ່ານໝາຍເຖິງຄຳຖາມເຫຼົ່ານີ້ບໍ? (ກົດເລືອກໄດ້ເລີຍ):</p>
                             </div>
                         </div>
@@ -683,8 +744,7 @@
 
                     html += `</div>`;
                     appendAIMessage(html);
-                }
-                // 3. ไม่พบข้อมูลเลย - แนะนำให้ติดต่อแอดมินหรือส่ง Feedback
+                } 
                 else {
                     appendAIMessage(`
                         <div class="text-slate-300">
@@ -715,7 +775,7 @@
                 setTimeout(() => {
                     removeTypingIndicator();
                     playSound('toast');
-                    appendAIMessage("✅ <b>ສົ່ງຂໍ້ຄວາມຮຽບຮ້ອຍແລ້ວ!</b><br>ຂອບໃຈຫຼາຍໆ ທີມງານຈະຮີບກວດສອບ ແລະ ຕອບກັບທ່ານໄວໆນີ້ 🙏");
+                    appendAIMessage("✅ <b>ສົ່ງຂໍ້ຄວາມຮຽບຮ້ອຍແລ້ວ!</b><br>ຂອບໃຈຫຼາຍໆ ທີມງານຈະຮີບກວດສອບ ແລະ ຕິດຕໍ່ກັບທ່ານໄວໆນີ້ 🙏");
                     deactivateFeedbackPrompt();
                     showToast("ສົ່ງຂໍ້ຄວາມສຳເລັດ");
                 }, 600);
@@ -788,7 +848,7 @@
 
         function scrollToBottom() {
             const chatBox = document.getElementById('chat-box');
-            chatBox.scrollTo({top: chatBox.scrollHeight, behavior: 'smooth'});
+            chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
         }
 
         function showToast(msg) {
@@ -804,7 +864,7 @@
 
         function getCurrentTime() {
             const now = new Date();
-            return now.toLocaleTimeString('lo-LA', {hour: '2-digit', minute: '2-digit'});
+            return now.toLocaleTimeString('lo-LA', { hour: '2-digit', minute: '2-digit' });
         }
 
         function escapeHtml(str) {
