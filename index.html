@@ -377,8 +377,7 @@
                     const q = d.question || d.q || '';
                     const a = d.answer || d.a || '';
                     if (q && a) {
-                        // ✅ แก้ไข: isPinned ต้องเป็น true อย่างชัดเจนเท่านั้นถึงจะแสดง Chip
-                        // (แอดมินปิดในหน้า Admin → isPinned = false → ไม่แสดง chip แต่ AI ยังค้นหาเจอ)
+                        // ✅ isPinned ต้องเป็น true อย่างชัดเจนเท่านั้นถึงจะแสดง Chip
                         const isPinned = d.isPinned === true;
 
                         const faq = {
@@ -488,25 +487,29 @@
             input.placeholder = "ພິມຄຳຖາມ... (ເຊັ່ນ: ປ່ຽນໜ້າຈໍ iPhone 13)";
         }
 
-        // ===== 🌟 COMPLETE ANGER & PROFANITY DICTIONARY DETECTOR =====
-        function checkAngerOrProfanity(text) {
+        // ============================================================
+        // 🌟 EMOTION DETECTION SYSTEM (Angry / Happy / Lonely-Sad)
+        // ============================================================
+        function detectEmotion(text) {
             const clean = (text || '').toLowerCase();
 
+            // ---------- 😡 ຄຳສັບສະແດງຄວາມໂກດ / ບໍ່ພໍໃຈ / ຄຳດ່າ ----------
             const angryKeywords = [
+                // ລາວ
                 'ດົນ', 'ຊ້າ', 'ດົນແທ້', 'ຊ້າຄັກ', 'ຊ້າໂພດ', 'ຊ້າເປັນບ້າ', 'ບໍລິການຊ້າ',
-                'ບໍ່ດີ', 'ແຍ່', 'ຮ່ວຍ', 'ຂີ້ຮ້າຍ', 'ບໍ່ໄດ້ເລື່ອງ', 'ບໍ່ໄດ້ຄວາມ', 'ບໍ່ມີຄຸນນະພາບ',
-                'ບໍ່ປະທັບໃຈ', 'ຜິດຫວັງ', 'ເສຍຄວາມຮູ້ສຶກ', 'ຫງຸດຫງິດ', 'ຕຶງ', 'ຕຶງມື', 'ສູຍ', 'ເຄືອງ', 'ຂັດໃຈ',
+                'ບໍ່ດີ', 'ລຳຄານ', 'ຫວຍແຕກ', 'ຂີ້ຮ້າຍ', 'ບໍ່ໄດ້ເລື່ອງ', 'ບໍ່ໄດ້ຄວາມ', 'ບໍ່ມີຄຸນນະພາບ',
+                'ບໍ່ປະທັບໃຈ', 'ຜິດຫວັງ', 'ເສຍຄວາມຮູ້ສຶກ', 'ຫງຸດຫງິດ', 'ຕຶງ', 'ຕຶງມື', 'ຢ່າຕົບ', 'ສົ້ນຕີນ', 'ຂັດໃຈ',
                 'ບໍ່ພໍໃຈ', 'ບໍ່ມັກ', 'ບໍ່ໂອເຄ', 'ຮັບບໍ່ໄດ້', 'ແຮງ', 'ແຮງໂພດ', 'ເກີນໄປ',
-                'ຫຼອກລວງ', 'ຕົ້ມຕ๋ຸນ', 'ຕົວະ', 'ຂີ້ຕັ໋ວ', 'ບໍ່ຈິງໃຈ', 'ເສຍເວລາ', 'ຖ້າດົນ', 'ຖ້າຈົນເມື່ອຍ',
-                'ບໍ່ສົນໃຈລູກຄ້າ', 'ບໍ່ສົນຫົວ', 'ແປງບໍ່ດີ', 'ເຮັດເປ', 'ເຮັດພັງ', 'ຄວາຍ', 'ຫົວຄ', 'ຊົ່ວ', 'ຫມາ',
-
+                'ຫຼອກລວງ', 'ຕົ້ມຕ๋ຸນ', 'ຕົວະ', 'ຂີ້ຕົວະ', 'ບໍ່ຈິງໃຈ', 'ເສຍເວລາ', 'ຖ້າດົນ', 'ຖ້າຈົນເມື່ອຍ',
+                'ບໍ່ສົນໃຈລູກຄ້າ', 'ບໍ່ສົນຫົວ', 'ແປງບໍ່ດີ', 'ເຮັດເປ', 'ເຮັດເສຍຫາຍ', 'ຄວາຍ', 'ຫົວຄວາຍ', 'ຊົ່ວ', 'ຫມາ',
+                // ໄທ
                 'ช้า', 'ช้ามาก', 'นาน', 'นานมาก', 'รอนาน', 'ช้าเป็นเต่า',
                 'แย่', 'ไม่ดี', 'ห่วย', 'ห่วยแตก', 'แย่มาก', 'ใช้ไม่ได้', 'ห่วยที่สุด',
                 'ไม่ประทับใจ', 'ผิดหวัง', 'เสียความรู้สึก', 'หงุดหงิด', 'หัวร้อน', 'โกรธ', 'เคือง', 'โมโห', 'ฉุน',
                 'ไม่พอใจ', 'ไม่โอเค', 'รับไม่ได้', 'แย่สุดๆ', 'เกรดกาก', 'ทุเรศ',
                 'หลอกลวง', 'โกง', 'ต้มตุ๋น', 'ขี้โกง', 'ไม่จริงใจ', 'บริการแย่', 'บริการห่วย', 'พนักงานแย่',
                 'ช่างแย่', 'ไม่ใส่ใจ', 'เพิกเฉย', 'ซ่อมไม่ดี', 'ซ่อมแล้วพังกว่าเดิม', 'ซ่อมแย่', 'เหี้ย', 'ส้นตีน', 'ควาย', 'กาก',
-
+                // ອັງກິດ
                 'slow', 'very slow', 'taking forever', 'so slow', 'too slow',
                 'bad', 'terrible', 'awful', 'horrible', 'worst', 'poor', 'garbage', 'trash',
                 'disappointed', 'frustrating', 'annoyed', 'angry', 'mad', 'pissed', 'furious', 'upset',
@@ -514,7 +517,57 @@
                 'bad service', 'poor service', 'worst experience', 'fuck', 'shit', 'bitch'
             ];
 
-            return angryKeywords.some(kw => clean.includes(kw));
+            // ---------- 😊 ຄຳສັບສະແດງຄວາມດີໃຈ / ພໍໃຈ / ຂອບໃຈ ----------
+            const happyKeywords = [
+                // ລາວ
+                'ດີໃຈ', 'ມີຄວາມສຸກ', 'ສຸກໃຈ', 'ປະທັບໃຈ', 'ພໍໃຈ', 'ດີຫຼາຍ', 'ດີແທ້', 'ດີທີ່ສຸດ', 'ສຸດຍອດ',
+                'ຍອດຢ້ຽມ', 'ພູມໃຈ', 'ປະເສີດ', 'ດີເລີດ', 'ສວຍງາມ', 'ງາມຫຼາຍ', 'ຂອບໃຈ', 'ຂອບຄຸນ',
+                'ຮັກແຮງ', 'ຈະກັບມາອີກ', 'ແນະນຳໃຫ້ໝູ່', 'ມັກຫຼາຍ', 'ຖືກໃຈ', 'ຖືກອັນ', 'ເກັ່ງ', 'ເກັ່ງຫຼາຍ',
+                'ໄວ', 'ໄວຫຼາຍ', 'ໄວທີ່ສຸດ', 'ບໍລິການດີ', 'ໃຈດີ', 'ເປັນກັນເອງ', 'ສະບາຍໃຈ', 'ອີ່ມໃຈ',
+                'happy', 'ດີເດີ', 'ດີໆ', 'ເຢ່ໆ',
+                // ໄທ
+                'ดีใจ', 'มีความสุข', 'ประทับใจ', 'พอใจ', 'ดีมาก', 'ดีจริง', 'ดีที่สุด', 'สุดยอด',
+                'เยี่ยม', 'ยอดเยี่ยม', 'ประเสริฐ', 'ดีเลิศ', 'สวยงาม', 'สวยมาก', 'ขอบใจ', 'ขอบคุณ',
+                'รักร้าน', 'จะกลับมาอีก', 'แนะนำให้เพื่อน', 'ชอบมาก', 'ถูกใจ', 'เก่ง', 'เร็ว', 'เร็วมาก', 'เร็วสุดๆ',
+                'บริการดี', 'ใจดี', 'เป็นกันเอง', 'สบายใจ', 'อิ่มใจ', 'ดีเยี่ยม', 'ดีงาม',
+                // ອັງກິດ
+                'happy', 'glad', 'great', 'good', 'excellent', 'awesome', 'amazing', 'wonderful',
+                'fantastic', 'perfect', 'love', 'like', 'satisfied', 'impressed', 'recommend',
+                'thank you', 'thanks', 'thank', 'fast', 'very fast', 'good service', 'nice',
+                'best', 'superb', 'brilliant', 'beautiful', 'nice service'
+            ];
+
+            // ---------- 🥺 ຄຳສັບສະແດງຄວາມເຫງົາ / ເສົ້າ / ທໍ້ແທ້ / ຕ້ອງການກຳລັງໃຈ ----------
+            const lonelySadKeywords = [
+                // ລາວ
+                'ເຫງົາ', 'ເຫງົາໃຈ', 'ຄົນດຽວ', 'ບໍ່ມີໃຜ', 'ບໍ່ມີໝູ່', 'ບໍ່ມີຄົນສົນໃຈ', 'ເສົ້າ', 'ເສົ້າໃຈ', 'ທໍ້ໃຈ',
+                'ທໍ້ແທ້', 'ເບື່ອ', 'ເບື່ອໜ່າຍ', 'ບໍ່ຢາກເຮັດຫຍັງ', 'ຮ້ອງໄຫ້', 'ນ້ຳຕາໄຫຼ', 'ຄຽດ', 'ຄຽດໃຈ',
+                'ກົດດັນ', 'ເຄັ່ງຄຽດ', 'ກັງວົນ', 'ຢ້ານ', 'ບໍ່ສະບາຍໃຈ', 'ອຸກໃຈ', 'ອຸກອັ່ງ', 'ຕັດສິນໃຈບໍ່ໄດ້',
+                'ບໍ່ມີກຳລັງໃຈ', 'ຕ້ອງການກຳລັງໃຈ', 'ຕ້ອງການຄົນຄຸຍ', 'ຢາກລົມ', 'ຢາກເວົ້າ', 'ບໍ່ມີໃຜຟັງ',
+                'ຄົນໂດດດ່ຽວ', 'ໂດດດ່ຽວ', 'ບໍ່ມີຄວາມຫວັງ', 'ໝົດຫວັງ', 'ຊີວິດບໍ່ມີຄວາມໝາຍ',
+                // ໄທ
+                'เหงา', 'เหงาใจ', 'คนเดียว', 'ไม่มีใคร', 'ไม่มีเพื่อน', 'ไม่มีคนสนใจ', 'เศร้า', 'เศร้าใจ', 'ท้อใจ',
+                'ท้อแท้', 'เบื่อ', 'เบื่อหน่าย', 'ไม่อยากทำอะไร', 'ร้องไห้', 'น้ำตาไหล', 'เครียด', 'เครียดใจ',
+                'กดดัน', 'กังวล', 'กลัว', 'ไม่สบายใจ', 'ทุกข์ใจ', 'ทุกข์ระทม', 'ตัดสินใจไม่ได้',
+                'ไม่มีกำลังใจ', 'ต้องการกำลังใจ', 'ต้องการคนคุย', 'อยากคุย', 'อยากระบาย', 'ไม่มีใครฟัง',
+                'คนโดดเดี่ยว', 'โดดเดี่ยว', 'ไม่มีความหวัง', 'หมดหวัง', 'ชีวิตไม่มีความหมาย',
+                // ອັງກິດ
+                'lonely', 'alone', 'sad', 'depressed', 'unhappy', 'hopeless', 'tired', 'exhausted',
+                'anxious', 'worried', 'stress', 'stressed', 'burnout', 'cry', 'crying', 'tears',
+                'no friends', 'nobody cares', 'need support', 'need help', 'need someone to talk',
+                'want to talk', 'feel down', 'feeling down', 'feel empty', 'feeling empty'
+            ];
+
+            // ກວດຄວາມໂກດກ່ອນ (ສຳຄັນສຸດ — ຖ້າໂກດ ໃຫ້ສົ່ງຕໍ່ຜູ້ຈັດການທັນທີ)
+            if (angryKeywords.some(kw => clean.includes(kw))) return 'angry';
+
+            // ຈາກນັ້ນກວດເຫງົາ/ເສົ້າ (ຕ້ອງການກຳລັງໃຈ)
+            if (lonelySadKeywords.some(kw => clean.includes(kw))) return 'sad';
+
+            // ສຸດທ້າຍກວດດີໃຈ
+            if (happyKeywords.some(kw => clean.includes(kw))) return 'happy';
+
+            return 'neutral';
         }
 
         // ===== ULTRA-SMART AI NLP & MATCHING ENGINE (v4.0) =====
@@ -630,7 +683,7 @@
 
             const lowerText = typedText.toLowerCase();
 
-            // 1. ເຊັກຄຳຂອບໃຈ
+            // 1. ເຊັກຄຳຂອບໃຈ / ບໍ່ມີຄຳຖາມແລ້ວ
             const isNoMoreQuestion = lowerText.includes("ບໍ່ມີ") || lowerText.includes("ບໍ່ມີແລ້ວ") || lowerText.includes("ບໍ່ມີຫຍັງ") || lowerText.includes("ພໍແລ້ວ") || lowerText.includes("ຈົບແລ້ວ") || lowerText === "ບໍ່" || lowerText.includes("ຂອບໃຈ") || lowerText.includes("thank");
 
             if (isNoMoreQuestion) {
@@ -668,14 +721,17 @@
             input.value = '';
             showTypingIndicator();
 
-            // 🌟 3. ກວດຈັບຄຳດ່າ/ຄວາມໂກດ (Anger Detection System)
-            const isAngry = checkAngerOrProfanity(typedText);
+            // 🌟 3. ກວດຈັບອາລົມ (Emotion Detection: angry / happy / sad / neutral)
+            const emotion = detectEmotion(typedText);
 
             setTimeout(() => {
                 removeTypingIndicator();
                 playSound('receive');
 
-                if (isAngry) {
+                // =========================
+                // 😡 ກໍລະນີ: ໂກດ
+                // =========================
+                if (emotion === 'angry') {
                     const angryResponse = `
                         <div class="p-1 leading-relaxed">
                             <p class="text-slate-200 text-xs sm:text-sm mb-2">
@@ -701,7 +757,79 @@
                     return;
                 }
 
-                // 4. ຄົ້ນຫາ FAQ ຕາມປົກຕິ
+                // =========================
+                // 😊 ກໍລະນີ: ດີໃຈ / ພໍໃຈ / ມີຄວາມສຸກ
+                // =========================
+                if (emotion === 'happy') {
+                    const happyResponse = `
+                        <div class="p-1 leading-relaxed">
+                            <div class="text-center py-2 mb-3">
+                                <div class="w-14 h-14 bg-gradient-to-br from-emerald-400 via-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg shadow-emerald-500/40 animate-pulse">
+                                    <i class="fa-solid fa-face-laugh-beam text-white text-2xl"></i>
+                                </div>
+                                <p class="font-bold text-emerald-300 text-sm">ດີໃຈນຳຫຼາຍໆ! 🎉</p>
+                            </div>
+                            <p class="text-slate-200 text-xs sm:text-sm mb-2 leading-relaxed">
+                                ຂອບໃຈຫຼາຍໆສຳລັບຄຳດີໆ ແລະ ຄວາມຮູ້ສຶກດີໆ ທີ່ທ່ານໄດ້ມອບໃຫ້ພວກເຮົາ 💖
+                                ຄຳເວົ້າຂອງທ່ານຄື <b>ກຳລັງໃຈທີ່ດີທີ່ສຸດ</b> ຂອງທີມງານຮ້ານຟູຈິ!
+                            </p>
+                            <p class="text-slate-300 text-xs sm:text-sm mb-3 leading-relaxed">
+                                ພວກເຮົາຈະສືບຕໍ່ຮັກສາຄຸນນະພາບ ແລະ ພັດທະນາການບໍລິການໃຫ້ດີຂຶ້ນຕະຫຼອດໄປ 🌟
+                                ຫາກຕ້ອງການສອບຖາມ ຫຼື ໃຊ້ບໍລິການເພີ່ມເຕີມ ຍິນດີຕ້ອນຮັບສະເໝີ 🙏
+                            </p>
+                            <div class="p-3 bg-gradient-to-r from-emerald-950/60 to-cyan-950/60 rounded-xl border border-emerald-500/30 text-xs text-emerald-200 flex items-center gap-2">
+                                <i class="fa-solid fa-heart text-pink-400 text-base"></i>
+                                <span>ຂອບໃຈທີ່ໄວ້ໃຈ ຮ້ານແປງໂທລະສັບຟູຈິ 💚</span>
+                            </div>
+                        </div>`;
+                    appendAIMessage(happyResponse);
+                    return;
+                }
+
+                // =========================
+                // 🥺 ກໍລະນີ: ເຫງົາ / ເສົ້າ / ທໍ້ໃຈ / ຕ້ອງການກຳລັງໃຈ
+                // =========================
+                if (emotion === 'sad') {
+                    const sadResponse = `
+                        <div class="p-1 leading-relaxed">
+                            <div class="text-center py-2 mb-3">
+                                <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg shadow-purple-500/40 animate-pulse">
+                                    <i class="fa-solid fa-hand-holding-heart text-white text-2xl"></i>
+                                </div>
+                                <p class="font-bold text-purple-300 text-sm">ຂ້ອຍຢູ່ນີ້ ພ້ອມຟັງທ່ານສະເໝີ 💜</p>
+                            </div>
+                            <p class="text-slate-200 text-xs sm:text-sm mb-2 leading-relaxed">
+                                ຂ້ອຍຮູ້ສຶກໄດ້ວ່າຕອນນີ້ທ່ານອາດຈະບໍ່ສະບາຍໃຈ ຫຼື ກຳລັງຜ່ານຊ່ວງເວລາທີ່ຍາກລຳບາກ 🥺
+                                <b>ທ່ານບໍ່ໄດ້ຢູ່ຄົນດຽວ</b> — ຂ້ອຍ ແລະ ທີມງານຮ້ານຟູຈິ ຢູ່ບ່ອນນີ້ ພ້ອມຮັບຟັງ ແລະ ຊ່ວຍເຫຼືອທ່ານ.
+                            </p>
+                            <p class="text-slate-300 text-xs sm:text-sm mb-3 leading-relaxed">
+                                ບໍ່ວ່າຈະເປັນເລື່ອງໃດກໍ່ຕາມ — ຄວາມເຫງົາ, ຄວາມເສົ້າ, ຄວາມກົດດັນ, ຫຼື ພຽງແຕ່ຢາກລົມກັບໃຜສັກຄົນ —
+                                ທ່ານສາມາດພິມລະບາຍຄວາມຮູ້ສຶກຜ່ານຊ່ອງທາງນີ້ໄດ້ເລີຍ 💌
+                            </p>
+                            <div class="p-3 bg-gradient-to-r from-indigo-950/70 to-purple-950/70 rounded-xl border border-purple-500/40 mb-3">
+                                <p class="text-xs text-purple-200 font-semibold mb-2 flex items-center gap-1">
+                                    <i class="fa-solid fa-quote-left text-purple-400"></i>
+                                    ຂໍ້ຄວາມໃຫ້ກຳລັງໃຈຈາກຮ້ານຟູຈິ
+                                </p>
+                                <p class="text-xs text-slate-200 leading-relaxed italic">
+                                    "ທຸກວັນທີ່ຍາກລຳບາກ ຈະຜ່ານໄປໄດ້ສະເໝີ. ຄວາມອົດທົນ ແລະ ຮອຍຍິ້ມ ຂອງທ່ານ ຄືສິ່ງທີ່ມີຄ່າທີ່ສຸດ. ຢ່າລືມດູແລໃຈຕົວເອງດ້ວຍເດີ 💖"
+                                </p>
+                            </div>
+                            <p class="text-slate-400 text-xs italic mb-2">
+                                ຖ້າຕ້ອງການໃຫ້ທີມງານຕິດຕໍ່ກັບ ຫຼື ຮັບຟັງທ່ານໂດຍກົງ, ກົດປຸ່ມດ້ານລຸ່ມໄດ້ເລີຍ 👇
+                            </p>
+                            <button onclick="activateFeedbackPrompt()" class="w-full text-left bg-gradient-to-r from-indigo-950/80 to-purple-950/80 hover:from-indigo-900 hover:to-purple-900 text-purple-200 border border-purple-500/50 p-3 rounded-xl text-xs font-medium transition flex items-center gap-2 active:scale-95 shadow-md">
+                                <i class="fa-solid fa-comment-dots text-purple-400 text-base"></i>
+                                <span>ຢາກລະບາຍຄວາມຮູ້ສຶກ ຫຼື ໃຫ້ທີມງານຕິດຕໍ່ກັບ</span>
+                            </button>
+                        </div>`;
+                    appendAIMessage(sadResponse);
+                    return;
+                }
+
+                // =========================
+                // 🔍 ກໍລະນີປົກກະຕິ: ຄົ້ນຫາ FAQ
+                // =========================
                 const aiResult = queryUltraSmartAI(typedText);
                 const followUpHTML = '<br><br><div class="pt-2 border-t border-slate-700/50 text-cyan-300 text-xs"><i class="fa-regular fa-circle-question mr-1"></i> ມີຫຍັງໃຫ້ຂ້ອຍຊ່ວຍເພີ່ມເຕີມບໍ?</div>';
 
