@@ -22,19 +22,19 @@
                         sans: ['Noto Sans Lao', 'sans-serif'],
                         tech: ['Space Grotesk', 'Noto Sans Lao', 'sans-serif'],
                     },
-                    colors: { cyber: { 900: '#030712', card: 'rgba(15, 23, 42, 0.75)', neon: '#00f0ff' } },
+                    colors: {cyber: {900: '#030712', card: 'rgba(15, 23, 42, 0.75)', neon: '#00f0ff'}},
                     animation: {
                         'glow-pulse': 'glowPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'float': 'float 6s ease-in-out infinite',
                     },
                     keyframes: {
                         glowPulse: {
-                            '0%, 100%': { opacity: 0.8, filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.6))' },
-                            '50%': { opacity: 1, filter: 'drop-shadow(0 0 18px rgba(0,240,255,0.9))' }
+                            '0%, 100%': {opacity: 0.8, filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.6))'},
+                            '50%': {opacity: 1, filter: 'drop-shadow(0 0 18px rgba(0,240,255,0.9))'}
                         },
                         'float': {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-6px)' }
+                            '0%, 100%': {transform: 'translateY(0px)'},
+                            '50%': {transform: 'translateY(-6px)'}
                         }
                     }
                 }
@@ -266,8 +266,8 @@
 
     <!-- Firebase SDK & Script -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, onValue, push, set, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import {getDatabase, ref, onValue, push, set, update} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCPlKQmGJZxWaea_6y-h5lRGL5PSGw861M",
@@ -285,18 +285,18 @@
         const FEEDBACK_SPECIAL_QUESTION = "ລູກຄ້າຕ້ອງການປະກອບຄວາມຄິດເຫັນເຖິງຜູ້ພັດທະນາໂປຣແກມບໍ ສາມາດພິມຂໍ້ຄວາມແລະສົ່ງໄດ້ທາງນີ້";
 
         const DEFAULT_FAQS = [
-            { question: "ຮ້ານຕັ້ງຢູ່ໃສ ແລະ ເປີດຈັກໂມງ?", answer: "📍 **ຮ້ານແປງໂທລະສັບຟູຈິ** ຕັ້ງຢູ່ແຄມທາງໃຫຍ່ ໃກ້ຕະຫຼາດດົງໂດກ.<br>⏰ ເປີດທຸກມື້: **08:30 - 19:00**.<br>🌐 ເບິ່ງແຜນທີ່: https://maps.google.com", isPinned: true, usageCount: 0 },
-            { question: "ປ່ຽນໜ້າຈໍໂທລະສັບ ໃຊ້ເວລາດົນປານໃດ?", answer: "📱 ປ່ຽນໜ້າຈໍໃຊ້ເວລາ **30 - 60 ນາທີ** ຂຶ້ນກັບລຸ້ນໂທລະສັບ.", isPinned: true, usageCount: 0 },
-            { question: "ມີປະກັນຫຼັງການແປງບໍ?", answer: "🛡️ ມີຮັບປະກັນອາໄຫຼ່ ແລະ ການແປງ **30 - 90 ມື້**.", isPinned: false, usageCount: 0 },
-            { question: "ປ່ຽນແບັດເຕີຣີ ລາຄາເທົ່າໃດ?", answer: "🔋 ເລີ່ມ **120,000 ກີບ** ຮັບປະກັນແບັດເຕີຣີ 6 ເດືອນ.", isPinned: false, usageCount: 0 },
-            { question: "ໂທລະສັບຕົກນ້ຳ ແປງໄດ້ບໍ?", answer: "💧 ແປງໄດ້! ຟ້າວນຳມາຮ້ານ ຢ່າສຽບສາຍຊາດ ຫຼື ເປີດເຄື່ອງ.", isPinned: false, usageCount: 0 },
+            {question: "ຮ້ານຕັ້ງຢູ່ໃສ ແລະ ເປີດຈັກໂມງ?", answer: "📍 **ຮ້ານແປງໂທລະສັບຟູຈິ** ຕັ້ງຢູ່ແຄມທາງໃຫຍ່ ໃກ້ຕະຫຼາດດົງໂດກ.<br>⏰ ເປີດທຸກມື້: **08:30 - 19:00**.<br>🌐 ເບິ່ງແຜນທີ່: https://maps.google.com", isPinned: true, usageCount: 0},
+            {question: "ປ່ຽນໜ້າຈໍໂທລະສັບ ໃຊ້ເວລາດົນປານໃດ?", answer: "📱 ປ່ຽນໜ້າຈໍໃຊ້ເວລາ **30 - 60 ນາທີ** ຂຶ້ນກັບລຸ້ນໂທລະສັບ.", isPinned: true, usageCount: 0},
+            {question: "ມີປະກັນຫຼັງການແປງບໍ?", answer: "🛡️ ມີຮັບປະກັນອາໄຫຼ່ ແລະ ການແປງ **30 - 90 ມື້**.", isPinned: false, usageCount: 0},
+            {question: "ປ່ຽນແບັດເຕີຣີ ລາຄາເທົ່າໃດ?", answer: "🔋 ເລີ່ມ **120,000 ກີບ** ຮັບປະກັນແບັດເຕີຣີ 6 ເດືອນ.", isPinned: false, usageCount: 0},
+            {question: "ໂທລະສັບຕົກນ້ຳ ແປງໄດ້ບໍ?", answer: "💧 ແປງໄດ້! ຟ້າວນຳມາຮ້ານ ຢ່າສຽບສາຍຊາດ ຫຼື ເປີດເຄື່ອງ.", isPinned: false, usageCount: 0},
         ];
 
         let allFAQs = [];
         let visibleFAQs = [];
         let isFeedbackActive = false;
         let isAudioEnabled = true;
-        let sessionContext = { lastBrand: null, lastTopic: null };
+        let sessionContext = {lastBrand: null, lastTopic: null};
         const usageBuffer = new Set();
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -346,7 +346,7 @@
         };
 
         window.resetSession = function () {
-            sessionContext = { lastBrand: null, lastTopic: null };
+            sessionContext = {lastBrand: null, lastTopic: null};
             const chatBox = document.getElementById('chat-box');
             chatBox.innerHTML = `
                 <div class="flex items-start space-x-3 msg-animate">
@@ -377,20 +377,26 @@
                     const q = d.question || d.q || '';
                     const a = d.answer || d.a || '';
                     if (q && a) {
+                        // ✅ แก้ไข: isPinned ต้องเป็น true อย่างชัดเจนเท่านั้นถึงจะแสดง Chip
+                        // (แอดมินปิดในหน้า Admin → isPinned = false → ไม่แสดง chip แต่ AI ยังค้นหาเจอ)
+                        const isPinned = d.isPinned === true;
+
                         const faq = {
                             id: key, question: q, answer: a,
-                            isPinned: d.isPinned === true || d.isHidden !== true,
+                            isPinned: isPinned,
                             usageCount: d.usageCount || 0,
                         };
+                        // AI ยังค้นหาคำตอบได้จาก allFAQs เสมอ (ไม่ว่าซ่อนหรือไม่ซ่อน)
                         allFAQs.push(faq);
-                        if (faq.isPinned) visibleFAQs.push(faq);
+                        // แสดง Chip เฉพาะที่แอดมินเปิด (isPinned === true)
+                        if (isPinned) visibleFAQs.push(faq);
                     }
                 });
             }
 
             if (allFAQs.length === 0) {
-                allFAQs = DEFAULT_FAQS.map((f, i) => ({ ...f, id: 'default-' + i }));
-                visibleFAQs = allFAQs.filter(f => f.isPinned);
+                allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i}));
+                visibleFAQs = allFAQs.filter(f => f.isPinned === true);
             }
 
             visibleFAQs.sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0));
@@ -398,8 +404,8 @@
             document.getElementById('faq-count-badge').innerText = `${visibleFAQs.length} ຄຳຖາມ`;
         }, (err) => {
             console.warn("Firebase connection failed:", err);
-            allFAQs = DEFAULT_FAQS.map((f, i) => ({ ...f, id: 'default-' + i }));
-            visibleFAQs = allFAQs.filter(f => f.isPinned);
+            allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i}));
+            visibleFAQs = allFAQs.filter(f => f.isPinned === true);
             renderFAQChips();
             document.getElementById('faq-count-badge').innerText = "ສຳຮອງ";
         });
@@ -438,7 +444,7 @@
             try {
                 const faq = allFAQs.find(f => f.id === faqId);
                 if (!faq) return;
-                await update(ref(db, `faqs/${faqId}`), { usageCount: (faq.usageCount || 0) + 1 });
+                await update(ref(db, `faqs/${faqId}`), {usageCount: (faq.usageCount || 0) + 1});
             } catch (e) { }
         }
 
@@ -485,10 +491,8 @@
         // ===== 🌟 COMPLETE ANGER & PROFANITY DICTIONARY DETECTOR =====
         function checkAngerOrProfanity(text) {
             const clean = (text || '').toLowerCase();
-            
-            // ລາຍຊື່ຄຳສັບຄົບຖ້ວນ (ພາສາລາວ, ໄທ, ອັງກິດ) ສະແດງຄວາມໂກດ, ອຸກອັ່ງ, ຄຳຕຳໜິ, ຄຳດ່າ
+
             const angryKeywords = [
-                // ພາສາລາວ
                 'ດົນ', 'ຊ້າ', 'ດົນແທ້', 'ຊ້າຄັກ', 'ຊ້າໂພດ', 'ຊ້າເປັນບ້າ', 'ບໍລິການຊ້າ',
                 'ບໍ່ດີ', 'ແຍ່', 'ຮ່ວຍ', 'ຂີ້ຮ້າຍ', 'ບໍ່ໄດ້ເລື່ອງ', 'ບໍ່ໄດ້ຄວາມ', 'ບໍ່ມີຄຸນນະພາບ',
                 'ບໍ່ປະທັບໃຈ', 'ຜິດຫວັງ', 'ເສຍຄວາມຮູ້ສຶກ', 'ຫງຸດຫງິດ', 'ຕຶງ', 'ຕຶງມື', 'ສູຍ', 'ເຄືອງ', 'ຂັດໃຈ',
@@ -496,7 +500,6 @@
                 'ຫຼອກລວງ', 'ຕົ້ມຕ๋ຸນ', 'ຕົວະ', 'ຂີ້ຕັ໋ວ', 'ບໍ່ຈິງໃຈ', 'ເສຍເວລາ', 'ຖ້າດົນ', 'ຖ້າຈົນເມື່ອຍ',
                 'ບໍ່ສົນໃຈລູກຄ້າ', 'ບໍ່ສົນຫົວ', 'ແປງບໍ່ດີ', 'ເຮັດເປ', 'ເຮັດພັງ', 'ຄວາຍ', 'ຫົວຄ', 'ຊົ່ວ', 'ຫມາ',
 
-                // ພາສາໄທ
                 'ช้า', 'ช้ามาก', 'นาน', 'นานมาก', 'รอนาน', 'ช้าเป็นเต่า',
                 'แย่', 'ไม่ดี', 'ห่วย', 'ห่วยแตก', 'แย่มาก', 'ใช้ไม่ได้', 'ห่วยที่สุด',
                 'ไม่ประทับใจ', 'ผิดหวัง', 'เสียความรู้สึก', 'หงุดหงิด', 'หัวร้อน', 'โกรธ', 'เคือง', 'โมโห', 'ฉุน',
@@ -504,7 +507,6 @@
                 'หลอกลวง', 'โกง', 'ต้มตุ๋น', 'ขี้โกง', 'ไม่จริงใจ', 'บริการแย่', 'บริการห่วย', 'พนักงานแย่',
                 'ช่างแย่', 'ไม่ใส่ใจ', 'เพิกเฉย', 'ซ่อมไม่ดี', 'ซ่อมแล้วพังกว่าเดิม', 'ซ่อมแย่', 'เหี้ย', 'ส้นตีน', 'ควาย', 'กาก',
 
-                // ພາສາອັງກິດ
                 'slow', 'very slow', 'taking forever', 'so slow', 'too slow',
                 'bad', 'terrible', 'awful', 'horrible', 'worst', 'poor', 'garbage', 'trash',
                 'disappointed', 'frustrating', 'annoyed', 'angry', 'mad', 'pissed', 'furious', 'upset',
@@ -528,10 +530,10 @@
             let foundBrand = null;
             let foundTopic = null;
 
-            brands.forEach(b => { if (lower.includes(b)) foundBrand = b; });
-            topics.forEach(t => { if (lower.includes(t)) foundTopic = t; });
+            brands.forEach(b => {if (lower.includes(b)) foundBrand = b;});
+            topics.forEach(t => {if (lower.includes(t)) foundTopic = t;});
 
-            return { foundBrand, foundTopic };
+            return {foundBrand, foundTopic};
         }
 
         function computeCharOverlap(str1, str2) {
@@ -563,8 +565,8 @@
             const matchRatio = userTokens.length > 0 ? (tokenMatchCount / userTokens.length) : 0;
             const charOverlapScore = computeCharOverlap(cleanUser, cleanFAQ);
 
-            const { foundBrand: uBrand, foundTopic: uTopic } = extractEntities(userInputText);
-            const { foundBrand: fBrand, foundTopic: fTopic } = extractEntities(faqQuestionText);
+            const {foundBrand: uBrand, foundTopic: uTopic} = extractEntities(userInputText);
+            const {foundBrand: fBrand, foundTopic: fTopic} = extractEntities(faqQuestionText);
 
             let entityBonus = 0;
             if (uBrand && fBrand && uBrand === fBrand) entityBonus += 0.25;
@@ -592,7 +594,7 @@
 
             allFAQs.forEach(faq => {
                 const score = calculateAdvancedScore(queryText, faq.question);
-                scoredList.push({ faq, score });
+                scoredList.push({faq, score});
                 if (score > maxScore) {
                     maxScore = score;
                     bestMatch = faq;
@@ -674,7 +676,6 @@
                 playSound('receive');
 
                 if (isAngry) {
-                    // 💡 ຂໍ້ຄວາມຕອບກັບສະເພາະເມື່ອລູກຄ້າໂກດຕາມທີ່ທ່ານກຳນົດ
                     const angryResponse = `
                         <div class="p-1 leading-relaxed">
                             <p class="text-slate-200 text-xs sm:text-sm mb-2">
@@ -713,7 +714,7 @@
                         <div class="text-slate-200">${formattedAnswer}${followUpHTML}</div>`;
                     appendAIMessage(responseHTML);
                     incrementUsage(aiResult.bestMatch.id);
-                } 
+                }
                 else if (aiResult.topSuggestions.length > 0) {
                     let html = `
                         <div class="text-amber-300 mb-3 flex items-start gap-2">
@@ -744,7 +745,7 @@
 
                     html += `</div>`;
                     appendAIMessage(html);
-                } 
+                }
                 else {
                     appendAIMessage(`
                         <div class="text-slate-300">
@@ -848,7 +849,7 @@
 
         function scrollToBottom() {
             const chatBox = document.getElementById('chat-box');
-            chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
+            chatBox.scrollTo({top: chatBox.scrollHeight, behavior: 'smooth'});
         }
 
         function showToast(msg) {
@@ -864,7 +865,7 @@
 
         function getCurrentTime() {
             const now = new Date();
-            return now.toLocaleTimeString('lo-LA', { hour: '2-digit', minute: '2-digit' });
+            return now.toLocaleTimeString('lo-LA', {hour: '2-digit', minute: '2-digit'});
         }
 
         function escapeHtml(str) {
