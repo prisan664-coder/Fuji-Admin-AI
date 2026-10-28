@@ -12,30 +12,20 @@
         href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>">
 
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Noto Sans Lao', 'sans-serif'],
-                        tech: ['Space Grotesk', 'Noto Sans Lao', 'sans-serif'],
-                    },
+                    fontFamily: {sans: ['Noto Sans Lao', 'sans-serif'], tech: ['Space Grotesk', 'Noto Sans Lao', 'sans-serif']},
                     colors: {cyber: {900: '#030712', card: 'rgba(15, 23, 42, 0.75)', neon: '#00f0ff'}},
-                    animation: {
-                        'glow-pulse': 'glowPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'float': 'float 6s ease-in-out infinite',
-                    },
+                    animation: {'glow-pulse': 'glowPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite', 'float': 'float 6s ease-in-out infinite'},
                     keyframes: {
-                        glowPulse: {
-                            '0%, 100%': {opacity: 0.8, filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.6))'},
-                            '50%': {opacity: 1, filter: 'drop-shadow(0 0 18px rgba(0,240,255,0.9))'}
-                        },
-                        'float': {
-                            '0%, 100%': {transform: 'translateY(0px)'},
-                            '50%': {transform: 'translateY(-6px)'}
-                        }
+                        glowPulse: {'0%, 100%': {opacity: 0.8, filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.6))'}, '50%': {opacity: 1, filter: 'drop-shadow(0 0 18px rgba(0,240,255,0.9))'}},
+                        'float': {'0%, 100%': {transform: 'translateY(0px)'}, '50%': {transform: 'translateY(-6px)'}}
                     }
                 }
             }
@@ -133,6 +123,16 @@
             background: rgba(30, 41, 59, 0.95);
             transform: translateX(4px);
         }
+
+        #scroll-bottom-btn {
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        #scroll-bottom-btn.hidden-btn {
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -165,7 +165,7 @@
                     </h1>
                     <div class="flex items-center gap-2 text-[11px] sm:text-xs text-slate-400 mt-0.5">
                         <span class="inline-flex items-center text-emerald-400 gap-1 font-medium">
-                            <i class="fa-solid fa-bolt text-[9px] animate-pulse"></i> Ultra-Smart AI v4.0
+                            <i class="fa-solid fa-bolt text-[9px] animate-pulse"></i> Ultra-Smart AI v4.1
                         </span>
                         <span>•</span>
                         <span class="text-slate-400 flex items-center gap-1">
@@ -176,11 +176,11 @@
             </div>
 
             <div class="flex items-center space-x-2">
-                <button onclick="toggleAudio()" id="audio-btn" title="ເປີດ/ປິດ ສຽງ"
+                <button onclick="toggleAudio()" id="audio-btn" aria-label="ເປີດ/ປິດ ສຽງ"
                     class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-cyan-400 transition border border-slate-700/60 active:scale-95">
                     <i id="audio-icon" class="fa-solid fa-volume-high text-cyan-400"></i>
                 </button>
-                <button onclick="resetSession()" title="ລ້າງແຊັດ"
+                <button onclick="resetSession()" aria-label="ລ້າງແຊັດ"
                     class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-rose-400 transition border border-slate-700/60 active:scale-95">
                     <i class="fa-solid fa-arrows-rotate"></i>
                 </button>
@@ -204,7 +204,7 @@
                     class="chat-bubble-ai rounded-2xl rounded-tl-none p-4 max-w-[88%] text-slate-200 text-xs sm:text-sm leading-relaxed">
                     <div class="flex items-center justify-between mb-1.5 pb-1 border-b border-slate-700/50">
                         <span class="font-bold text-cyan-400 flex items-center gap-1.5">
-                            <i class="fa-solid fa-microchip text-xs"></i> Fuji Smart AI v4.0
+                            <i class="fa-solid fa-microchip text-xs"></i> Fuji Smart AI v4.1
                         </span>
                         <span
                             class="text-[10px] bg-cyan-950/80 text-cyan-300 border border-cyan-800 px-2 py-0.5 rounded-md font-mono">Ready</span>
@@ -216,6 +216,12 @@
                 </div>
             </div>
         </div>
+
+        <!-- Scroll to Bottom -->
+        <button id="scroll-bottom-btn" onclick="scrollToBottom()" aria-label="ໄປລຸ່ມສຸດ"
+            class="hidden-btn absolute bottom-44 right-6 w-10 h-10 rounded-full bg-cyan-500 hover:bg-cyan-400 text-white shadow-lg shadow-cyan-500/40 z-10 flex items-center justify-center">
+            <i class="fa-solid fa-arrow-down"></i>
+        </button>
 
         <!-- Quick Suggestion Bar -->
         <div class="px-3 py-2.5 bg-slate-950/70 border-t border-slate-800/80 shrink-0">
@@ -239,8 +245,10 @@
             <form id="chat-form" onsubmit="handleUserInputSubmit(event)" class="flex items-center gap-2">
                 <div class="relative flex-1">
                     <input type="text" id="user-input" placeholder="ພິມຄຳຖາມ... (ເຊັ່ນ: ປ່ຽນໜ້າຈໍ iPhone 13)"
-                        autocomplete="off"
-                        class="w-full bg-slate-950/90 text-slate-100 placeholder-slate-500 text-xs sm:text-sm rounded-xl px-4 py-3 border border-slate-700/80 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner">
+                        autocomplete="off" maxlength="500" autofocus enterkeyhint="send"
+                        class="w-full bg-slate-950/90 text-slate-100 placeholder-slate-500 text-xs sm:text-sm rounded-xl px-4 py-3 pr-14 border border-slate-700/80 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner">
+                    <span id="char-count"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-500 pointer-events-none">0/500</span>
                     <span id="feedback-badge"
                         class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-[10px] bg-pink-500/20 text-pink-300 border border-pink-500/40 px-2.5 py-1 rounded-md font-medium flex items-center gap-1">
                         <i class="fa-solid fa-pen-to-square"></i> ໂໝດສົ່ງຄຳຄິດເຫັນ
@@ -267,7 +275,7 @@
     <!-- Firebase SDK & Script -->
     <script type="module">
         import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import {getDatabase, ref, onValue, push, set, update} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import {getDatabase, ref, onValue, push, set, update, get} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCPlKQmGJZxWaea_6y-h5lRGL5PSGw861M",
@@ -282,6 +290,13 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        // ⚙️ CONFIG
+        const MATCH_THRESHOLD = 0.35;      // คะแนนขั้นต่ำที่จะตอบตรง
+        const SUGGEST_THRESHOLD = 0.15;    // คะแนนขั้นต่ำที่จะแสดง suggestion
+        const MAX_INPUT_LENGTH = 500;
+        const RATE_LIMIT_PER_MIN = 10;
+        const USAGE_COOLDOWN_MS = 60000;   // 1 นาที cooldown ต่อ FAQ
+
         const FEEDBACK_SPECIAL_QUESTION = "ລູກຄ້າຕ້ອງການປະກອບຄວາມຄິດເຫັນເຖິງຜູ້ພັດທະນາໂປຣແກມບໍ ສາມາດພິມຂໍ້ຄວາມແລະສົ່ງໄດ້ທາງນີ້";
 
         const DEFAULT_FAQS = [
@@ -292,43 +307,56 @@
             {question: "ໂທລະສັບຕົກນ້ຳ ແປງໄດ້ບໍ?", answer: "💧 ແປງໄດ້! ຟ້າວນຳມາຮ້ານ ຢ່າສຽບສາຍຊາດ ຫຼື ເປີດເຄື່ອງ.", isPinned: false, usageCount: 0},
         ];
 
+        // ===== STATE =====
         let allFAQs = [];
         let visibleFAQs = [];
         let isFeedbackActive = false;
         let isAudioEnabled = true;
         let sessionContext = {lastBrand: null, lastTopic: null};
-        const usageBuffer = new Set();
+        const usageCooldown = new Map();
+        const rateLimitTimestamps = [];
+        window.__faqCache = {};
+        let audioCtx = null;
 
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // ===== AUDIO (Lazy Init) =====
+        function getAudioCtx() {
+            if (!audioCtx) {
+                try {audioCtx = new (window.AudioContext || window.webkitAudioContext)();}
+                catch (e) {return null;}
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            return audioCtx;
+        }
 
         function playSound(type) {
             if (!isAudioEnabled) return;
+            const ctx = getAudioCtx();
+            if (!ctx) return;
             try {
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.connect(gain); gain.connect(audioCtx.destination);
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
                 if (type === 'send') {
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
-                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-                    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+                    osc.frequency.setValueAtTime(440, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                    osc.start(); osc.stop(ctx.currentTime + 0.1);
                 } else if (type === 'receive') {
                     osc.type = 'triangle';
-                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.15);
-                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
-                    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+                    osc.frequency.setValueAtTime(600, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+                    osc.start(); osc.stop(ctx.currentTime + 0.15);
                 } else if (type === 'toast') {
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
-                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
-                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-                    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+                    osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+                    osc.start(); osc.stop(ctx.currentTime + 0.2);
                 }
             } catch (e) { }
         }
@@ -347,6 +375,8 @@
 
         window.resetSession = function () {
             sessionContext = {lastBrand: null, lastTopic: null};
+            usageCooldown.clear();
+            rateLimitTimestamps.length = 0;
             const chatBox = document.getElementById('chat-box');
             chatBox.innerHTML = `
                 <div class="flex items-start space-x-3 msg-animate">
@@ -359,51 +389,52 @@
                     </div>
                 </div>`;
             deactivateFeedbackPrompt();
+            sessionStorage.removeItem('fuji_chat_history');
             showToast("ລ້າງແຊັດຮຽບຮ້ອຍແລ້ວ");
         };
 
         document.getElementById('welcome-time').innerText = getCurrentTime();
 
-        // ===== REALTIME DATABASE LISTENER =====
+        // ===== FIREBASE LISTENER =====
         const faqsRef = ref(db, 'faqs');
         onValue(faqsRef, (snapshot) => {
-            const data = snapshot.val();
-            allFAQs = [];
-            visibleFAQs = [];
-
-            if (data) {
-                Object.keys(data).forEach(key => {
-                    const d = data[key];
-                    const q = d.question || d.q || '';
-                    const a = d.answer || d.a || '';
-                    if (q && a) {
-                        // ✅ isPinned ต้องเป็น true อย่างชัดเจนเท่านั้นถึงจะแสดง Chip
-                        const isPinned = d.isPinned === true;
-
-                        const faq = {
-                            id: key, question: q, answer: a,
-                            isPinned: isPinned,
-                            usageCount: d.usageCount || 0,
-                        };
-                        // AI ยังค้นหาคำตอบได้จาก allFAQs เสมอ (ไม่ว่าซ่อนหรือไม่ซ่อน)
-                        allFAQs.push(faq);
-                        // แสดง Chip เฉพาะที่แอดมินเปิด (isPinned === true)
-                        if (isPinned) visibleFAQs.push(faq);
-                    }
-                });
-            }
-
-            if (allFAQs.length === 0) {
-                allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i}));
+            try {
+                const data = snapshot.val();
+                allFAQs = [];
+                visibleFAQs = [];
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        const d = data[key];
+                        const q = d.question || d.q || '';
+                        const a = d.answer || d.a || '';
+                        if (q && a) {
+                            const faq = {
+                                id: key, question: q, answer: a,
+                                isPinned: d.isPinned === true,
+                                category: d.category || 'ທົ່ວໄປ',
+                                usageCount: d.usageCount || 0,
+                            };
+                            allFAQs.push(faq);
+                            if (faq.isPinned) visibleFAQs.push(faq);
+                        }
+                    });
+                }
+                if (allFAQs.length === 0) {
+                    allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i, category: 'ທົ່ວໄປ'}));
+                    visibleFAQs = allFAQs.filter(f => f.isPinned === true);
+                }
+                visibleFAQs.sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0));
+                renderFAQChips();
+                document.getElementById('faq-count-badge').innerText = `${visibleFAQs.length} ຄຳຖາມ`;
+            } catch (e) {
+                console.error('FAQ parse error:', e);
+                allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i, category: 'ທົ່ວໄປ'}));
                 visibleFAQs = allFAQs.filter(f => f.isPinned === true);
+                renderFAQChips();
             }
-
-            visibleFAQs.sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0));
-            renderFAQChips();
-            document.getElementById('faq-count-badge').innerText = `${visibleFAQs.length} ຄຳຖາມ`;
         }, (err) => {
-            console.warn("Firebase connection failed:", err);
-            allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i}));
+            console.warn("Firebase failed:", err);
+            allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i, category: 'ທົ່ວໄປ'}));
             visibleFAQs = allFAQs.filter(f => f.isPinned === true);
             renderFAQChips();
             document.getElementById('faq-count-badge').innerText = "ສຳຮອງ";
@@ -412,7 +443,6 @@
         function renderFAQChips() {
             const container = document.getElementById('faq-buttons-container');
             container.innerHTML = '';
-
             if (visibleFAQs.length === 0) {
                 container.innerHTML = `
                     <div class="w-full text-center py-3 text-xs text-slate-500 italic">
@@ -424,11 +454,10 @@
                     const btn = document.createElement('button');
                     btn.className = "chip-pinned text-xs px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 text-left active:scale-95 shadow-sm border";
                     btn.innerHTML = `<i class="fa-solid fa-star text-amber-400 text-[11px] shrink-0"></i> <span>${escapeHtml(faq.question)}</span>`;
-                    btn.onclick = () => handleSelectFAQ(faq.question, faq.answer, faq.id);
+                    btn.onclick = () => handleSelectFAQById(faq.id);
                     container.appendChild(btn);
                 });
             }
-
             const devBtn = document.createElement('button');
             devBtn.className = "text-xs bg-gradient-to-r from-pink-950/60 to-purple-950/60 hover:from-pink-900/80 hover:to-purple-900/80 text-pink-200 border border-pink-500/40 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 text-left active:scale-95 shadow-sm w-full font-medium mt-1";
             devBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-pink-400 text-[11px] shrink-0"></i> <span>${FEEDBACK_SPECIAL_QUESTION}</span>`;
@@ -438,8 +467,9 @@
 
         async function incrementUsage(faqId) {
             if (!faqId || faqId.startsWith('default-')) return;
-            if (usageBuffer.has(faqId)) return;
-            usageBuffer.add(faqId);
+            const last = usageCooldown.get(faqId) || 0;
+            if (Date.now() - last < USAGE_COOLDOWN_MS) return;
+            usageCooldown.set(faqId, Date.now());
             try {
                 const faq = allFAQs.find(f => f.id === faqId);
                 if (!faq) return;
@@ -447,8 +477,16 @@
             } catch (e) { }
         }
 
+        // ⭐ ใช้ __faqCache แทน data-q/data-a
+        window.handleSelectFAQById = function (faqId) {
+            const faq = window.__faqCache[faqId] || allFAQs.find(f => f.id === faqId);
+            if (!faq) return;
+            handleSelectFAQ(faq.question, faq.answer, faq.id);
+        };
+
         window.handleSelectFAQ = function (question, answer, faqId) {
             deactivateFeedbackPrompt();
+            if (!checkRateLimit()) return;
             playSound('send');
             appendUserMessage(question);
             showTypingIndicator();
@@ -473,6 +511,7 @@
                 const input = document.getElementById('user-input');
                 const badge = document.getElementById('feedback-badge');
                 badge.classList.remove('hidden');
+                document.getElementById('char-count').classList.add('hidden');
                 input.value = '';
                 input.focus();
                 input.placeholder = "ພິມຄຳຄິດເຫັນເຖິງຜູ້ພັດທະນາ...";
@@ -483,33 +522,44 @@
             isFeedbackActive = false;
             const input = document.getElementById('user-input');
             const badge = document.getElementById('feedback-badge');
+            const counter = document.getElementById('char-count');
             badge.classList.add('hidden');
+            counter.classList.remove('hidden');
             input.placeholder = "ພິມຄຳຖາມ... (ເຊັ່ນ: ປ່ຽນໜ້າຈໍ iPhone 13)";
         }
 
-        // ============================================================
-        // 🌟 EMOTION DETECTION SYSTEM (Angry / Happy / Lonely-Sad)
-        // ============================================================
+        // ===== QUESTION DETECTOR =====
+        function isQuestion(text) {
+            const lower = text.toLowerCase();
+            const markers = [
+                'ແນວໃດ', 'ແນວໃດ້', 'ແນວໃດແດ່', 'ບໍ', 'ບໍ່', 'ຫຍັງ', 'ໃດ', 'ໃສ', 'ເທົ່າໃດ', 'ຈັກ',
+                'ຢູ່ໃສ', 'ເຮັດແນວໃດ', 'ແກ້ແນວໃດ', 'ມີບໍ', 'ໄດ້ບໍ', 'ໄດ້ບໍ່', 'ເປັນຫຍັງ',
+                'ແກ້', 'ແກ້ໄຂ', 'ຊ່ວຍ', 'ຊ່ວຍແນ່', 'ວິທີ', 'ວິທີແກ້', 'ວິທີການ', 'ແນະນຳ', 'ບອກແນ່', 'ສອນ',
+                'ຍັງໄງ', 'ຢ່າງໄຮ', 'ທຳໄມ', 'ອະໄຣ', 'ທີ່ໄຫນ', 'ເທົ່າໃຫຣ່', 'ກີ່', 'ໄຫມ', 'ມັຍ', 'ຫຼື', 'ປ່າວ', 'ເປົ່າ',
+                'ແກ້', 'ຊ່ວຍ', 'ວິທີ', 'ແນະນຳ', 'ສອນ',
+                'how', 'what', 'where', 'when', 'why', 'which', 'who', '?',
+                'can i', 'do i', 'should i', 'fix', 'solve', 'help', 'repair'
+            ];
+            return markers.some(m => lower.includes(m));
+        }
+
+        // ===== EMOTION DETECTION =====
         function detectEmotion(text) {
             const clean = (text || '').toLowerCase();
 
-            // ---------- 😡 ຄຳສັບສະແດງຄວາມໂກດ / ບໍ່ພໍໃຈ / ຄຳດ່າ ----------
             const angryKeywords = [
-                // ລາວ
                 'ດົນ', 'ຊ້າ', 'ດົນແທ້', 'ຊ້າຄັກ', 'ຊ້າໂພດ', 'ຊ້າເປັນບ້າ', 'ບໍລິການຊ້າ',
                 'ບໍ່ດີ', 'ລຳຄານ', 'ຫວຍແຕກ', 'ຂີ້ຮ້າຍ', 'ບໍ່ໄດ້ເລື່ອງ', 'ບໍ່ໄດ້ຄວາມ', 'ບໍ່ມີຄຸນນະພາບ',
                 'ບໍ່ປະທັບໃຈ', 'ຜິດຫວັງ', 'ເສຍຄວາມຮູ້ສຶກ', 'ຫງຸດຫງິດ', 'ຕຶງ', 'ຕຶງມື', 'ຢ່າຕົບ', 'ສົ້ນຕີນ', 'ຂັດໃຈ',
                 'ບໍ່ພໍໃຈ', 'ບໍ່ມັກ', 'ບໍ່ໂອເຄ', 'ຮັບບໍ່ໄດ້', 'ແຮງ', 'ແຮງໂພດ', 'ເກີນໄປ',
                 'ຫຼອກລວງ', 'ຕົ້ມຕ๋ຸນ', 'ຕົວະ', 'ຂີ້ຕົວະ', 'ບໍ່ຈິງໃຈ', 'ເສຍເວລາ', 'ຖ້າດົນ', 'ຖ້າຈົນເມື່ອຍ',
                 'ບໍ່ສົນໃຈລູກຄ້າ', 'ບໍ່ສົນຫົວ', 'ແປງບໍ່ດີ', 'ເຮັດເປ', 'ເຮັດເສຍຫາຍ', 'ຄວາຍ', 'ຫົວຄວາຍ', 'ຊົ່ວ', 'ຫມາ',
-                // ໄທ
                 'ช้า', 'ช้ามาก', 'นาน', 'นานมาก', 'รอนาน', 'ช้าเป็นเต่า',
                 'แย่', 'ไม่ดี', 'ห่วย', 'ห่วยแตก', 'แย่มาก', 'ใช้ไม่ได้', 'ห่วยที่สุด',
                 'ไม่ประทับใจ', 'ผิดหวัง', 'เสียความรู้สึก', 'หงุดหงิด', 'หัวร้อน', 'โกรธ', 'เคือง', 'โมโห', 'ฉุน',
                 'ไม่พอใจ', 'ไม่โอเค', 'รับไม่ได้', 'แย่สุดๆ', 'เกรดกาก', 'ทุเรศ',
                 'หลอกลวง', 'โกง', 'ต้มตุ๋น', 'ขี้โกง', 'ไม่จริงใจ', 'บริการแย่', 'บริการห่วย', 'พนักงานแย่',
                 'ช่างแย่', 'ไม่ใส่ใจ', 'เพิกเฉย', 'ซ่อมไม่ดี', 'ซ่อมแล้วพังกว่าเดิม', 'ซ่อมแย่', 'เหี้ย', 'ส้นตีน', 'ควาย', 'กาก',
-                // ອັງກິດ
                 'slow', 'very slow', 'taking forever', 'so slow', 'too slow',
                 'bad', 'terrible', 'awful', 'horrible', 'worst', 'poor', 'garbage', 'trash',
                 'disappointed', 'frustrating', 'annoyed', 'angry', 'mad', 'pissed', 'furious', 'upset',
@@ -517,79 +567,86 @@
                 'bad service', 'poor service', 'worst experience', 'fuck', 'shit', 'bitch'
             ];
 
-            // ---------- 😊 ຄຳສັບສະແດງຄວາມດີໃຈ / ພໍໃຈ / ຂອບໃຈ ----------
+            // ⭐ ลบคำกำกวมออก: 'ໄວ', 'ໄວຫຼາຍ', 'ໄວທີ່ສຸດ', 'ເກັ່ງ', 'ເກັ່ງຫຼາຍ', 'เร็ว', 'เร็วมาก', 'เร็วสุดๆ', 'fast', 'very fast', 'เก่ง'
             const happyKeywords = [
-                // ລາວ
                 'ດີໃຈ', 'ມີຄວາມສຸກ', 'ສຸກໃຈ', 'ປະທັບໃຈ', 'ພໍໃຈ', 'ດີຫຼາຍ', 'ດີແທ້', 'ດີທີ່ສຸດ', 'ສຸດຍອດ',
                 'ຍອດຢ້ຽມ', 'ພູມໃຈ', 'ປະເສີດ', 'ດີເລີດ', 'ສວຍງາມ', 'ງາມຫຼາຍ', 'ຂອບໃຈ', 'ຂອບຄຸນ',
-                'ຮັກແຮງ', 'ຈະກັບມາອີກ', 'ແນະນຳໃຫ້ໝູ່', 'ມັກຫຼາຍ', 'ຖືກໃຈ', 'ຖືກອັນ', 'ເກັ່ງ', 'ເກັ່ງຫຼາຍ',
-                'ໄວ', 'ໄວຫຼາຍ', 'ໄວທີ່ສຸດ', 'ບໍລິການດີ', 'ໃຈດີ', 'ເປັນກັນເອງ', 'ສະບາຍໃຈ', 'ອີ່ມໃຈ',
+                'ຮັກແຮງ', 'ຈະກັບມາອີກ', 'ແນະນຳໃຫ້ໝູ່', 'ມັກຫຼາຍ', 'ຖືກໃຈ', 'ຖືກອັນ',
+                'ໄວຈັງ', 'ໄວແທ້', 'ໄວຄັກ', 'ໄວໂພດ', 'ບໍລິການໄວ', 'ຊ່າງໄວ', 'ແປງໄວ',
+                'ໄວກວ່າທີ່ຄິດ', 'ໄວກວ່າລ້ານຮ້ານ', 'ໄວຫຼາຍໆ', 'ໄວທີ່ສຸດເລີຍ',
+                'ບໍລິການດີ', 'ໃຈດີ', 'ເປັນກັນເອງ', 'ສະບາຍໃຈ', 'ອີ່ມໃຈ',
                 'happy', 'ດີເດີ', 'ດີໆ', 'ເຢ່ໆ',
-                // ໄທ
                 'ดีใจ', 'มีความสุข', 'ประทับใจ', 'พอใจ', 'ดีมาก', 'ดีจริง', 'ดีที่สุด', 'สุดยอด',
                 'เยี่ยม', 'ยอดเยี่ยม', 'ประเสริฐ', 'ดีเลิศ', 'สวยงาม', 'สวยมาก', 'ขอบใจ', 'ขอบคุณ',
-                'รักร้าน', 'จะกลับมาอีก', 'แนะนำให้เพื่อน', 'ชอบมาก', 'ถูกใจ', 'เก่ง', 'เร็ว', 'เร็วมาก', 'เร็วสุดๆ',
+                'รักร้าน', 'จะกลับมาอีก', 'แนะนำให้เพื่อน', 'ชอบมาก', 'ถูกใจ',
+                'เร็วมากก', 'เร็วสุดๆ', 'บริการเร็ว', 'ช่างเร็ว',
                 'บริการดี', 'ใจดี', 'เป็นกันเอง', 'สบายใจ', 'อิ่มใจ', 'ดีเยี่ยม', 'ดีงาม',
-                // ອັງກິດ
                 'happy', 'glad', 'great', 'good', 'excellent', 'awesome', 'amazing', 'wonderful',
                 'fantastic', 'perfect', 'love', 'like', 'satisfied', 'impressed', 'recommend',
-                'thank you', 'thanks', 'thank', 'fast', 'very fast', 'good service', 'nice',
+                'thank you', 'thanks', 'thank', 'good service', 'nice',
                 'best', 'superb', 'brilliant', 'beautiful', 'nice service'
             ];
 
-            // ---------- 🥺 ຄຳສັບສະແດງຄວາມເຫງົາ / ເສົ້າ / ທໍ້ແທ້ / ຕ້ອງການກຳລັງໃຈ ----------
             const lonelySadKeywords = [
-                // ລາວ
                 'ເຫງົາ', 'ເຫງົາໃຈ', 'ຄົນດຽວ', 'ບໍ່ມີໃຜ', 'ບໍ່ມີໝູ່', 'ບໍ່ມີຄົນສົນໃຈ', 'ເສົ້າ', 'ເສົ້າໃຈ', 'ທໍ້ໃຈ',
                 'ທໍ້ແທ້', 'ເບື່ອ', 'ເບື່ອໜ່າຍ', 'ບໍ່ຢາກເຮັດຫຍັງ', 'ຮ້ອງໄຫ້', 'ນ້ຳຕາໄຫຼ', 'ຄຽດ', 'ຄຽດໃຈ',
                 'ກົດດັນ', 'ເຄັ່ງຄຽດ', 'ກັງວົນ', 'ຢ້ານ', 'ບໍ່ສະບາຍໃຈ', 'ອຸກໃຈ', 'ອຸກອັ່ງ', 'ຕັດສິນໃຈບໍ່ໄດ້',
                 'ບໍ່ມີກຳລັງໃຈ', 'ຕ້ອງການກຳລັງໃຈ', 'ຕ້ອງການຄົນຄຸຍ', 'ຢາກລົມ', 'ຢາກເວົ້າ', 'ບໍ່ມີໃຜຟັງ',
                 'ຄົນໂດດດ່ຽວ', 'ໂດດດ່ຽວ', 'ບໍ່ມີຄວາມຫວັງ', 'ໝົດຫວັງ', 'ຊີວິດບໍ່ມີຄວາມໝາຍ',
-                // ໄທ
                 'เหงา', 'เหงาใจ', 'คนเดียว', 'ไม่มีใคร', 'ไม่มีเพื่อน', 'ไม่มีคนสนใจ', 'เศร้า', 'เศร้าใจ', 'ท้อใจ',
                 'ท้อแท้', 'เบื่อ', 'เบื่อหน่าย', 'ไม่อยากทำอะไร', 'ร้องไห้', 'น้ำตาไหล', 'เครียด', 'เครียดใจ',
                 'กดดัน', 'กังวล', 'กลัว', 'ไม่สบายใจ', 'ทุกข์ใจ', 'ทุกข์ระทม', 'ตัดสินใจไม่ได้',
                 'ไม่มีกำลังใจ', 'ต้องการกำลังใจ', 'ต้องการคนคุย', 'อยากคุย', 'อยากระบาย', 'ไม่มีใครฟัง',
                 'คนโดดเดี่ยว', 'โดดเดี่ยว', 'ไม่มีความหวัง', 'หมดหวัง', 'ชีวิตไม่มีความหมาย',
-                // ອັງກິດ
                 'lonely', 'alone', 'sad', 'depressed', 'unhappy', 'hopeless', 'tired', 'exhausted',
                 'anxious', 'worried', 'stress', 'stressed', 'burnout', 'cry', 'crying', 'tears',
                 'no friends', 'nobody cares', 'need support', 'need help', 'need someone to talk',
                 'want to talk', 'feel down', 'feeling down', 'feel empty', 'feeling empty'
             ];
 
-            // ກວດຄວາມໂກດກ່ອນ (ສຳຄັນສຸດ — ຖ້າໂກດ ໃຫ້ສົ່ງຕໍ່ຜູ້ຈັດການທັນທີ)
+            // 1. angry ก่อนเสมอ
             if (angryKeywords.some(kw => clean.includes(kw))) return 'angry';
-
-            // ຈາກນັ້ນກວດເຫງົາ/ເສົ້າ (ຕ້ອງການກຳລັງໃຈ)
+            // 2. ถ้าเป็นคำถาม → neutral (ยกเว้นมี sad ชัดๆ)
+            if (isQuestion(clean)) {
+                if (lonelySadKeywords.some(kw => clean.includes(kw))) return 'sad';
+                return 'neutral';
+            }
+            // 3. sad
             if (lonelySadKeywords.some(kw => clean.includes(kw))) return 'sad';
-
-            // ສຸດທ້າຍກວດດີໃຈ
+            // 4. happy
             if (happyKeywords.some(kw => clean.includes(kw))) return 'happy';
-
             return 'neutral';
         }
 
-        // ===== ULTRA-SMART AI NLP & MATCHING ENGINE (v4.0) =====
+        // ===== NLP ENGINE =====
         function cleanLaoString(str) {
             return (str || '').toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"“”]/g, "").trim();
         }
 
         function extractEntities(text) {
             const lower = text.toLowerCase();
-            const brands = ['iphone', 'ipad', 'samsung', 'oppo', 'vivo', 'xiaomi', 'huawei', 'redmi'];
-            const topics = ['ຈໍ', 'ໜ້າຈໍ', 'ແບັດ', 'ແບັດເຕີຣີ', 'ຕົກນ້ຳ', 'ລາຄາ', 'ປະກັນ', 'ເວລາ', 'ທີ່ຢູ່', 'ເປີດ'];
-
+            const brands = [
+                'iphone', 'ipad', 'apple', 'macbook', 'airpods', 'apple watch',
+                'samsung', 'galaxy', 'oppo', 'vivo', 'xiaomi', 'redmi', 'poco',
+                'huawei', 'honor', 'realme', 'oneplus', 'infinix', 'tecno', 'nokia'
+            ];
+            const topics = [
+                'ຈໍ', 'ໜ້າຈໍ', 'ແບັດ', 'ແບັດເຕີຣີ', 'ລຳໂພງ', 'ກ້ອງ', 'ໄມໂຄ', 'ປຸ່ມ', 'ພອດ', 'ຊາດ', 'ສາຍຊາດ',
+                'ຝາຫຼັງ', 'ກອບ', 'ຮອຍຂີດ', 'ຊ້າ', 'ຄ້າງ', 'ດັບ', 'ບູດ', 'ຣີສະຕາດ', 'ອັບເດດ', 'ຣີເຊັດ',
+                'wifi', 'wi-fi', 'ວາຍຟາຍ', 'bluetooth', 'ບຼູທູດ', 'ສັນຍານ', 'ເນັດ', '4g', '5g',
+                'face id', 'touch id', 'ລາຍນິ້ວ', 'ລະຫັດ',
+                'ລາຄາ', 'ປະກັນ', 'ເວລາ', 'ທີ່ຢູ່', 'ເປີດ', 'ປິດ',
+                'ຕົກນ້ຳ', 'ກູ້ຂໍ້ມູນ', 'ກູ້ຮູບ', 'ແຕກ', 'ບວມ'
+            ];
             let foundBrand = null;
             let foundTopic = null;
-
             brands.forEach(b => {if (lower.includes(b)) foundBrand = b;});
             topics.forEach(t => {if (lower.includes(t)) foundTopic = t;});
-
             return {foundBrand, foundTopic};
         }
 
         function computeCharOverlap(str1, str2) {
+            if (!str1 || !str2) return 0;
             let matches = 0;
             const maxLen = Math.max(str1.length, str2.length);
             if (maxLen === 0) return 0;
@@ -597,14 +654,13 @@
                 const sub = str1.substring(i, i + 2);
                 if (str2.includes(sub)) matches++;
             }
-            return matches / maxLen;
+            return matches / Math.max(1, str1.length - 1);
         }
 
         function calculateAdvancedScore(userInputText, faqQuestionText) {
             const cleanUser = cleanLaoString(userInputText);
             const cleanFAQ = cleanLaoString(faqQuestionText);
             if (!cleanUser || !cleanFAQ) return 0;
-
             if (cleanFAQ.includes(cleanUser) || cleanUser.includes(cleanFAQ)) return 0.95;
 
             const userTokens = cleanUser.split(/\s+/).filter(t => t.length > 1);
@@ -614,7 +670,6 @@
                     if (cleanFAQ.includes(token)) tokenMatchCount++;
                 });
             }
-
             const matchRatio = userTokens.length > 0 ? (tokenMatchCount / userTokens.length) : 0;
             const charOverlapScore = computeCharOverlap(cleanUser, cleanFAQ);
 
@@ -622,22 +677,22 @@
             const {foundBrand: fBrand, foundTopic: fTopic} = extractEntities(faqQuestionText);
 
             let entityBonus = 0;
-            if (uBrand && fBrand && uBrand === fBrand) entityBonus += 0.25;
-            if (uTopic && fTopic && uTopic === fTopic) entityBonus += 0.25;
-
-            return Math.min((matchRatio * 0.3) + (charOverlapScore * 0.3) + entityBonus, 1.0);
+            let penalty = 0;
+            if (uBrand && fBrand) {
+                if (uBrand === fBrand) entityBonus += 0.15;
+                else penalty += 0.3;
+            }
+            if (uTopic && fTopic) {
+                if (uTopic === fTopic) entityBonus += 0.15;
+                else penalty += 0.2;
+            }
+            return Math.max(0, Math.min((matchRatio * 0.35) + (charOverlapScore * 0.35) + entityBonus - penalty, 1.0));
         }
 
         function queryUltraSmartAI(queryText) {
             let entities = extractEntities(queryText);
-
-            if (!entities.foundBrand && sessionContext.lastBrand) {
-                entities.foundBrand = sessionContext.lastBrand;
-            }
-            if (!entities.foundTopic && sessionContext.lastTopic) {
-                entities.foundTopic = sessionContext.lastTopic;
-            }
-
+            if (!entities.foundBrand && sessionContext.lastBrand) entities.foundBrand = sessionContext.lastBrand;
+            if (!entities.foundTopic && sessionContext.lastTopic) entities.foundTopic = sessionContext.lastTopic;
             if (entities.foundBrand) sessionContext.lastBrand = entities.foundBrand;
             if (entities.foundTopic) sessionContext.lastTopic = entities.foundTopic;
 
@@ -646,16 +701,17 @@
             const scoredList = [];
 
             allFAQs.forEach(faq => {
-                const score = calculateAdvancedScore(queryText, faq.question);
+                let score = calculateAdvancedScore(queryText, faq.question);
+                // ⭐ boost ตาม session context
+                const faqEntities = extractEntities(faq.question);
+                if (sessionContext.lastBrand && faqEntities.foundBrand === sessionContext.lastBrand) score += 0.1;
+                if (sessionContext.lastTopic && faqEntities.foundTopic === sessionContext.lastTopic) score += 0.1;
+                score = Math.min(score, 1);
                 scoredList.push({faq, score});
-                if (score > maxScore) {
-                    maxScore = score;
-                    bestMatch = faq;
-                }
+                if (score > maxScore) {maxScore = score; bestMatch = faq;}
             });
 
             scoredList.sort((a, b) => b.score - a.score);
-
             return {
                 bestMatch,
                 score: maxScore,
@@ -665,31 +721,102 @@
 
         function autoLinkify(text) {
             if (!text) return '';
-            const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+            const urlRegex = /(https?:\/\/[^\s<>"]+|www\.[^\s<>"]+)/g;
             return text.replace(urlRegex, (url) => {
                 let href = url;
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    href = 'https://' + url;
-                }
-                return `<a href="${href}" target="_blank" class="text-cyan-400 underline hover:text-cyan-300 font-medium break-all inline-flex items-center gap-1">${url} <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>`;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) href = 'https://' + url;
+                const safeHref = escapeHtml(href);
+                const safeText = escapeHtml(url);
+                return `<a href="${safeHref}" target="_blank" rel="noopener noreferrer" class="text-cyan-400 underline hover:text-cyan-300 font-medium break-all inline-flex items-center gap-1">${safeText} <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i></a>`;
             });
         }
 
+        // ===== RATE LIMIT =====
+        function checkRateLimit() {
+            const now = Date.now();
+            while (rateLimitTimestamps.length > 0 && now - rateLimitTimestamps[0] > 60000) {
+                rateLimitTimestamps.shift();
+            }
+            if (rateLimitTimestamps.length >= RATE_LIMIT_PER_MIN) {
+                showToast(`ສົ່ງໄວເກີນໄປ (ສູງສຸດ ${RATE_LIMIT_PER_MIN}/ນາທີ)`);
+                return false;
+            }
+            rateLimitTimestamps.push(now);
+            return true;
+        }
+
+        // ===== LOG UNANSWERED (⭐ หัวใจ) =====
+        async function logUnansweredQuery(query, aiResult, emotion) {
+            const normalized = cleanLaoString(query);
+            if (!normalized || normalized.length < 2) return;
+
+            try {
+                const snap = await get(ref(db, 'unanswered_queries'));
+                const data = snap.val() || {};
+
+                let existingId = null;
+                let existing = null;
+                for (const [id, item] of Object.entries(data)) {
+                    if (item.status === 'resolved' || item.status === 'ignored') continue;
+                    if (item.normalizedQuery === normalized) {existingId = id; existing = item; break;}
+                }
+
+                if (existingId) {
+                    await update(ref(db, `unanswered_queries/${existingId}`), {
+                        count: (existing.count || 1) + 1,
+                        lastAskedAt: new Date().toISOString(),
+                        lastEmotion: emotion,
+                    });
+                } else {
+                    const newRef = push(ref(db, 'unanswered_queries'));
+                    await set(newRef, {
+                        query: query,
+                        normalizedQuery: normalized,
+                        count: 1,
+                        timestamp: new Date().toISOString(),
+                        lastAskedAt: new Date().toISOString(),
+                        status: 'pending',
+                        closestFaqId: aiResult.bestMatch?.id || null,
+                        closestQuestion: aiResult.bestMatch?.question || null,
+                        closestScore: aiResult.score || 0,
+                        emotion: emotion,
+                    });
+                }
+            } catch (e) {
+                console.warn('Log unanswered failed:', e);
+            }
+        }
+
+        // ===== MAIN HANDLER =====
         window.handleUserInputSubmit = async function (e) {
             e.preventDefault();
             const input = document.getElementById('user-input');
             const typedText = input.value.trim();
             if (!typedText) return;
 
+            // Validate
+            if (typedText.length > MAX_INPUT_LENGTH) {
+                showToast(`ຂໍ້ຄວາມຍາວເກີນ ${MAX_INPUT_LENGTH} ຕົວອັກສອນ`);
+                return;
+            }
+            if (!/[\u0E80-\u0EFF\u0E00-\u0E7Fa-zA-Z0-9]/.test(typedText)) {
+                showToast('ກະລຸນາພິມຂໍ້ຄວາມ');
+                return;
+            }
+
             const lowerText = typedText.toLowerCase();
 
-            // 1. ເຊັກຄຳຂອບໃຈ / ບໍ່ມີຄຳຖາມແລ້ວ
-            const isNoMoreQuestion = lowerText.includes("ບໍ່ມີ") || lowerText.includes("ບໍ່ມີແລ້ວ") || lowerText.includes("ບໍ່ມີຫຍັງ") || lowerText.includes("ພໍແລ້ວ") || lowerText.includes("ຈົບແລ້ວ") || lowerText === "ບໍ່" || lowerText.includes("ຂອບໃຈ") || lowerText.includes("thank");
+            // 1. ตรวจคำอำลา (farewell) — ใช้ exact match
+            const farewellRegex = /^(ບໍ່ມີ|ບໍ່ມີແລ້ວ|ບໍ່ມີຫຍັງ|ພໍແລ້ວ|ຈົບແລ້ວ|ບໍ່|ຂອບໃຈ|ຂອບຄຸນ|thank you|thanks|thank)$/i;
+            const isFarewell = farewellRegex.test(typedText.trim()) ||
+                (lowerText.includes('ຂອບໃຈ') && !isQuestion(lowerText) && lowerText.length < 30);
 
-            if (isNoMoreQuestion) {
+            if (isFarewell) {
+                if (!checkRateLimit()) return;
                 playSound('send');
                 appendUserMessage(typedText);
                 input.value = '';
+                updateCharCount();
                 showTypingIndicator();
                 setTimeout(() => {
                     removeTypingIndicator();
@@ -707,61 +834,48 @@
                 return;
             }
 
-            // 2. ເຊັກໂໝດ Feedback
+            // 2. Feedback mode
             const isFeedbackKeyword = lowerText.includes("ຄວາມຄິດເຫັນ") || lowerText.includes("ຜູ້ພັດທະນາ") || lowerText.includes("feedback") || lowerText.includes("ສະເໜີ");
-
             if (isFeedbackActive || isFeedbackKeyword) {
                 await sendFeedbackToFirebase(typedText);
                 input.value = '';
+                updateCharCount();
                 return;
             }
+
+            if (!checkRateLimit()) return;
 
             playSound('send');
             appendUserMessage(typedText);
             input.value = '';
+            updateCharCount();
             showTypingIndicator();
 
-            // 🌟 3. ກວດຈັບອາລົມ (Emotion Detection: angry / happy / sad / neutral)
             const emotion = detectEmotion(typedText);
 
-            setTimeout(() => {
+            setTimeout(async () => {
                 removeTypingIndicator();
                 playSound('receive');
 
-                // =========================
-                // 😡 ກໍລະນີ: ໂກດ
-                // =========================
                 if (emotion === 'angry') {
-                    const angryResponse = `
+                    appendAIMessage(`
                         <div class="p-1 leading-relaxed">
                             <p class="text-slate-200 text-xs sm:text-sm mb-2">
-                                💡 <b>ທາງຮ້ານຂໍຮັບປະກັນວ່າຈະບໍ່ປ່ອຍຜ່ານເລື່ອງນີ້ໄປງ່າຍໆ.</b> ເນື່ອງຈາກເປັນເລື່ອງທີ່ຕ້ອງໃຊ້ການຕັດສິນໃຈ ຂ້ອຍຂໍສົ່ງຕໍ່ໃຫ້ <b>ຜູ້ຈັດການຮ້ານ</b> ເພື່ອຕິດຕໍ່ກັບທ່ານໂດຍກົງ ແລະ ຫາທາງອອກທີ່ດີທີ່ສຸດໃຫ້ທັງສອງຝ່າຍ.
+                                💡 <b>ທາງຮ້ານຂໍຮັບປະກັນວ່າຈະບໍ່ປ່ອຍຜ່ານເລື່ອງນີ້ໄປງ່າຍໆ.</b> ເນື່ອງຈາກເປັນເລື່ອງທີ່ຕ້ອງໃຊ້ການຕັດສິນໃຈ ຂ້ອຍຂໍສົ່ງຕໍ່ໃຫ້ <b>ຜູ້ຈັດການຮ້ານ</b> ເພື່ອຕິດຕໍ່ກັບທ່ານໂດຍກົງ.
                             </p>
                             <p class="text-slate-300 text-xs sm:text-sm mb-3">
-                                ເພື່ອຄວາມປອດໄພ ແລະ ບໍ່ໃຫ້ຂໍ້ມູນຕົກຫຼົ່ນ, ຂໍອະນຸຍາດໃຫ້ທ່ານ <b>ພິມລາຍລະອຽດບັນຫາ ແລະ ເບີໂທຕິດຕໍ່</b> ສົ່ງຜ່ານປຸ່ມສົ່ງຄຳຄິດເຫັນທີ່ຢູ່ດ້ານລຸ່ມສຸດຂອງໜ້າຈໍນີ້ແທນ 👇
+                                ກະລຸນາ <b>ພິມລາຍລະອຽດບັນຫາ ແລະ ເບີໂທຕິດຕໍ່</b> ສົ່ງຜ່ານປຸ່ມດ້ານລຸ່ມ 👇
                             </p>
-                            <div class="p-3 bg-slate-900/90 rounded-xl border border-pink-500/40 mb-2">
-                                <p class="text-xs text-pink-300 font-semibold mb-2">
-                                    (ປຸ່ມ: ລູກຄ້າຕ້ອງການປະກອບຄວາມຄິດເຫັນເຖິງຜູ້ພັດທະນາໂປຣແກມບໍ...)
-                                </p>
-                                <button onclick="activateFeedbackPrompt()" class="w-full text-left bg-gradient-to-r from-pink-950/80 to-purple-950/80 hover:from-pink-900 hover:to-purple-900 text-pink-200 border border-pink-500/50 p-2.5 rounded-lg text-xs font-medium transition flex items-center gap-2 active:scale-95 shadow-md">
-                                    <i class="fa-solid fa-paper-plane text-pink-400"></i>
-                                    <span>ກົດທີ່ນີ້ເພື່ອພິມບັນຫາ ພ້ອມເບີໂທ ແລ້ວກົດສົ່ງໄດ້ເລີຍ</span>
-                                </button>
-                            </div>
-                            <p class="text-slate-400 text-xs italic">
-                                ພຽງແຕ່ກົດທີ່ປຸ່ມນັ້ນ, ພິມບັນຫາຂອງທ່ານພ້ອມເບີໂທ ແລ້ວກົດສົ່ງໄດ້ເລີຍ. ຜູ້ຈັດການຈະໄດ້ຮັບຂໍ້ຄວາມ ແລະ ຕິດຕໍ່ກັບທ່ານໂດຍໄວທີ່ສຸດ 🙏
-                            </p>
-                        </div>`;
-                    appendAIMessage(angryResponse);
+                            <button onclick="activateFeedbackPrompt()" class="w-full text-left bg-gradient-to-r from-pink-950/80 to-purple-950/80 hover:from-pink-900 hover:to-purple-900 text-pink-200 border border-pink-500/50 p-2.5 rounded-lg text-xs font-medium transition flex items-center gap-2 active:scale-95 shadow-md">
+                                <i class="fa-solid fa-paper-plane text-pink-400"></i>
+                                <span>ກົດທີ່ນີ້ເພື່ອພິມບັນຫາ ພ້ອມເບີໂທ</span>
+                            </button>
+                        </div>`);
                     return;
                 }
 
-                // =========================
-                // 😊 ກໍລະນີ: ດີໃຈ / ພໍໃຈ / ມີຄວາມສຸກ
-                // =========================
                 if (emotion === 'happy') {
-                    const happyResponse = `
+                    appendAIMessage(`
                         <div class="p-1 leading-relaxed">
                             <div class="text-center py-2 mb-3">
                                 <div class="w-14 h-14 bg-gradient-to-br from-emerald-400 via-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg shadow-emerald-500/40 animate-pulse">
@@ -770,27 +884,21 @@
                                 <p class="font-bold text-emerald-300 text-sm">ດີໃຈນຳຫຼາຍໆ! 🎉</p>
                             </div>
                             <p class="text-slate-200 text-xs sm:text-sm mb-2 leading-relaxed">
-                                ຂອບໃຈຫຼາຍໆສຳລັບຄຳດີໆ ແລະ ຄວາມຮູ້ສຶກດີໆ ທີ່ທ່ານໄດ້ມອບໃຫ້ພວກເຮົາ 💖
-                                ຄຳເວົ້າຂອງທ່ານຄື <b>ກຳລັງໃຈທີ່ດີທີ່ສຸດ</b> ຂອງທີມງານຮ້ານຟູຈິ!
+                                ຂອບໃຈຫຼາຍໆສຳລັບຄຳດີໆ ທີ່ທ່ານໄດ້ມອບໃຫ້ພວກເຮົາ 💖
                             </p>
                             <p class="text-slate-300 text-xs sm:text-sm mb-3 leading-relaxed">
-                                ພວກເຮົາຈະສືບຕໍ່ຮັກສາຄຸນນະພາບ ແລະ ພັດທະນາການບໍລິການໃຫ້ດີຂຶ້ນຕະຫຼອດໄປ 🌟
-                                ຫາກຕ້ອງການສອບຖາມ ຫຼື ໃຊ້ບໍລິການເພີ່ມເຕີມ ຍິນດີຕ້ອນຮັບສະເໝີ 🙏
+                                ພວກເຮົາຈະສືບຕໍ່ຮັກສາຄຸນນະພາບ ແລະ ພັດທະນາການບໍລິການໃຫ້ດີຂຶ້ນ 🌟
                             </p>
                             <div class="p-3 bg-gradient-to-r from-emerald-950/60 to-cyan-950/60 rounded-xl border border-emerald-500/30 text-xs text-emerald-200 flex items-center gap-2">
                                 <i class="fa-solid fa-heart text-pink-400 text-base"></i>
                                 <span>ຂອບໃຈທີ່ໄວ້ໃຈ ຮ້ານແປງໂທລະສັບຟູຈິ 💚</span>
                             </div>
-                        </div>`;
-                    appendAIMessage(happyResponse);
+                        </div>`);
                     return;
                 }
 
-                // =========================
-                // 🥺 ກໍລະນີ: ເຫງົາ / ເສົ້າ / ທໍ້ໃຈ / ຕ້ອງການກຳລັງໃຈ
-                // =========================
                 if (emotion === 'sad') {
-                    const sadResponse = `
+                    appendAIMessage(`
                         <div class="p-1 leading-relaxed">
                             <div class="text-center py-2 mb-3">
                                 <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg shadow-purple-500/40 animate-pulse">
@@ -799,86 +907,75 @@
                                 <p class="font-bold text-purple-300 text-sm">ຂ້ອຍຢູ່ນີ້ ພ້ອມຟັງທ່ານສະເໝີ 💜</p>
                             </div>
                             <p class="text-slate-200 text-xs sm:text-sm mb-2 leading-relaxed">
-                                ຂ້ອຍຮູ້ສຶກໄດ້ວ່າຕອນນີ້ທ່ານອາດຈະບໍ່ສະບາຍໃຈ ຫຼື ກຳລັງຜ່ານຊ່ວງເວລາທີ່ຍາກລຳບາກ 🥺
-                                <b>ທ່ານບໍ່ໄດ້ຢູ່ຄົນດຽວ</b> — ຂ້ອຍ ແລະ ທີມງານຮ້ານຟູຈິ ຢູ່ບ່ອນນີ້ ພ້ອມຮັບຟັງ ແລະ ຊ່ວຍເຫຼືອທ່ານ.
-                            </p>
-                            <p class="text-slate-300 text-xs sm:text-sm mb-3 leading-relaxed">
-                                ບໍ່ວ່າຈະເປັນເລື່ອງໃດກໍ່ຕາມ — ຄວາມເຫງົາ, ຄວາມເສົ້າ, ຄວາມກົດດັນ, ຫຼື ພຽງແຕ່ຢາກລົມກັບໃຜສັກຄົນ —
-                                ທ່ານສາມາດພິມລະບາຍຄວາມຮູ້ສຶກຜ່ານຊ່ອງທາງນີ້ໄດ້ເລີຍ 💌
+                                ຂ້ອຍຮູ້ສຶກໄດ້ວ່າຕອນນີ້ທ່ານອາດຈະບໍ່ສະບາຍໃຈ 🥺
+                                <b>ທ່ານບໍ່ໄດ້ຢູ່ຄົນດຽວ</b> — ຂ້ອຍ ແລະ ທີມງານຮ້ານຟູຈິ ຢູ່ບ່ອນນີ້.
                             </p>
                             <div class="p-3 bg-gradient-to-r from-indigo-950/70 to-purple-950/70 rounded-xl border border-purple-500/40 mb-3">
                                 <p class="text-xs text-purple-200 font-semibold mb-2 flex items-center gap-1">
                                     <i class="fa-solid fa-quote-left text-purple-400"></i>
-                                    ຂໍ້ຄວາມໃຫ້ກຳລັງໃຈຈາກຮ້ານຟູຈິ
+                                    ຂໍ້ຄວາມໃຫ້ກຳລັງໃຈ
                                 </p>
                                 <p class="text-xs text-slate-200 leading-relaxed italic">
-                                    "ທຸກວັນທີ່ຍາກລຳບາກ ຈະຜ່ານໄປໄດ້ສະເໝີ. ຄວາມອົດທົນ ແລະ ຮອຍຍິ້ມ ຂອງທ່ານ ຄືສິ່ງທີ່ມີຄ່າທີ່ສຸດ. ຢ່າລືມດູແລໃຈຕົວເອງດ້ວຍເດີ 💖"
+                                    "ທຸກວັນທີ່ຍາກລຳບາກ ຈະຜ່ານໄປໄດ້ສະເໝີ. ຢ່າລືມດູແລໃຈຕົວເອງດ້ວຍເດີ 💖"
                                 </p>
                             </div>
-                            <p class="text-slate-400 text-xs italic mb-2">
-                                ຖ້າຕ້ອງການໃຫ້ທີມງານຕິດຕໍ່ກັບ ຫຼື ຮັບຟັງທ່ານໂດຍກົງ, ກົດປຸ່ມດ້ານລຸ່ມໄດ້ເລີຍ 👇
-                            </p>
-                            <button onclick="activateFeedbackPrompt()" class="w-full text-left bg-gradient-to-r from-indigo-950/80 to-purple-950/80 hover:from-indigo-900 hover:to-purple-900 text-purple-200 border border-purple-500/50 p-3 rounded-xl text-xs font-medium transition flex items-center gap-2 active:scale-95 shadow-md">
-                                <i class="fa-solid fa-comment-dots text-purple-400 text-base"></i>
-                                <span>ຢາກລະບາຍຄວາມຮູ້ສຶກ ຫຼື ໃຫ້ທີມງານຕິດຕໍ່ກັບ</span>
+                            <button onclick="activateFeedbackPrompt()" class="w-full text-left bg-gradient-to-r from-indigo-950/80 to-purple-950/80 hover:from-indigo-900 hover:to-purple-900 text-purple-200 border border-purple-500/50 p-3 rounded-xl text-xs font-medium transition flex items-center gap-2 active:scale-95">
+                                <i class="fa-solid fa-comment-dots text-purple-400"></i>
+                                <span>ຢາກລະບາຍຄວາມຮູ້ສຶກ</span>
                             </button>
-                        </div>`;
-                    appendAIMessage(sadResponse);
+                        </div>`);
                     return;
                 }
 
-                // =========================
-                // 🔍 ກໍລະນີປົກກະຕິ: ຄົ້ນຫາ FAQ
-                // =========================
+                // ===== NEUTRAL: ค้นหา FAQ =====
                 const aiResult = queryUltraSmartAI(typedText);
                 const followUpHTML = '<br><br><div class="pt-2 border-t border-slate-700/50 text-cyan-300 text-xs"><i class="fa-regular fa-circle-question mr-1"></i> ມີຫຍັງໃຫ້ຂ້ອຍຊ່ວຍເພີ່ມເຕີມບໍ?</div>';
 
-                if (aiResult.score >= 0.18 && aiResult.bestMatch) {
+                if (aiResult.score >= MATCH_THRESHOLD && aiResult.bestMatch) {
                     const formattedAnswer = autoLinkify(aiResult.bestMatch.answer);
-                    const responseHTML = `
+                    appendAIMessage(`
                         <div class="mb-2 text-cyan-300 font-semibold text-xs flex items-center gap-1.5">
                             <i class="fa-solid fa-circle-check text-emerald-400"></i> ຄຳຕອບທີ່ເໝາະສົມທີ່ສຸດ:
                         </div>
-                        <div class="text-slate-200">${formattedAnswer}${followUpHTML}</div>`;
-                    appendAIMessage(responseHTML);
+                        <div class="text-slate-200">${formattedAnswer}${followUpHTML}</div>`);
                     incrementUsage(aiResult.bestMatch.id);
                 }
-                else if (aiResult.topSuggestions.length > 0) {
+                else if (aiResult.score >= SUGGEST_THRESHOLD && aiResult.topSuggestions.length > 0) {
+                    // ⭐ log ด้วย (score ต่ำ)
+                    await logUnansweredQuery(typedText, aiResult, emotion);
+
                     let html = `
                         <div class="text-amber-300 mb-3 flex items-start gap-2">
                             <i class="fa-solid fa-circle-info mt-1 text-sm"></i>
                             <div>
                                 <p class="font-bold text-sm">ເອໄອພົບຫົວຂໍ້ທີ່ໃກ້ຄຽງຄັບ</p>
-                                <p class="text-xs text-slate-400 mt-0.5">ທ່ານໝາຍເຖິງຄຳຖາມເຫຼົ່ານີ້ບໍ? (ກົດເລືອກໄດ້ເລີຍ):</p>
+                                <p class="text-xs text-slate-400 mt-0.5">ທ່ານໝາຍເຖິງຄຳຖາມເຫຼົ່ານີ້ບໍ?</p>
                             </div>
                         </div>
                         <div class="space-y-2">`;
-
                     aiResult.topSuggestions.forEach((sugg, index) => {
-                        const safeQ = escapeHtml(sugg.question);
-                        const safeA = escapeHtml(sugg.answer);
-                        const safeId = sugg.id || '';
-
+                        // ⭐ ใช้ __faqCache
+                        window.__faqCache[sugg.id] = {question: sugg.question, answer: sugg.answer};
                         html += `
                             <button class="suggestion-btn w-full text-left bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/80 rounded-xl p-3 flex items-center justify-between group transition" 
-                                onclick="handleSelectFAQ(this.getAttribute('data-q'), this.getAttribute('data-a'), this.getAttribute('data-id'))"
-                                data-q="${safeQ}" data-a="${safeA}" data-id="${safeId}">
+                                onclick="handleSelectFAQById('${sugg.id}')">
                                 <div class="flex items-center gap-2 overflow-hidden pr-2">
                                     <span class="w-5 h-5 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-[10px] shrink-0 font-bold">${index + 1}</span>
-                                    <span class="text-xs font-medium text-slate-200 truncate group-hover:text-amber-300 transition-colors">${safeQ}</span>
+                                    <span class="text-xs font-medium text-slate-200 truncate group-hover:text-amber-300 transition-colors">${escapeHtml(sugg.question)}</span>
                                 </div>
                                 <i class="fa-solid fa-chevron-right text-slate-500 text-xs group-hover:translate-x-1 group-hover:text-amber-400 transition-all shrink-0"></i>
                             </button>`;
                     });
-
                     html += `</div>`;
                     appendAIMessage(html);
                 }
                 else {
+                    // ⭐ log ทุกครั้ง
+                    await logUnansweredQuery(typedText, aiResult, emotion);
                     appendAIMessage(`
                         <div class="text-slate-300">
                             <p class="mb-2">⚠️ ຂໍອະໄພ, ຂ້ອຍບໍ່ພົບຂໍ້ມູນທີ່ກົງກັບ <b>"${escapeHtml(typedText)}"</b> ໃນລະບົບ.</p>
-                            <p class="text-xs text-slate-400 mb-3">ທ່ານສາມາດຝາກຂໍ້ຄວາມ ຫຼື ຄວາມຄິດເຫັນໃຫ້ທີມງານແອດມິນກວດສອບໂດຍກົງໄດ້ເລີຍຄັບ:</p>
+                            <p class="text-xs text-slate-400 mb-3">ຂໍ້ຄວາມຂອງທ່ານຖືກສົ່ງໃຫ້ທີມງານແອດມິນແລ້ວ — ພວກເຮົາຈະຮີບຕອບກັບ 🙏</p>
                             <button onclick="activateFeedbackPrompt()" class="text-xs bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 border border-pink-500/40 px-3 py-2 rounded-xl transition flex items-center gap-2 font-medium">
                                 <i class="fa-solid fa-paper-plane"></i> ຝາກຂໍ້ຄວາມເຖິງທີມງານແອດມິນ
                             </button>
@@ -889,22 +986,21 @@
         };
 
         async function sendFeedbackToFirebase(message) {
+            if (!checkRateLimit()) return;
             playSound('send');
             appendUserMessage(message);
             showTypingIndicator();
             try {
-                const feedbackRef = ref(db, 'developer_feedback');
-                const newRef = push(feedbackRef);
+                const newRef = push(ref(db, 'developer_feedback'));
                 await set(newRef, {
                     message: message,
                     timestamp: new Date().toISOString(),
                     device: navigator.userAgent.substring(0, 80)
                 });
-
                 setTimeout(() => {
                     removeTypingIndicator();
                     playSound('toast');
-                    appendAIMessage("✅ <b>ສົ່ງຂໍ້ຄວາມຮຽບຮ້ອຍແລ້ວ!</b><br>ຂອບໃຈຫຼາຍໆ ທີມງານຈະຮີບກວດສອບ ແລະ ຕິດຕໍ່ກັບທ່ານໄວໆນີ້ 🙏");
+                    appendAIMessage("✅ <b>ສົ່ງຂໍ້ຄວາມຮຽບຮ້ອຍແລ້ວ!</b><br>ຂອບໃຈຫຼາຍໆ 🙏");
                     deactivateFeedbackPrompt();
                     showToast("ສົ່ງຂໍ້ຄວາມສຳເລັດ");
                 }, 600);
@@ -912,13 +1008,13 @@
                 console.error("Feedback error:", err);
                 setTimeout(() => {
                     removeTypingIndicator();
-                    appendAIMessage("❌ ເກີດຂໍ້ຜິດພາດໃນການສົ່ງ. ກະລຸນາລອງໃໝ່ອີກຄັ້ງ.");
+                    appendAIMessage("❌ ເກີດຂໍ້ຜິດພາດ. ກະລຸນາລອງໃໝ່.");
                     deactivateFeedbackPrompt();
                 }, 600);
             }
         }
 
-        // ===== CHAT UI HELPER FUNCTIONS =====
+        // ===== UI HELPERS =====
         function appendUserMessage(text) {
             const chatBox = document.getElementById('chat-box');
             const div = document.createElement('div');
@@ -964,7 +1060,7 @@
                     <span class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce"></span>
                     <span class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce [animation-delay:0.2s]"></span>
                     <span class="w-2 h-2 bg-cyan-400 rounded-full animate-bounce [animation-delay:0.4s]"></span>
-                    <span class="text-slate-400 text-[11px] ml-2">ກຳລັງວິເຄາະ AI v4.0...</span>
+                    <span class="text-slate-400 text-[11px] ml-2">ກຳລັງວິເຄາະ AI v4.1...</span>
                 </div>`;
             chatBox.appendChild(div);
             scrollToBottom();
@@ -980,6 +1076,13 @@
             chatBox.scrollTo({top: chatBox.scrollHeight, behavior: 'smooth'});
         }
 
+        // ⭐ Scroll-to-bottom button
+        document.getElementById('chat-box').addEventListener('scroll', (e) => {
+            const box = e.target;
+            const isNearBottom = box.scrollHeight - box.scrollTop - box.clientHeight < 100;
+            document.getElementById('scroll-bottom-btn').classList.toggle('hidden-btn', isNearBottom);
+        });
+
         function showToast(msg) {
             const toast = document.getElementById('toast');
             document.getElementById('toast-message').innerText = msg;
@@ -992,19 +1095,67 @@
         }
 
         function getCurrentTime() {
-            const now = new Date();
-            return now.toLocaleTimeString('lo-LA', {hour: '2-digit', minute: '2-digit'});
+            return new Date().toLocaleTimeString('lo-LA', {hour: '2-digit', minute: '2-digit'});
         }
 
         function escapeHtml(str) {
             if (!str) return '';
-            return str
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
+
+        // ⭐ Char counter
+        function updateCharCount() {
+            const input = document.getElementById('user-input');
+            const counter = document.getElementById('char-count');
+            const len = input.value.length;
+            counter.innerText = `${len}/${MAX_INPUT_LENGTH}`;
+            counter.className = len > MAX_INPUT_LENGTH * 0.9
+                ? 'absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-rose-400 pointer-events-none'
+                : 'absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-slate-500 pointer-events-none';
+        }
+        document.getElementById('user-input').addEventListener('input', updateCharCount);
+
+        // ⭐ Session persistence
+        function saveSession() {
+            try {
+                const chatBox = document.getElementById('chat-box');
+                if (chatBox.children.length <= 1) return; // แค่ welcome ไม่ต้อง save
+                sessionStorage.setItem('fuji_chat_history', chatBox.innerHTML);
+            } catch (e) { }
+        }
+        window.addEventListener('beforeunload', saveSession);
+
+        // ⭐ Restore session
+        window.addEventListener('load', () => {
+            try {
+                const saved = sessionStorage.getItem('fuji_chat_history');
+                if (saved) {
+                    const chatBox = document.getElementById('chat-box');
+                    chatBox.innerHTML = saved;
+                    scrollToBottom();
+                }
+            } catch (e) { }
+        });
+
+        // ⭐ Offline detection
+        window.addEventListener('online', () => showToast('✅ ກັບມາອອນລາຍແລ້ວ'));
+        window.addEventListener('offline', () => showToast('⚠️ ອອບລາຍ ກະລຸນາກວດເນັດ'));
+
+        // ⭐ Global error handler
+        window.addEventListener('error', (e) => console.error('Global error:', e));
+        window.addEventListener('unhandledrejection', (e) => console.error('Unhandled promise:', e));
+
+        // ⭐ Keyboard shortcut: Ctrl+K = focus input
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('user-input').focus();
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('user-input').value = '';
+                updateCharCount();
+            }
+        });
     </script>
 </body>
 
