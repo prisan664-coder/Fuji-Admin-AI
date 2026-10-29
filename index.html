@@ -9,7 +9,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="description" content="Fuji Smart AI — ผู้ช่วย AI ร้านซ่อมมือถือ ตอบคำถาม 24 ชั่วโมง">
-    <title>Fuji Smart AI v5.1 — ຮ້ານແປງໂທລະສັບຟູຈິ</title>
+    <title>Fuji Smart AI v5.2 — ຮ້ານແປງໂທລະສັບຟູຈິ</title>
 
     <!-- Preload & Preconnect -->
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
@@ -472,7 +472,7 @@
                     </h1>
                     <div class="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-slate-400 mt-0.5">
                         <span class="inline-flex items-center text-emerald-400 gap-1 font-medium">
-                            <i class="fa-solid fa-bolt text-[9px] animate-pulse"></i> v5.1
+                            <i class="fa-solid fa-bolt text-[9px] animate-pulse"></i> v5.2
                         </span>
                         <span class="hidden sm:inline">•</span>
                         <span class="hidden sm:flex text-slate-400 items-center gap-1">
@@ -521,7 +521,7 @@
                     class="chat-bubble-ai rounded-2xl rounded-tl-none p-3 sm:p-4 max-w-[88%] text-slate-200 text-xs sm:text-sm leading-relaxed">
                     <div class="flex items-center justify-between mb-1.5 pb-1 border-b border-slate-700/50">
                         <span class="font-bold text-cyan-400 flex items-center gap-1.5 text-[10px] sm:text-xs">
-                            <i class="fa-solid fa-microchip text-xs"></i> Fuji Smart AI v5.1
+                            <i class="fa-solid fa-microchip text-xs"></i> Fuji Smart AI v5.2
                         </span>
                         <span
                             class="text-[9px] sm:text-[10px] bg-cyan-950/80 text-cyan-300 border border-cyan-800 px-1.5 sm:px-2 py-0.5 rounded-md font-mono">Ready</span>
@@ -547,8 +547,9 @@
                     class="p-2.5 sm:p-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-pink-400 transition border border-slate-700/60 active:scale-95 shrink-0">
                     <i class="fa-solid fa-microphone text-sm"></i>
                 </button>
+                <!-- ⭐ ลบ hidden sm:block ออก为了让มือถือเห็นปุ่มกล้อง -->
                 <button type="button" onclick="capturePhoto()" aria-label="ຖ່າຍຮູບ"
-                    class="hidden sm:block p-2.5 sm:p-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-emerald-400 transition border border-slate-700/60 active:scale-95 shrink-0">
+                    class="p-2.5 sm:p-3 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-emerald-400 transition border border-slate-700/60 active:scale-95 shrink-0">
                     <i class="fa-solid fa-camera text-sm"></i>
                 </button>
 
@@ -684,7 +685,8 @@
         let allFAQs = [];
         let visibleFAQs = [];
         let isFeedbackActive = false;
-        let isAudioEnabled = true;
+        // 🌟 โหลดค่าการเปิดปิดเสียงจาก localStorage (ถ้าไม่เคยตั้งให้เปิดเป็นค่าเริ่มต้น)
+        let isAudioEnabled = localStorage.getItem('fuji_audio') !== 'false';
         let sessionContext = {lastBrand: null, lastTopic: null};
         const usageCooldown = new Map();
         const rateLimitTimestamps = [];
@@ -695,6 +697,7 @@
         let isRecording = false;
         let lastUserMessage = '';
         let lastAiMessage = '';
+        let isProcessing = false; // 🌟 ตัวแปรป้องกันการกดส่งซ้ำ (ช่วยไม่ให้ iPhone ค้าง)
 
         // ===== HAPTIC =====
         function haptic(type = 'light') {
@@ -783,11 +786,17 @@
 
         window.toggleAudio = function () {
             isAudioEnabled = !isAudioEnabled;
+            localStorage.setItem('fuji_audio', isAudioEnabled); // บันทึกการตั้งค่า
             const icon = document.getElementById('audio-icon');
             if (isAudioEnabled) {icon.className = "fa-solid fa-volume-high text-cyan-400 text-sm sm:text-base"; showToast("🔊 ເປີດສຽງ");}
             else {icon.className = "fa-solid fa-volume-xmark text-slate-500 text-sm sm:text-base"; showToast("🔇 ປິດສຽງ");}
             haptic('light');
         };
+
+        // อัปเดตไอคอนเสียงให้ตรงกับค่าที่บันทึกไว้
+        if (!isAudioEnabled) {
+            document.getElementById('audio-icon').className = "fa-solid fa-volume-xmark text-slate-500 text-sm sm:text-base";
+        }
 
         window.resetSession = function () {
             if (!confirm('ລ້າງແຊັດ?')) return;
@@ -813,7 +822,8 @@
             const ctx = canvas.getContext('2d');
             function resizeCanvas() {canvas.width = window.innerWidth; canvas.height = window.innerHeight;}
             resizeCanvas(); window.addEventListener('resize', resizeCanvas);
-            const particles = Array.from({length: 30}, () => ({
+            // ลดจำนวน particle ลงเล็กน้อยเพื่อประสิทธิภาพบนมือถือ
+            const particles = Array.from({length: 20}, () => ({
                 x: Math.random() * canvas.width, y: Math.random() * canvas.height,
                 vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
                 r: Math.random() * 2 + 1, color: Math.random() > 0.5 ? 'rgba(6, 182, 212, 0.5)' : 'rgba(139, 92, 246, 0.5)'
@@ -965,6 +975,7 @@
         };
 
         window.handleSelectFAQ = function (question, answer, faqId) {
+            if (isProcessing) return; // ป้องกันการกดซ้ำ
             deactivateFeedbackPrompt(); if (!checkRateLimit()) return;
             haptic('light'); playSound('send'); appendUserMessage(question); showTypingIndicator();
             if (faqId) incrementUsage(faqId);
@@ -1188,11 +1199,17 @@ ${faqContext}
         // ===== MAIN HANDLER =====
         window.handleUserInputSubmit = async function (e) {
             e.preventDefault();
+
+            // 🌟 ป้องกันการกดส่งรัวๆ (เป็นสาเหตุให้ iPhone ค้าง)
+            if (isProcessing) return;
+
             const input = document.getElementById('user-input');
             const typedText = input.value.trim();
             if (!typedText) return;
             if (typedText.length > MAX_INPUT_LENGTH) {showToast(`⚠️ ຍາວເກີນ ${MAX_INPUT_LENGTH} ຕົວ`); return;}
             if (!/[\u0E80-\u0EFF\u0E00-\u0E7Fa-zA-Z0-9]/.test(typedText)) {showToast('⚠️ ກະລຸນາພິມຂໍ້ຄວາມ'); return;}
+
+            isProcessing = true; // ล็อคการทำงาน
 
             const lowerText = typedText.toLowerCase();
             lastUserMessage = typedText;
@@ -1201,21 +1218,22 @@ ${faqContext}
             const isFarewell = farewellRegex.test(typedText.trim()) || (lowerText.includes('ຂອບໃຈ') && !isQuestion(lowerText) && lowerText.length < 30);
 
             if (isFarewell) {
-                if (!checkRateLimit()) return;
+                if (!checkRateLimit()) {isProcessing = false; return;}
                 haptic('light'); playSound('send'); appendUserMessage(typedText); input.value = ''; updateCharCount(); showTypingIndicator();
                 setTimeout(() => {
                     removeTypingIndicator(); playSound('receive'); haptic('success');
                     appendAIMessage(`<div class="text-center py-2"><div class="w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-500 rounded-full flex items-center justify-center mx-auto mb-3 shadow-lg shadow-pink-500/30"><i class="fa-solid fa-heart text-white text-xl"></i></div><p class="font-bold text-pink-300 text-sm mb-1">ຂອບໃຈຫຼາຍໆ! 💖</p><p class="text-xs text-slate-300 leading-relaxed">ຍິນດີທີ່ໄດ້ບໍລິການທ່ານ 🙏</p></div>`);
+                    isProcessing = false; // ปลดล็อค
                 }, 400);
                 return;
             }
 
             const isFeedbackKeyword = lowerText.includes("ຄວາມຄິດເຫັນ") || lowerText.includes("ຜູ້ພັດທະນາ") || lowerText.includes("feedback") || lowerText.includes("ສະເໜີ");
             if (isFeedbackActive || isFeedbackKeyword) {
-                await sendFeedbackToFirebase(typedText); input.value = ''; updateCharCount(); return;
+                await sendFeedbackToFirebase(typedText); input.value = ''; updateCharCount(); isProcessing = false; return;
             }
 
-            if (!checkRateLimit()) return;
+            if (!checkRateLimit()) {isProcessing = false; return;}
             haptic('light'); playSound('send'); appendUserMessage(typedText); input.value = ''; updateCharCount(); showTypingIndicator();
             const emotion = detectEmotion(typedText);
 
@@ -1223,13 +1241,13 @@ ${faqContext}
                 removeTypingIndicator(); playSound('receive'); haptic('success');
 
                 if (emotion === 'angry') {
-                    appendAIMessage(`<div class="p-1 leading-relaxed"><p class="text-slate-200 text-xs sm:text-sm mb-2">💡 <b>ທາງຮ້ານຂໍຮັບປະກັນວ່າຈະບໍ່ປ່ອຍຜ່ານເລື່ອງນີ້ໄປງ່າຍໆ.</b> ຂໍສົ່ງຕໍ່ໃຫ້ <b>ຜູ້ຈັດການຮ້ານ</b> ຕິດຕໍ່ກັບທ່ານໂດຍກົງ.</p><button onclick="activateFeedbackPrompt()" class="w-full text-left bg-gradient-to-r from-pink-950/80 to-purple-950/80 hover:from-pink-900 hover:to-purple-900 text-pink-200 border border-pink-500/50 p-2.5 rounded-lg text-xs font-medium transition flex items-center gap-2 active:scale-95 shadow-md"><i class="fa-solid fa-paper-plane text-pink-400"></i><span>ພິມບັນຫາ ພ້ອມເບີໂທ</span></button></div>`); return;
+                    appendAIMessage(`<div class="p-1 leading-relaxed"><p class="text-slate-200 text-xs sm:text-sm mb-2">💡 <b>ທາງຮ້ານຂໍຮັບປະກັນວ່າຈະບໍ່ປ່ອຍຜ່ານເລື່ອງນີ້ໄປງ່າຍໆ.</b> ຂໍສົ່ງຕໍ່ໃຫ້ <b>ຜູ້ຈັດການຮ້ານ</b> ຕິດຕໍ່ກັບທ່ານໂດຍກົງ.</p><button onclick="activateFeedbackPrompt()" class="w-full text-left bg-gradient-to-r from-pink-950/80 to-purple-950/80 hover:from-pink-900 hover:to-purple-900 text-pink-200 border border-pink-500/50 p-2.5 rounded-lg text-xs font-medium transition flex items-center gap-2 active:scale-95 shadow-md"><i class="fa-solid fa-paper-plane text-pink-400"></i><span>ພິມບັນຫາ ພ້ອມເບີໂທ</span></button></div>`); isProcessing = false; return;
                 }
                 if (emotion === 'happy') {
-                    appendAIMessage(`<div class="p-1 leading-relaxed text-center"><div class="w-14 h-14 bg-gradient-to-br from-emerald-400 via-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg shadow-emerald-500/40 animate-pulse"><i class="fa-solid fa-face-laugh-beam text-white text-2xl"></i></div><p class="font-bold text-emerald-300 text-sm mb-2">ດີໃຈນຳຫຼາຍໆ! 🎉</p><p class="text-slate-200 text-xs sm:text-sm leading-relaxed">ຂອບໃຈສຳລັບຄຳດີໆ 💖</p></div>`); return;
+                    appendAIMessage(`<div class="p-1 leading-relaxed text-center"><div class="w-14 h-14 bg-gradient-to-br from-emerald-400 via-cyan-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg shadow-emerald-500/40 animate-pulse"><i class="fa-solid fa-face-laugh-beam text-white text-2xl"></i></div><p class="font-bold text-emerald-300 text-sm mb-2">ດີໃຈນຳຫຼາຍໆ! 🎉</p><p class="text-slate-200 text-xs sm:text-sm leading-relaxed">ຂອບໃຈສຳລັບຄຳດີໆ 💖</p></div>`); isProcessing = false; return;
                 }
                 if (emotion === 'sad') {
-                    appendAIMessage(`<div class="p-1 leading-relaxed text-center"><div class="w-14 h-14 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg shadow-purple-500/40 animate-pulse"><i class="fa-solid fa-hand-holding-heart text-white text-2xl"></i></div><p class="font-bold text-purple-300 text-sm mb-2">ຂ້ອຍຢູ່ນີ້ ພ້ອມຟັງ 💜</p><p class="text-slate-200 text-xs sm:text-sm mb-3 leading-relaxed">ທ່ານບໍ່ໄດ້ຢູ່ຄົນດຽວ 🥺</p><button onclick="activateFeedbackPrompt()" class="w-full bg-gradient-to-r from-indigo-950/80 to-purple-950/80 text-purple-200 border border-purple-500/50 p-3 rounded-xl text-xs font-medium flex items-center justify-center gap-2 active:scale-95"><i class="fa-solid fa-comment-dots text-purple-400"></i><span>ລະບາຍຄວາມຮູ້ສຶກ</span></button></div>`); return;
+                    appendAIMessage(`<div class="p-1 leading-relaxed text-center"><div class="w-14 h-14 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-lg shadow-purple-500/40 animate-pulse"><i class="fa-solid fa-hand-holding-heart text-white text-2xl"></i></div><p class="font-bold text-purple-300 text-sm mb-2">ຂ້ອຍຢູ່ນີ້ ພ້ອມຟັງ 💜</p><p class="text-slate-200 text-xs sm:text-sm mb-3 leading-relaxed">ທ່ານບໍ່ໄດ້ຢູ່ຄົນດຽວ 🥺</p><button onclick="activateFeedbackPrompt()" class="w-full bg-gradient-to-r from-indigo-950/80 to-purple-950/80 text-purple-200 border border-purple-500/50 p-3 rounded-xl text-xs font-medium flex items-center justify-center gap-2 active:scale-95"><i class="fa-solid fa-comment-dots text-purple-400"></i><span>ລະບາຍຄວາມຮູ້ສຶກ</span></button></div>`); isProcessing = false; return;
                 }
 
                 // NEUTRAL
@@ -1243,6 +1261,7 @@ ${faqContext}
                     if (ENABLE_STREAMING && formattedAnswer.length < 500) await typeMessage(fullHtml); else appendAIMessage(fullHtml);
                     incrementUsage(aiResult.bestMatch.id);
                     appendQuickReplies(['ລາຄາເທົ່າໃດ?', 'ໃຊ້ເວລາດົນບໍ?', 'ມີປະກັນບໍ?']);
+                    isProcessing = false; // ปลดล็อค
                 }
                 // 🌟 กรณีที่เจอ FAQ ใกล้เคียง -> ให้ SEA-LION ช่วยอ่านและสรุป
                 else if (aiResult.topSuggestions.length > 0) {
@@ -1265,10 +1284,12 @@ ${faqContext}
                         });
                         html += `</div>`; appendAIMessage(html);
                     }
+                    isProcessing = false; // ปลดล็อค
                 }
                 else {
                     await logUnansweredQuery(typedText, aiResult, emotion);
                     appendAIMessage(`<div class="text-slate-300"><p class="mb-2">⚠️ ຂໍອະໄພ, ບໍ່ພົບຂໍ້ມູນທີ່ກົງກັບ <b>"${escapeHtml(typedText)}"</b>.</p><p class="text-xs text-slate-400 mb-3">ຂໍ້ຄວາມຖືກສົ່ງໃຫ້ທີມງານແລ້ວ 🙏</p><button onclick="activateFeedbackPrompt()" class="text-xs bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 border border-pink-500/40 px-3 py-2 rounded-xl transition flex items-center gap-2 font-medium"><i class="fa-solid fa-paper-plane"></i> ຝາກຂໍ້ຄວາມ</button></div>`);
+                    isProcessing = false; // ปลดล็อค
                 }
             }, 500);
         };
@@ -1343,7 +1364,7 @@ ${faqContext}
             if (document.getElementById('typing-indicator')) return; // Prevent duplicate
             const chatBox = document.getElementById('chat-box');
             const div = document.createElement('div'); div.id = 'typing-indicator'; div.className = "flex items-start space-x-2 sm:space-x-3 msg-animate";
-            div.innerHTML = `<div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shrink-0 mt-1"><i class="fa-solid fa-robot animate-pulse"></i></div><div class="chat-bubble-ai rounded-2xl rounded-tl-none px-3 sm:px-4 py-2.5 sm:py-3 text-cyan-400 text-xs flex items-center space-x-1.5"><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce"></span><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce [animation-delay:0.2s]"></span><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce [animation-delay:0.4s]"></span><span class="text-slate-400 text-[10px] sm:text-[11px] ml-2">AI v5.1 ກຳລັງຄິດ...</span></div>`;
+            div.innerHTML = `<div class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shrink-0 mt-1"><i class="fa-solid fa-robot animate-pulse"></i></div><div class="chat-bubble-ai rounded-2xl rounded-tl-none px-3 sm:px-4 py-2.5 sm:py-3 text-cyan-400 text-xs flex items-center space-x-1.5"><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce"></span><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce [animation-delay:0.2s]"></span><span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce [animation-delay:0.4s]"></span><span class="text-slate-400 text-[10px] sm:text-[11px] ml-2">AI v5.2 ກຳລັງຄິດ...</span></div>`;
             chatBox.appendChild(div); scrollToBottomSmart();
         }
 
