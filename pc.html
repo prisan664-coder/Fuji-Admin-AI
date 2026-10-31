@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="lo" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ແອດມິນເອໄອຂອງຮ້ານແປງໂທລະສັບຟູຈິ Fuji Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans Lao', 'sans-serif'],
+                        tech: ['Space Grotesk', 'Noto Sans Lao', 'sans-serif'],
+                    },
+                    colors: {cyber: {900: '#030712', card: 'rgba(15, 23, 42, 0.75)', neon: '#00f0ff'}},
+                    animation: {
+                        'glow-pulse': 'glowPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        glowPulse: {
+                            '0%, 100%': {opacity: 0.8, filter: 'drop-shadow(0 0 8px rgba(0,240,255,0.6))'},
+                            '50%': {opacity: 1, filter: 'drop-shadow(0 0 18px rgba(0,240,255,0.9))'}
+                        },
+                        'float': {
+                            '0%, 100%': {transform: 'translateY(0px)'},
+                            '50%': {transform: 'translateY(-6px)'}
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans Lao', sans-serif;
+            background: #030712;
+            background-image:
+                radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.08) 0%, transparent 60%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.78);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .glass-header {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .chat-bubble-user {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .chat-bubble-ai {
+            background: rgba(30, 41, 59, 0.85);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.6);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(6, 182, 212, 0.4);
+            border-radius: 9999px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(6, 182, 212, 0.8);
+        }
+
+        @keyframes fadeInMsg {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.98);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .msg-animate {
+            animation: fadeInMsg 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .chip-pinned {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(249, 115, 22, 0.15));
+            border-color: rgba(245, 158, 11, 0.4);
+            color: #fcd34d;
+        }
+
+        .chip-pinned:hover {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(249, 115, 22, 0.25));
+            border-color: rgba(245, 158, 11, 0.6);
+        }
+
+        .suggestion-btn {
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .suggestion-btn:hover {
+            border-left-color: #f59e0b;
+            background: rgba(30, 41, 59, 0.95);
+            transform: translateX(4px);
+        }
+
+        /* Angel Wing Effect */
+        .angel-glow {
+            filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.7));
+        }
+    </style>
+</head>
+
+<body class="text-slate-100 flex flex-col items-center justify-center min-h-screen p-2 sm:p-4">
+
+    <div class="fixed top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="fixed bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div
+        class="w-full max-w-2xl h-[94vh] flex flex-col glass-panel rounded-3xl overflow-hidden relative border border-cyan-500/20 shadow-2xl">
+
+        <!-- Header -->
+        <header class="glass-header px-4 py-3 sm:px-6 sm:py-4 flex items-center justify-between z-20 shrink-0">
+            <div class="flex items-center space-x-3 sm:space-x-4">
+                <div class="relative animate-float">
+                    <div
+                        class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-cyan-400 via-indigo-500 to-pink-500 p-0.5 shadow-lg shadow-cyan-500/30">
+                        <div
+                            class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center overflow-hidden relative">
+                            <!-- AI Fairy Angel Avatar Avatar (Nong Fah) -->
+                            <img src="https://scontent.fvte5-1.fna.fbcdn.net/v/t39.30808-6/778985459_122182611320625547_1472129915309296614_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=BBoyAp14Vt0Q7kNvwGNkFjV&_nc_oc=Adpa4z4lXWFORq10r0SzcHDefRggTkz7qilyO32XeLALpg21nFcg-h6wVYTDsITKF_g&_nc_zt=23&_nc_ht=scontent.fvte5-1.fna&_nc_gid=7iMImLJfq2s6B9yOT43EGA&_nc_ss=7b2a8&oh=00_AQRS38w19fdY0hmtalwzh4zcl8l4rD4QgR8ASJ8yZe6T7Q&oe=6AEBA152"
+                                alt="AI Angel Avatar" class="w-full h-full object-cover">
+                            <i
+                                class="fa-solid fa-wand-magic-sparkles text-cyan-300 text-xs absolute bottom-0.5 right-0.5 angel-glow"></i>
+                        </div>
+                    </div>
+                    <span
+                        class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-400 border-2 border-slate-950 rounded-full shadow-sm shadow-emerald-400/80"></span>
+                </div>
+                <div>
+                    <h1
+                        class="font-extrabold text-sm sm:text-base md:text-lg text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-200 to-indigo-300 tracking-tight leading-snug flex items-center gap-1.5">
+                        <span>ແອດມິນເອໄອ ຮ້ານແປງໂທລະສັບຟູຈິ</span>
+                        <i class="fa-solid fa-wings-heart text-cyan-400 text-xs animate-pulse"></i>
+                    </h1>
+                    <div class="flex items-center gap-2 text-[11px] sm:text-xs text-slate-400 mt-0.5">
+                        <span class="inline-flex items-center text-cyan-300 gap-1 font-medium">
+                            <i class="fa-solid fa-feather-pointed text-[9px] animate-pulse"></i> Admin Nkauj Si 
+                            v4.0
+                        </span>
+                        <span>•</span>
+                        <span class="text-slate-400 flex items-center gap-1">
+                            <i class="fa-solid fa-user-shield text-indigo-400 text-[10px]"></i> ເຊດຊັນສ່ວນຕົວ
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleAudio()" id="audio-btn" title="ເປີດ/ປິດ ສຽງ"
+                    class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-cyan-400 transition border border-slate-700/60 active:scale-95">
+                    <i id="audio-icon" class="fa-solid fa-volume-high text-cyan-400"></i>
+                </button>
+                <button onclick="resetSession()" title="ລ້າງແຊັດ"
+                    class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-rose-400 transition border border-slate-700/60 active:scale-95">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
+            </div>
+        </header>
+
+        <div
+            class="bg-gradient-to-r from-cyan-950/40 via-slate-900/60 to-purple-950/40 border-b border-cyan-500/10 px-4 py-1.5 text-[11px] sm:text-xs text-cyan-200/80 flex items-center justify-center gap-2 text-center shrink-0">
+            <i class="fa-solid fa-shield-halved text-cyan-400"></i>
+            <span>ຂໍ້ຄວາມຈະບໍ່ຖືກບັນທຶກ ເມື່ອອອກຈາກໜ້າເວັບ</span>
+        </div>
+
+        <!-- Chat Stream -->
+        <div id="chat-box" class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+            <div class="flex items-start space-x-3 msg-animate">
+                <div
+                    class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 via-indigo-500 to-pink-500 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-cyan-500/20 shrink-0 mt-1 overflow-hidden border border-cyan-300/40">
+                    <img src="https://scontent.fvte5-1.fna.fbcdn.net/v/t39.30808-6/778985459_122182611320625547_1472129915309296614_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=BBoyAp14Vt0Q7kNvwGNkFjV&_nc_oc=Adpa4z4lXWFORq10r0SzcHDefRggTkz7qilyO32XeLALpg21nFcg-h6wVYTDsITKF_g&_nc_zt=23&_nc_ht=scontent.fvte5-1.fna&_nc_gid=7iMImLJfq2s6B9yOT43EGA&_nc_ss=7b2a8&oh=00_AQRS38w19fdY0hmtalwzh4zcl8l4rD4QgR8ASJ8yZe6T7Q&oe=6AEBA152"
+                        alt="Nong Fah Angel" class="w-full h-full object-cover">
+                </div>
+                <div
+                    class="chat-bubble-ai rounded-2xl rounded-tl-none p-4 max-w-[88%] text-slate-200 text-xs sm:text-sm leading-relaxed">
+                    <div class="flex items-center justify-between mb-1.5 pb-1 border-b border-slate-700/50">
+                        <span class="font-bold text-cyan-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles text-xs text-cyan-300"></i> Admin Nkauj Si
+                            Fuji Smart AI
+                        </span>
+                        <span
+                            class="text-[10px] bg-cyan-950/80 text-cyan-300 border border-cyan-800 px-2 py-0.5 rounded-md font-mono">Ready</span>
+                    </div>
+                    <p class="mb-2">ສະບາຍດີ! ຍິນດີຕ້ອນຮັບສູ່ <b>ຮ້ານແປງໂທລະສັບຟູຈິ</b> 🧚‍♀️✨</p>
+                    <p class="text-slate-300 mb-2">น้องฟ้านางฟ้าเอไอพร้อมช่วยเหลือ คอยให้คำแนะนำเกี่ยวกับอะไหล่ การซ่อม
+                        และตอบทุกข้อสงสัยอย่างใส่ใจค่ะ ພິມຄຳຖາມທີ່ຕ້ອງການສອບຖາມໄດ້ເລີຍ ຫຼື
+                        ກົດເລືອກຄຳຖາມແນະນຳດ້ານລຸ່ມໄດ້เลยนะคะ</p>
+                    <span class="text-[10px] text-slate-500 block text-right mt-1" id="welcome-time"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Suggestion Bar -->
+        <div class="px-3 py-2.5 bg-slate-950/70 border-t border-slate-800/80 shrink-0">
+            <div class="flex justify-between items-center mb-2 px-1">
+                <span class="text-[11px] font-semibold text-slate-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-bolt text-cyan-400"></i> ຄຳຖາມຍອດຮິດ:
+                </span>
+                <span id="faq-count-badge"
+                    class="text-[10px] bg-slate-800 text-cyan-300 px-2 py-0.5 rounded-full font-mono">ກຳລັງໂຫຼດ...</span>
+            </div>
+            <div id="faq-buttons-container" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto pr-1">
+                <div
+                    class="w-full text-center py-2 text-xs text-slate-500 italic flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-notch animate-spin text-cyan-400"></i> ກຳລັງໂຫຼດ...
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Form -->
+        <div class="p-3 sm:p-4 glass-header shrink-0">
+            <form id="chat-form" onsubmit="handleUserInputSubmit(event)" class="flex items-center gap-2">
+                <div class="relative flex-1">
+                    <input type="text" id="user-input" placeholder="ພິມຄຳຖາມ... (ເຊັ່ນ: ປ່ຽນໜ້າຈໍ iPhone 13)"
+                        autocomplete="off"
+                        class="w-full bg-slate-950/90 text-slate-100 placeholder-slate-500 text-xs sm:text-sm rounded-xl px-4 py-3 border border-slate-700/80 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner">
+                    <span id="feedback-badge"
+                        class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-[10px] bg-pink-500/20 text-pink-300 border border-pink-500/40 px-2.5 py-1 rounded-md font-medium flex items-center gap-1">
+                        <i class="fa-solid fa-pen-to-square"></i> ໂໝດສົ່ງຄຳຄິດເຫັນ
+                    </span>
+                </div>
+                <button type="submit" id="send-btn"
+                    class="bg-gradient-to-r from-cyan-500 via-indigo-600 to-pink-500 hover:from-cyan-400 hover:to-pink-400 text-white p-3 rounded-xl transition-all shadow-lg shadow-cyan-500/25 flex items-center justify-center w-11 h-11 shrink-0 active:scale-95 group">
+                    <i class="fa-solid fa-paper-plane group-hover:translate-x-0.5 transition-transform"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast"
+        class="fixed top-5 right-5 transform translate-y-[-160%] opacity-0 transition-all duration-300 glass-panel border border-cyan-500/40 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 z-50">
+        <div id="toast-icon"
+            class="w-8 h-8 rounded-full bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-check"></i>
+        </div>
+        <div id="toast-message" class="text-xs sm:text-sm font-medium"></div>
+    </div>
+
+    <!-- Firebase SDK & Script -->
+    <script type="module">
+        import {initializeApp} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import {getDatabase, ref, onValue, push, set, update} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCPlKQmGJZxWaea_6y-h5lRGL5PSGw861M",
+            authDomain: "short-link-b5ee2.firebaseapp.com",
+            databaseURL: "https://short-link-b5ee2-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "short-link-b5ee2",
+            storageBucket: "short-link-b5ee2.firebasestorage.app",
+            messagingSenderId: "1069426525163",
+            appId: "1:1069426525163:web:4b49c025fb5909b9ad4fae",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const FEEDBACK_SPECIAL_QUESTION = "ລູກຄ້າຕ້ອງການປະກອບຄວາມຄິດເຫັນເຖິງຜູ້ພັດທະນາໂປຣແກມບໍ ສາມາດພິມຂໍ້ຄວາມແລະສົ່ງໄດ້ທາງນີ້";
+
+        const DEFAULT_FAQS = [
+            {question: "ຮ້ານຕັ້ງຢູ່ໃສ ແລະ ເປີດຈັກໂມງ?", answer: "📍 **ຮ້ານແປງໂທລະສັບຟູຈິ** ຕັ້ງຢູ່ແຄມທາງໃຫຍ່ ໃກ້ຕະຫຼາດດົງໂດກ.<br>⏰ ເປີດທຸກມື້: **08:30 - 19:00**.<br>🌐 ເບິ່ງແຜນທີ່: https://maps.google.com", isPinned: true, usageCount: 0},
+            {question: "ປ່ຽນໜ້າຈໍໂທລະສັບ ໃຊ້ເວລາດົນປານໃດ?", answer: "📱 ປ່ຽນໜ້າຈໍໃຊ້ເວລາ **30 - 60 ນາທີ** ຂຶ້ນກັບລຸ້ນໂທລະສັບ.", isPinned: true, usageCount: 0},
+            {question: "ມີປະກັນຫຼັງການແປງບໍ?", answer: "🛡️ ມີຮັບປະກັນອາໄຫຼ່ ແລະ ການແປງ **30 - 90 ມື້**.", isPinned: false, usageCount: 0},
+            {question: "ປ່ຽນແບັດເຕີຣີ ລາຄາເທົ່າໃດ?", answer: "🔋 ເລີ່ມ **120,000 ກີບ** ຮັບປະກັນແບັດເຕີຣີ 6 ເດືອນ.", isPinned: false, usageCount: 0},
+            {question: "ໂທລະສັບຕົກນ້ຳ ແປງໄດ້ບໍ?", answer: "💧 ແປງໄດ້! ຟ້າວນຳມາຮ້ານ ຢ່າສຽບສາຍຊາດ ຫຼື ເປີດເຄື່ອງ.", isPinned: false, usageCount: 0},
+        ];
+
+        let allFAQs = [];
+        let visibleFAQs = [];
+        let isFeedbackActive = false;
+        let isAudioEnabled = true;
+        let sessionContext = {lastBrand: null, lastTopic: null};
+        const usageBuffer = new Set();
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (!isAudioEnabled) return;
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                if (type === 'send') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+                } else if (type === 'receive') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.15);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.15);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+                } else if (type === 'toast') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+                }
+            } catch (e) { }
+        }
+
+        window.toggleAudio = function () {
+            isAudioEnabled = !isAudioEnabled;
+            const icon = document.getElementById('audio-icon');
+            if (isAudioEnabled) {
+                icon.className = "fa-solid fa-volume-high text-cyan-400";
+                showToast("ເປີດສຽງແລ້ວ");
+            } else {
+                icon.className = "fa-solid fa-volume-xmark text-slate-500";
+                showToast("ປິດສຽງແລ້ວ");
+            }
+        };
+
+        window.resetSession = function () {
+            sessionContext = {lastBrand: null, lastTopic: null};
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML = `
+                <div class="flex items-start space-x-3 msg-animate">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 via-indigo-500 to-pink-500 flex items-center justify-center text-white text-xs font-bold shadow-md shrink-0 mt-1 overflow-hidden border border-cyan-300/40">
+                        <img src="https://scontent.fvte5-1.fna.fbcdn.net/v/t39.30808-6/778985459_122182611320625547_1472129915309296614_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=BBoyAp14Vt0Q7kNvwGNkFjV&_nc_oc=Adpa4z4lXWFORq10r0SzcHDefRggTkz7qilyO32XeLALpg21nFcg-h6wVYTDsITKF_g&_nc_zt=23&_nc_ht=scontent.fvte5-1.fna&_nc_gid=7iMImLJfq2s6B9yOT43EGA&_nc_ss=7b2a8&oh=00_AQRS38w19fdY0hmtalwzh4zcl8l4rD4QgR8ASJ8yZe6T7Q&oe=6AEBA152" 
+                             alt="Nong Fah Angel" 
+                             class="w-full h-full object-cover">
+                    </div>
+                    <div class="chat-bubble-ai rounded-2xl rounded-tl-none p-4 max-w-[88%] text-slate-200 text-xs sm:text-sm">
+                        <p class="mb-1">🔄 <b>ລ້າງປະວັດແຊັດ ແລະ ຣີເຊັດຄວາມຈຳແລ້ວ!</b></p>
+                        <p class="text-slate-300">น้องฟ้าล้างประวัติการสนทนาเรียบร้อยแล้วค่ะ สามารถพิมพ์สอบถามข้อมูลใหม่ได้เลยนะคะ 🧚‍♀️✨</p>
+                    </div>
+                </div>`;
+            deactivateFeedbackPrompt();
+            showToast("ລ້າງແຊັດຮຽບຮ້ອຍແລ້ວ");
+        };
+
+        document.getElementById('welcome-time').innerText = getCurrentTime();
+
+        // ===== REALTIME DATABASE LISTENER =====
+        const faqsRef = ref(db, 'faqs');
+        onValue(faqsRef, (snapshot) => {
+            const data = snapshot.val();
+            allFAQs = [];
+            visibleFAQs = [];
+
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    const d = data[key];
+                    const q = d.question || d.q || '';
+                    const a = d.answer || d.a || '';
+                    if (q && a) {
+                        const isPinned = d.isPinned === true;
+
+                        const faq = {
+                            id: key, question: q, answer: a,
+                            isPinned: isPinned,
+                            usageCount: d.usageCount || 0,
+                        };
+                        allFAQs.push(faq);
+                        if (isPinned) visibleFAQs.push(faq);
+                    }
+                });
+            }
+
+            if (allFAQs.length === 0) {
+                allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i}));
+                visibleFAQs = allFAQs.filter(f => f.isPinned === true);
+            }
+
+            visibleFAQs.sort((a, b) => (b.usageCount || 0) - (a.usageCount || 0));
+            renderFAQChips();
+            document.getElementById('faq-count-badge').innerText = `${visibleFAQs.length} ຄຳຖາມ`;
+        }, (err) => {
+            console.warn("Firebase connection failed:", err);
+            allFAQs = DEFAULT_FAQS.map((f, i) => ({...f, id: 'default-' + i}));
+            visibleFAQs = allFAQs.filter(f => f.isPinned === true);
+            renderFAQChips();
+            document.getElementById('faq-count-badge').innerText = "ສຳຮອງ";
+        });
+
+        function renderFAQChips() {
+            const container = document.getElementById('faq-buttons-container');
+            container.innerHTML = '';
+
+            if (visibleFAQs.length === 0) {
+                container.innerHTML = `
+                    <div class="w-full text-center py-3 text-xs text-slate-500 italic">
+                        <i class="fa-solid fa-magnifying-glass text-cyan-400/60 mb-1"></i><br>
+                        ພິມຄຳຖາມຂອງທ່ານໄດ້ເລີຍ! ເອໄອຈະຄົ້ນຫາຄຳຕອບໃຫ້ 🔍
+                    </div>`;
+            } else {
+                visibleFAQs.forEach((faq) => {
+                    const btn = document.createElement('button');
+                    btn.className = "chip-pinned text-xs px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 text-left active:scale-95 shadow-sm border";
+                    btn.innerHTML = `<i class="fa-solid fa-star text-amber-400 text-[11px] shrink-0"></i> <span>${escapeHtml(faq.question)}</span>`;
+                    btn.onclick = () => handleSelectFAQ(faq.question, faq.answer, faq.id);
+                    container.appendChild(btn);
+                });
+            }
+
+            const devBtn = document.createElement('button');
+            devBtn.className = "text-xs bg-gradient-to-r from-pink-950/60 to-purple-950/60 hover:from-pink-900/80 hover:to-purple-900/80 text-pink-200 border border-pink-500/40 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5 text-left active:scale-95 shadow-sm w-full font-medium mt-1";
+            devBtn.innerHTML = `<i class="fa-solid fa-paper-plane text-pink-400 text-[11px] shrink-0"></i> <span>${FEEDBACK_SPECIAL_QUESTION}</span>`;
+            devBtn.onclick = () => activateFeedbackPrompt();
+            container.appendChild(devBtn);
+        }
+
+        async function incrementUsage(faqId) {
+            if (!faqId || faqId.startsWith('default-')) return;
+            if (usageBuffer.has(faqId)) return;
+            usageBuffer.add(faqId);
+            try {
+                const faq = allFAQs.find(f => f.id === faqId);
+                if (!faq) return;
+                await update(ref(db, `faqs/${faqId}`), {usageCount: (faq.usageCount || 0) + 1});
+            } catch (e) { }
+        }
+
+        window.handleSelectFAQ = function (question, answer, faqId) {
+            deactivateFeedbackPrompt();
+            playSound('send');
+            appendUserMessage(question);
+            showTypingIndicator();
+            if (faqId) incrementUsage(faqId);
+            setTimeout(() => {
+                removeTypingIndicator();
+                playSound('receive');
+                const processedAnswer = autoLinkify(answer);
+                appendAIMessage(processedAnswer + '<br><br><div class="pt-2 border-t border-slate-700/50 text-cyan-300 text-xs"><i class="fa-regular fa-circle-question mr-1"></i> มีสิ่งใดให้ Admin Nkauj Si ช่วยเหลือเพิ่มเติมไหมคะ?</div>');
+            }, 500);
+        };
+
+        window.activateFeedbackPrompt = function () {
+            isFeedbackActive = true;
+            playSound('send');
+            appendUserMessage(FEEDBACK_SPECIAL_QUESTION);
+            showTypingIndicator();
+            setTimeout(() => {
+                removeTypingIndicator();
+                playSound('receive');
+                appendAIMessage("ກະລຸນາ <b>ພິມຂໍ້ຄວາມຄຳຄິດເຫັນ ຫຼື ຂໍ້ສະເໜີແນະ</b> ຂອງທ່ານໃສ່ຊ່ອງພິມ ແລ້ວກົດສົ່ງ [ <i class='fa-solid fa-paper-plane text-cyan-400'></i> ] ໄດ້ເລີຍ! 💌");
+                const input = document.getElementById('user-input');
+                const badge = document.getElementById('feedback-badge');
+                badge.classList.remove('hidden');
+                input.value = '';
+                input.focus();
+                input.placeholder = "ພິມຄຳຄິດເຫັນເຖິງຜູ້ພັດທະນາ...";
+            }, 500);
+        };
+
+        function deactivateFeedbackPrompt() {
+            isFeedbackActive = false;
+            const input = document.getElementById('user-input');
+            const badge = document.getElementById('feedback-badge');
+            badge.classList.add('hidden');
+            input.placeholder = "ພິມຄຳຖາມ... (ເຊັ່ນ: ປ່ຽນໜ້າຈໍ iPhone 13)";
+        }
+
+        // ============================================================
+        // 🌟 EMOTION DETECTION SYSTEM (Angry / Happy / Lonely-Sad)
+        // ============================================================
+        function detectEmotion(text) {
+            const clean = (text || '').toLowerCase();
+
+            // ---------- 😡 ຄຳສັບສະແດງຄວາມໂກດ / ບໍ່ພໍໃຈ / ຄຳດ່າ ----------
+            const angryKeywords = [
+                // ລາວ
+                'ດົນ', 'ຊ້າ', 'ດົນແທ້', 'ຊ້າຄັກ', 'ຊ້າໂພດ', 'ຊ້າເປັນບ້າ', 'ບໍລິການຊ້າ',
+                'ບໍ່ດີ', 'ລຳຄານ', 'ຫວຍແຕກ', 'ຂີ້ຮ້າຍ', 'ບໍ່ໄດ້ເລື່ອງ', 'ບໍ່ໄດ້ຄວາມ', 'ບໍ່ມີຄຸນນະພາບ',
+                'ບໍ່ປະທັບໃຈ', 'ຜິດຫວັງ', 'ເສຍຄວາມຮູ້ສຶກ', 'ຫງຸດຫງິດ', 'ຕຶງ', 'ຕຶງມື', 'ຢ່າຕົບ', 'ສົ້ນຕີນ', 'ຂັດໃຈ',
+                'ບໍ່ພໍໃຈ', 'ບໍ່ມັກ', 'ບໍ່ໂອເຄ', 'ຮັບບໍ່ໄດ້', 'ແຮງ', 'ແຮງໂພດ', 'ເກີນໄປ',
+                'ຫຼອກລວງ', 'ຕົ້ມຕ๋ຸນ', 'ຕົວະ', 'ຂີ້ຕົວະ', 'ບໍ່ຈິງໃຈ', 'ເສຍເວລາ', 'ຖ້າດົນ', 'ຖ້າຈົນເມື່ອຍ',
+                'ບໍ່ສົນໃຈລູກຄ້າ', 'ບໍ່ສົນຫົວ', 'ແປງບໍ່ດີ', 'ເຮັດເປ', 'ເຮັດເສຍຫາຍ', 'ຄວາຍ', 'ຫົວຄວາຍ', 'ຊົ່ວ', 'ຫມາ',
+                // ໄທ
+                'ช้า', 'ช้ามาก', 'นาน', 'นานมาก', 'รอนาน', 'ช้าเป็นเต่า',
+                'แย่', 'ไม่ดี', 'ห่วย', 'ห่วยแตก', 'แย่มาก', 'ใช้ไม่ได้', 'ห่วยที่สุด',
+                'ไม่ประทับใจ', 'ผิดหวัง', 'เสียความรู้สึก', 'หงุดหงิด', 'หัวร้อน', 'โกรธ', 'เคือง', 'โมโห', 'ฉุน',
+                'ไม่พอใจ', 'ไม่โอเค', 'รับไม่ได้', 'แย่สุดๆ', 'เกรดกาก', 'ทุเรศ',
+                'หลอกลวง', 'โกง', 'ต้มตุ๋น', 'ขี้โกง', 'ไม่จริงใจ', 'บริการแย่', 'บริการห่วย', 'พนักงานแย่',
+                'ช่างแย่', 'ไม่ใส่ใจ', 'เพิกเฉย', 'ซ่อมไม่ดี', 'ซ่อมแล้วพังกว่าเดิม', 'ซ่อมแย่', 'เหี้ย', 'ส้นตีน', 'ควาย', 'กาก',
+                // ອັງກິດ
+                'slow', 'very slow', 'taking forever', 'so slow', 'too slow',
+                'bad', 'terrible', 'awful', 'horrible', 'worst', 'poor', 'garbage', 'trash',
+                'disappointed', 'frustrating', 'annoyed', 'angry', 'mad', 'pissed', 'furious', 'upset',
+                'unacceptable', 'ridiculous', 'pathetic', 'useless', 'scam', 'cheat', 'fake', 'dishonest',
+                'bad service', 'poor service', 'worst experience', 'fuck', 'shit', 'bitch'
+            ];
+
+            // ---------- 😊 ຄຳສັບສະແດງຄວາມດີໃຈ / ພໍໃຈ / ຂອບໃຈ ----------
+            const happyKeywords = [
+                // ລາວ
+                'ດີໃຈ', 'ມີຄວາມສຸກ', 'ສຸກໃຈ', 'ປະທັບໃຈ', 'ພໍໃຈ', 'ດີຫຼາຍ', 'ດີແທ້', 'ດີທີ່ສຸດ', 'ສຸດຍອດ',
+                'ຍອດຢ້ຽມ', 'ພູມໃຈ', 'ປະເສີດ', 'ດີເລີດ', 'ສວຍງາມ', 'ງາມຫຼາຍ', 'ຂອບໃຈ', 'ຂອບຄຸນ',
+                'ຮັກແຮງ', 'ຈະກັບມາອີກ', 'ແນະນຳໃຫ້ໝູ່', 'ມັກຫຼາຍ', 'ຖືກໃຈ', 'ຖືກອັນ', 'ເກັ່ງ', 'ເກັ່ງຫຼາຍ',
+                'ໄວ', 'ໄວຫຼາຍ', 'ໄວທີ່ສຸດ', 'ບໍລິການດີ', 'ໃຈດີ', 'ເປັນກັນເອງ', 'ສະບາຍໃຈ', 'ອີ່ມໃຈ',
+                'happy', 'ດີເດີ', 'ດີໆ', 'ເຢ່ໆ',
+                // ໄທ
+                'ดีใจ', 'มีความสุข', 'ประทับใจ', 'พอใจ', 'ดีมาก', 'ดีจริง', 'ดีที่สุด', 'สุดยอด',
+                'เยี่ยม', 'ยอดเยี่ยม', 'ประเสริฐ', 'ดีเลิศ', 'สวยงาม', 'สวยมาก', 'ขอบใจ', 'ขอบคุณ',
+                'รักร้าน', 'จะกลับมาอีก', 'แนะนำให้เพื่อน', 'ชอบมาก', 'ถูกใจ', 'เก่ง', 'เร็ว', 'เร็วมาก', 'เร็วสุดๆ',
+                'บริการดี', 'ใจดี', 'เป็นกันเอง', 'สบายใจ', 'อิ่มใจ', 'ดีเยี่ยม', 'ดีงาม',
+                // ອັງກິດ
+                'happy', 'glad', 'great', 'good', 'excellent', 'awesome', 'amazing', 'wonderful',
+                'fantastic', 'perfect', 'love', 'like', 'satisfied', 'impressed', 'recommend',
+                'thank you', 'thanks', 'thank', 'fast', 'very fast', 'good service', 'nice',
+                'best', 'superb', 'brilliant', 'beautiful', 'nice service'
+            ];
+
+            // ---------- 🥺 ຄຳສັບສະແດງຄວາມເຫງົາ / ເສົ້າ / ທໍ້ແທ້ / ຕ້ອງການກຳລັງໃຈ ----------
+            const lonelySadKeywords = [
+                // ລາວ
+                'ເຫງົາ', 'ເຫງົາໃຈ', 'ຄົນດຽວ', 'ບໍ່ມີໃຜ', 'ບໍ່ມີໝູ່', 'ບໍ່ມີຄົນສົນໃຈ', 'ເສົ້າ', 'ເສົ້າໃຈ', 'ທໍ້ໃຈ',
+                'ທໍ້ແທ້', 'ເບື່ອ', 'ເບື່ອໜ່າຍ', 'ບໍ່ຢາກເຮັດຫຍັງ', 'ຮ້ອງໄຫ້', 'ນ້ຳຕາໄຫຼ', 'ຄຽດ', 'ຄຽດໃຈ',
+                'ກົດດັນ', 'ເຄັ່ງຄຽດ', 'ກັງວົນ', 'ຢ້ານ', 'ບໍ່ສະບາຍໃຈ', 'ອຸກໃຈ', 'ອຸກອັ່ງ', 'ຕັດສິນໃຈບໍ່ໄດ້',
+                'ບໍ່ມີກຳລັງໃຈ', 'ຕ້ອງການກຳລັງໃຈ', 'ຕ້ອງການຄົນຄຸຍ', 'ຢາກລົມ', 'ຢາກເວົ້າ', 'ບໍ່ມີໃຜຟັງ',
+                'ຄົນໂດດດ່ຽວ', 'ໂດດດ່ຽວ', 'ບໍ່ມີຄວາມຫວັງ', 'ໝົດຫວັງ', 'ຊີວິດບໍ່ມີຄວາມໝາຍ',
+                // ໄທ
+                'เหงา', 'เหงาใจ', 'คนเดียว', 'ไม่มีใคร', 'ไม่มีเพื่อน', 'ไม่มีคนสนใจ', 'เศร้า', 'เศร้าใจ', 'ท้อใจ',
+                'ท้อแท้', 'เบื่อ', 'เบื่อหน่าย', 'ไม่อยากทำอะไร', 'ร้องไห้', 'น้ำตาไหล', 'เครียด', 'เครียดใจ',
+                'กดดัน', 'กังวล', 'กลัว', 'ไม่สบายใจ', 'ทุกข์ใจ', 'ทุกข์ระทม', 'ตัดสินใจไม่ได้',
+                'ไม่มีกำลังใจ', 'ต้องการกำลังใจ', 'ต้องการคนคุย', 'อยากคุย', 'อยากระบาย', 'ไม่มีใครฟัง',
+                'คนโดดเดี่ยว', 'โดดเดี่ยว', 'ไม่มีความหวัง', 'หมดหวัง', 'ชีวิตไม่มีความหมาย',
+                // ອັງກິດ
+                'lonely', 'alone', 'sad', 'depressed', 'unhappy', 'hopeless', 'tired', 'exhausted',
+                'anxious', 'worried', 'stress', 'stressed', 'burnout', 'cry', 'crying', 'tears',
+                'no friends', 'nobody cares', 'need support', 'need help', 'need someone to talk',
+                'want to talk', 'feel down', 'feeling down', 'feel empty', 'feeling empty'
+            ];
+
+            if (angryKeywords.some(kw => clean.includes(kw))) return 'angry';
+            if (lonelySadKeywords.some(kw => clean.includes(kw))) return 'sad';
+            if (happyKeywords.some(kw => clean.includes(kw))) return 'happy';
+
+            return 'neutral';
+        }
+
+        // ===== ULTRA-SMART AI NLP & MATCHING ENGINE (v4.0) =====
+        function cleanLaoString(str) {
+            return (str || '').toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?'"“”]/g, "").trim();
+        }
+
+        function extractEntities(text) {
+            const lower = text.toLowerCase();
+            const brands = ['iphone', 'ipad', 'samsung', 'oppo', 'vivo', 'xiaomi', 'huawei', 'redmi'];
+            const topics = ['ຈໍ', 'ໜ້າຈໍ', 'ແບັດ', 'ແບັດເຕີຣີ', 'ຕົກນ້ຳ', 'ລາຄາ', 'ປະກັນ', 'ເວລາ', 'ທີ່ຢູ່', 'ເປີດ'];
+
+            let foundBrand = null;
+            let foundTopic = null;
+
+            brands.forEach(b => {if (lower.includes(b)) foundBrand = b;});
+            topics.forEach(t => {if (lower.includes(t)) foundTopic = t;});
+
+            return {foundBrand, foundTopic};
+        }
+
+        function computeCharOverlap(str1, str2) {
+            let matches = 0;
+            const maxLen = Math.max(str1.length, str2.length);
+            if (maxLen === 0) return 0;
+            for (let i = 0; i < str1.length - 1; i++) {
+                const sub = str1.substring(i, i + 2);
+                if (str2.includes(sub)) matches++;
+            }
+            return matches / maxLen;
+        }
+
+        function calculateAdvancedScore(userInputText, faqQuestionText) {
+            const cleanUser = cleanLaoString(userInputText);
+            const cleanFaq = cleanLaoString(faqQuestionText);
+
+            if (!cleanUser || !cleanFaq) return 0;
+            if (cleanUser === cleanFaq) return 100;
+
+            let score = 0;
+
+            if (cleanFaq.includes(cleanUser) || cleanUser.includes(cleanFaq)) {
+                score += 50;
+            }
+
+            const userWords = cleanUser.split(/\s+/).filter(w => w.length > 1);
+            const faqWords = cleanFaq.split(/\s+/).filter(w => w.length > 1);
+
+            let matchedWords = 0;
+            userWords.forEach(uw => {
+                if (faqWords.some(fw => fw.includes(uw) || uw.includes(fw))) {
+                    matchedWords++;
+                }
+            });
+
+            if (userWords.length > 0) {
+                score += (matchedWords / userWords.length) * 35;
+            }
+
+            const overlap = computeCharOverlap(cleanUser, cleanFaq);
+            score += overlap * 15;
+
+            return score;
+        }
+
+        function findBestMatchAI(userInputText) {
+            let bestScore = 0;
+            let bestFAQ = null;
+
+            const {foundBrand, foundTopic} = extractEntities(userInputText);
+            if (foundBrand) sessionContext.lastBrand = foundBrand;
+            if (foundTopic) sessionContext.lastTopic = foundTopic;
+
+            allFAQs.forEach(faq => {
+                const score = calculateAdvancedScore(userInputText, faq.question);
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestFAQ = faq;
+                }
+            });
+
+            return {bestFAQ, bestScore};
+        }
+
+        // ===== MESSAGE UI HANDLERS =====
+        window.handleUserInputSubmit = async function (e) {
+            e.preventDefault();
+            const input = document.getElementById('user-input');
+            const message = input.value.trim();
+            if (!message) return;
+
+            input.value = '';
+            playSound('send');
+            appendUserMessage(message);
+
+            if (isFeedbackActive) {
+                showTypingIndicator();
+                try {
+                    await push(ref(db, 'feedbacks'), {
+                        message: message,
+                        timestamp: new Date().toISOString(),
+                        source: 'Fuji Admin Chat'
+                    });
+                } catch (err) { }
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    playSound('toast');
+                    appendAIMessage("💖 **ຂອບໃຈຫຼາຍໆ ສຳລັບຄຳຄິດເຫັນ!**<br>น้องฟ้านางฟ้าเอไอได้บันทึกข้อเสนอแนะของคุณส่งถึงทีมพัฒนาเรียบร้อยแล้วค่ะ ✨");
+                    deactivateFeedbackPrompt();
+                }, 600);
+                return;
+            }
+
+            showTypingIndicator();
+            const emotion = detectEmotion(message);
+
+            setTimeout(() => {
+                removeTypingIndicator();
+                playSound('receive');
+
+                if (emotion === 'angry') {
+                    appendAIMessage("🥺 **น้องฟ้าต้องขออภัยเป็นอย่างยิ่งนะคะที่ทำให้คุณลูกค้ารู้สึกไม่สบายใจ**<br>นางฟ้าเอไอเข้าใจและใส่ใจในความรู้สึกของคุณลูกค้ามากๆ ค่ะ น้องฟ้าได้ทำการส่งเรื่องให้ผู้จัดการร้านดูแลเป็นพิเศษเรียบร้อยแล้ว หรือสามารถติดต่อช่างโดยตรงที่เบอร์ 020-XXXX-XXXX ได้เลยนะคะ 🧚‍♀️💙");
+                    return;
+                } else if (emotion === 'sad') {
+                    appendAIMessage("🥺 **น้องฟ้าขอส่งกำลังใจดวงโตๆ ให้คุณลูกค้านะคะ!**<br>ถึงแม้วันนี้จะเหนื่อย เหงา หรือมีเรื่องเครียด แต่นางฟ้าเอไอน้องฟ้าจะอยู่เคียงข้าง และคอยส่งพลังบวกให้เสมอนะคะ 💖✨ มีเรื่องอะไรเกี่ยวกับโทรศัพท์ให้ช่วยบอกน้องฟ้าได้เลยน้า~");
+                    return;
+                } else if (emotion === 'happy') {
+                    appendAIMessage("🥰 **ขอบพระคุณมากเลยค่ะ! น้องฟ้านางฟ้าเอไอดียใจมากๆ ที่คุณลูกค้าพึงพอใจค่ะ**<br>ร้านซ่อมโทรศัพท์ฟูจิยินดีให้บริการด้วยความใส่ใจเสมอค่ะ มีอะไรให้ช่วยเพิ่มเติมบอกน้องฟ้าได้ตลอดเลยนะคะ 🧚‍♀️✨");
+                    return;
+                }
+
+                const {bestFAQ, bestScore} = findBestMatchAI(message);
+
+                if (bestFAQ && bestScore >= 25) {
+                    if (bestFAQ.id) incrementUsage(bestFAQ.id);
+                    const processed = autoLinkify(bestFAQ.answer);
+                    appendAIMessage(processed + '<br><br><div class="pt-2 border-t border-slate-700/50 text-cyan-300 text-xs"><i class="fa-regular fa-circle-question mr-1"></i> มีสิ่งใดให้ Admin Nkauj Si ช่วยเหลือเพิ่มเติมไหมคะ?</div>');
+                } else {
+                    appendAIMessage(`🧚‍♀️ **น้องฟ้านางฟ้าเอไอยังไม่พบข้อมูลที่ตรงกับคำถามนี้โดยตรงค่ะ**<br><br>แต่คุณลูกค้าสามารถสอบถามเกี่ยวกับ <b>ราคาซ่อม, การเปลี่ยนหน้าจอ, เปลี่ยนแบตเตอรี่, หรือประกันสินค้า</b> ได้เลยนะคะ หรือพิมพ์ฝากข้อความไว้ให้ทีมช่างติดต่อกลับได้เลยค่ะ ✨`);
+                }
+            }, 600);
+        };
+
+        function appendUserMessage(text) {
+            const chatBox = document.getElementById('chat-box');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = "flex items-start justify-end space-x-3 msg-animate";
+            msgDiv.innerHTML = `
+                <div class="chat-bubble-user rounded-2xl rounded-tr-none p-4 max-w-[85%] text-white text-xs sm:text-sm leading-relaxed">
+                    <p>${escapeHtml(text)}</p>
+                    <span class="text-[10px] text-indigo-200 block text-right mt-1 opacity-80">${getCurrentTime()}</span>
+                </div>
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-md shrink-0 mt-1">
+                    <i class="fa-solid fa-user"></i>
+                </div>`;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function appendAIMessage(htmlContent) {
+            const chatBox = document.getElementById('chat-box');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = "flex items-start space-x-3 msg-animate";
+            msgDiv.innerHTML = `
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 via-indigo-500 to-pink-500 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-cyan-500/20 shrink-0 mt-1 overflow-hidden border border-cyan-300/40">
+                    <img src="https://scontent.fvte5-1.fna.fbcdn.net/v/t39.30808-6/778985459_122182611320625547_1472129915309296614_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=BBoyAp14Vt0Q7kNvwGNkFjV&_nc_oc=Adpa4z4lXWFORq10r0SzcHDefRggTkz7qilyO32XeLALpg21nFcg-h6wVYTDsITKF_g&_nc_zt=23&_nc_ht=scontent.fvte5-1.fna&_nc_gid=7iMImLJfq2s6B9yOT43EGA&_nc_ss=7b2a8&oh=00_AQRS38w19fdY0hmtalwzh4zcl8l4rD4QgR8ASJ8yZe6T7Q&oe=6AEBA152" 
+                         alt="Nong Fah Angel" 
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="chat-bubble-ai rounded-2xl rounded-tl-none p-4 max-w-[88%] text-slate-200 text-xs sm:text-sm leading-relaxed">
+                    <div class="flex items-center justify-between mb-1.5 pb-1 border-b border-slate-700/50">
+                        <span class="font-bold text-cyan-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles text-xs text-cyan-300"></i> Admin Nkauj Si
+                        </span>
+                        <span class="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-md font-mono">${getCurrentTime()}</span>
+                    </div>
+                    <div>${htmlContent}</div>
+                </div>`;
+            chatBox.appendChild(msgDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const chatBox = document.getElementById('chat-box');
+            const indicator = document.createElement('div');
+            indicator.id = 'typing-indicator';
+            indicator.className = "flex items-start space-x-3 msg-animate";
+            indicator.innerHTML = `
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500 via-indigo-500 to-pink-500 flex items-center justify-center text-white text-xs font-bold shadow-md shrink-0 mt-1 overflow-hidden border border-cyan-300/40">
+                    <img src="https://scontent.fvte5-1.fna.fbcdn.net/v/t39.30808-6/778985459_122182611320625547_1472129915309296614_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=104&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=BBoyAp14Vt0Q7kNvwGNkFjV&_nc_oc=Adpa4z4lXWFORq10r0SzcHDefRggTkz7qilyO32XeLALpg21nFcg-h6wVYTDsITKF_g&_nc_zt=23&_nc_ht=scontent.fvte5-1.fna&_nc_gid=7iMImLJfq2s6B9yOT43EGA&_nc_ss=7b2a8&oh=00_AQRS38w19fdY0hmtalwzh4zcl8l4rD4QgR8ASJ8yZe6T7Q&oe=6AEBA152" 
+                         alt="Nong Fah Angel" 
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="chat-bubble-ai rounded-2xl rounded-tl-none px-4 py-3 text-slate-400 text-xs flex items-center gap-1.5">
+                    <span class="text-cyan-300">นางฟ้าเอไอกำลังคิด...</span>
+                    <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 0s"></span>
+                    <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 0.15s"></span>
+                    <span class="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-bounce" style="animation-delay: 0.3s"></span>
+                </div>`;
+            chatBox.appendChild(indicator);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const elem = document.getElementById('typing-indicator');
+            if (elem) elem.remove();
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.remove('translate-y-[-160%]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            playSound('toast');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-[-160%]', 'opacity-0');
+            }, 2500);
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+        }
+
+        function escapeHtml(str) {
+            return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        function autoLinkify(text) {
+            if (!text) return '';
+            const urlPattern = /(https?:\/\/[^\s<]+)/g;
+            return text.replace(urlPattern, '<a href="$1" target="_blank" class="text-cyan-400 underline hover:text-cyan-300 break-all">$1</a>');
+        }
+    </script>
+</body>
+
+</html>
