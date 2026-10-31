@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ເລືອກລະບົບປະຕິບັດການ - Portal App</title>
-
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -73,6 +72,10 @@
             box-shadow: 0 0 30px rgba(61, 220, 132, 0.35);
         }
 
+        .pc-glow:hover {
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.35);
+        }
+
         /* Smooth pulse animation for detected badge */
         @keyframes pulseGlow {
 
@@ -91,6 +94,23 @@
         .detected-badge {
             animation: pulseGlow 2s infinite ease-in-out;
         }
+
+        /* Animation for avatar floating */
+        @keyframes avatarFloat {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-6px);
+            }
+        }
+
+        .avatar-float {
+            animation: avatarFloat 4s ease-in-out infinite;
+        }
     </style>
 </head>
 
@@ -98,12 +118,12 @@
     class="text-slate-100 dark:text-slate-100 light:text-slate-800 transition-colors duration-300 flex flex-col justify-between p-4 sm:p-6 md:p-8">
 
     <!-- Top Navigation Bar / Controls -->
-    <header class="w-full max-w-5xl mx-auto flex justify-between items-center py-4 px-2">
+    <header class="w-full max-w-6xl mx-auto flex justify-between items-center py-4 px-2">
         <!-- Logo -->
         <div class="flex items-center space-x-3 space-x-reverse">
             <div
                 class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
-                <i class="fa-solid fa-mobile-screen-button text-xl text-white"></i>
+                <i class="fa-solid fa-desktop text-xl text-white"></i>
             </div>
             <span
                 class="font-bold text-lg sm:text-xl tracking-wide bg-gradient-to-r from-white to-slate-300 light:from-slate-800 light:to-slate-600 bg-clip-text text-transparent">
@@ -120,7 +140,32 @@
     </header>
 
     <!-- Main Content Portal Container -->
-    <main class="w-full max-w-4xl mx-auto my-auto py-8 flex flex-col items-center">
+    <main class="w-full max-w-6xl mx-auto my-auto py-8 flex flex-col items-center">
+
+        <!-- Asian Beauty Character Greeting Section -->
+        <div
+            class="avatar-float flex flex-col sm:flex-row items-center justify-center gap-4 mb-6 max-w-xl text-center sm:text-left">
+            <div class="relative">
+                <!-- Character Avatar Image -->
+                <img src="https://scontent.fvte5-1.fna.fbcdn.net/v/t39.30808-6/653361028_122168504726625547_6448175622588932256_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=108&_nc_map=urlgen_bucketless&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=Jae56bs1knAQ7kNvwH1QMID&_nc_oc=Ado4a_q6pSbf2nMxsvz2qB5iRFX2oxpKJYk4C8GvrBRXZQe-SxrM1AFl8E7NIpmKllU&_nc_zt=23&_nc_ht=scontent.fvte5-1.fna&_nc_gid=qz2Z2XAMyS8IQb2jw-r5SA&_nc_ss=7b2a8&oh=00_AQSqNlvn7D5ylhT24omfGOeF5JWT_H2WpJg-6XhNwfNuUQ&oe=6AEB8241"
+                    alt="Asian Character Greeting"
+                    class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover border-2 border-cyan-400/60 shadow-lg shadow-cyan-500/20">
+                <!-- Online Status Badge -->
+                <span
+                    class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
+            </div>
+
+            <!-- Greeting Speech Bubble -->
+            <div class="glass-card px-5 py-3.5 rounded-2xl relative max-w-xs sm:max-w-md border border-cyan-500/30">
+                <div class="flex items-center gap-2 mb-1 justify-center sm:justify-start">
+                    <span class="text-xs font-semibold text-cyan-400 light:text-cyan-600">Nkauj Si (AI Assistant)</span>
+                    <i class="fa-solid fa-hand-wave text-amber-400 text-xs"></i>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-200 light:text-slate-700 leading-relaxed font-normal">
+                    "ສະບາຍດີ! ຍິນດີຕ້ອນຮັບເຂົ້າสู่ລະບົບ ເລືອກອຸປະກອນຂອງທ່ານດ້ານລຸ່ມໄດ້ເລີຍເຈົ້າ"
+                </p>
+            </div>
+        </div>
 
         <!-- Welcome Header & Title Section -->
         <div class="text-center max-w-2xl mb-10 px-4">
@@ -133,7 +178,7 @@
                 ເລືອກລະບົບປະຕິບັດການຂອງທ່ານ
             </h1>
             <p class="text-sm sm:text-base text-slate-300 light:text-slate-600 font-light leading-relaxed">
-                ກະລຸນາເລືອກອຸປະກອນທີ່ທ່ານກຳລັງໃຊ້ງານຢູ່ ເພື່ອປະສົບການທີ່ດີທີ່ສຸດ ແລະ ເໝາະສົມກັບໂທລະສັບຂອງທ່ານ
+                ກະລຸນາເລືອກອຸປະກອນທີ່ທ່ານກຳລັງໃຊ້ງານຢູ່ ເພື່ອປະສົບການທີ່ດີທີ່ສຸດ ແລະ ເໝາະສົມກັບອຸປະກອນຂອງທ່ານ
             </p>
 
             <!-- Auto Device Detector Badge -->
@@ -144,12 +189,46 @@
             </div>
         </div>
 
-        <!-- Dynamic OS Selection Grid (2 Cards) -->
-        <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 px-2 sm:px-4">
+        <!-- Dynamic OS Selection Grid (3 Cards) -->
+        <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-6 px-2 sm:px-4">
 
-            <!-- 1. iPhone (iOS) Option Card -->
+            <!-- 1. Computer / PC Option Card -->
+            <a href="pc.html" id="btnPc"
+                class="group relative glass-card pc-glow rounded-3xl p-6 sm:p-8 flex flex-col items-center text-center transition-all duration-500 transform hover:-translate-y-2 hover:bg-white/10 dark:hover:bg-white/10 light:hover:bg-white/80 border-2 border-transparent hover:border-sky-400/30">
+
+                <!-- OS Recommendation Tag -->
+                <div id="pcTag"
+                    class="hidden absolute -top-3.5 bg-gradient-to-r from-sky-400 to-blue-500 text-slate-950 font-semibold text-xs px-3 py-1 rounded-full shadow-md">
+                    <i class="fa-solid fa-thumbs-up mr-1"></i> ແນະນຳສຳລັບທ່ານ
+                </div>
+
+                <!-- Icon Wrapper -->
+                <div
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl bg-gradient-to-b from-sky-950/80 to-slate-950 light:from-sky-50 light:to-sky-100 flex items-center justify-center mb-6 shadow-2xl group-hover:scale-110 transition-transform duration-500 border border-sky-500/20">
+                    <i
+                        class="fa-solid fa-desktop text-5xl sm:text-6xl text-sky-400 group-hover:rotate-3 transition-transform duration-300"></i>
+                </div>
+
+                <!-- Title & Description -->
+                <h2
+                    class="text-2xl font-bold mb-2 text-white light:text-slate-800 group-hover:text-sky-400 light:group-hover:text-sky-600 transition-colors">
+                    Computer (PC)
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-400 light:text-slate-500 mb-6 font-light">
+                    ສຳລັບຜູ້ໃຊ້ງານ Windows, macOS, Linux ຫຼື ເຂົ້າຜ່ານ Web Browser บนคอมพิวเตอร์
+                </p>
+
+                <!-- Action Button Link -->
+                <div
+                    class="w-full mt-auto py-3.5 px-6 rounded-2xl bg-white/10 light:bg-slate-900/10 group-hover:bg-sky-500 group-hover:text-slate-950 light:group-hover:bg-sky-600 light:group-hover:text-white font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 border border-white/20 light:border-slate-800/20">
+                    <span>ເຂົ້າໃຊ້ງານ PC</span>
+                    <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            <!-- 2. iPhone (iOS) Option Card -->
             <a href="iphone.html" id="btnIphone"
-                class="group relative glass-card apple-glow rounded-3xl p-8 flex flex-col items-center text-center transition-all duration-500 transform hover:-translate-y-2 hover:bg-white/10 dark:hover:bg-white/10 light:hover:bg-white/80 border-2 border-transparent hover:border-slate-400/30">
+                class="group relative glass-card apple-glow rounded-3xl p-6 sm:p-8 flex flex-col items-center text-center transition-all duration-500 transform hover:-translate-y-2 hover:bg-white/10 dark:hover:bg-white/10 light:hover:bg-white/80 border-2 border-transparent hover:border-slate-400/30">
 
                 <!-- OS Recommendation Tag -->
                 <div id="iosTag"
@@ -175,15 +254,15 @@
 
                 <!-- Action Button Link -->
                 <div
-                    class="w-full py-3.5 px-6 rounded-2xl bg-white/10 light:bg-slate-900/10 group-hover:bg-white group-hover:text-slate-900 light:group-hover:bg-slate-900 light:group-hover:text-white font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 border border-white/20 light:border-slate-800/20">
+                    class="w-full mt-auto py-3.5 px-6 rounded-2xl bg-white/10 light:bg-slate-900/10 group-hover:bg-white group-hover:text-slate-900 light:group-hover:bg-slate-900 light:group-hover:text-white font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 border border-white/20 light:border-slate-800/20">
                     <span>ເຂົ້າໃຊ້ງານ iOS</span>
                     <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
                 </div>
             </a>
 
-            <!-- 2. Android Option Card -->
+            <!-- 3. Android Option Card -->
             <a href="android.html" id="btnAndroid"
-                class="group relative glass-card android-glow rounded-3xl p-8 flex flex-col items-center text-center transition-all duration-500 transform hover:-translate-y-2 hover:bg-white/10 dark:hover:bg-white/10 light:hover:bg-white/80 border-2 border-transparent hover:border-emerald-500/30">
+                class="group relative glass-card android-glow rounded-3xl p-6 sm:p-8 flex flex-col items-center text-center transition-all duration-500 transform hover:-translate-y-2 hover:bg-white/10 dark:hover:bg-white/10 light:hover:bg-white/80 border-2 border-transparent hover:border-emerald-500/30">
 
                 <!-- OS Recommendation Tag -->
                 <div id="androidTag"
@@ -209,7 +288,7 @@
 
                 <!-- Action Button Link -->
                 <div
-                    class="w-full py-3.5 px-6 rounded-2xl bg-white/10 light:bg-slate-900/10 group-hover:bg-emerald-500 group-hover:text-slate-950 light:group-hover:bg-emerald-600 light:group-hover:text-white font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 border border-white/20 light:border-slate-800/20">
+                    class="w-full mt-auto py-3.5 px-6 rounded-2xl bg-white/10 light:bg-slate-900/10 group-hover:bg-emerald-500 group-hover:text-slate-950 light:group-hover:bg-emerald-600 light:group-hover:text-white font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 border border-white/20 light:border-slate-800/20">
                     <span>ເຂົ້າໃຊ້ງານ Android</span>
                     <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
                 </div>
@@ -227,7 +306,7 @@
 
     <!-- Footer -->
     <footer
-        class="w-full max-w-5xl mx-auto text-center py-6 border-t border-white/10 light:border-slate-300/60 mt-auto">
+        class="w-full max-w-6xl mx-auto text-center py-6 border-t border-white/10 light:border-slate-300/60 mt-auto">
         <p class="text-xs text-slate-400 light:text-slate-500">
             © <span id="year"></span> ລະບົບເລືອກອຸປະກອນ. สงวนลิขสิทธิ์ / สงวนสิทธิ์ทั้งหมด.
         </p>
@@ -259,13 +338,26 @@
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
             const detectorBox = document.getElementById('deviceDetector');
             const detectedText = document.getElementById('detectedText');
+
+            const pcTag = document.getElementById('pcTag');
             const iosTag = document.getElementById('iosTag');
             const androidTag = document.getElementById('androidTag');
+
+            const btnPc = document.getElementById('btnPc');
             const btnIphone = document.getElementById('btnIphone');
             const btnAndroid = document.getElementById('btnAndroid');
 
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+
+            // Detect Computer / PC (Windows, Mac, Linux)
+            if (!isMobile) {
+                detectorBox.classList.remove('hidden');
+                detectedText.innerHTML = 'ກວດພົບອຸປະກອນ: <strong class="text-sky-400 light:text-sky-600">Computer / PC</strong>';
+                pcTag.classList.remove('hidden');
+                btnPc.classList.add('border-sky-400', 'shadow-2xl', 'scale-[1.02]');
+            }
             // Detect iOS (iPhone / iPad / iPod)
-            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+            else if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
                 detectorBox.classList.remove('hidden');
                 detectedText.innerHTML = 'ກວດພົບອຸປະກອນ: <strong class="text-white light:text-slate-900">iPhone / iOS</strong>';
                 iosTag.classList.remove('hidden');
